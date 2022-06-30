@@ -3,6 +3,7 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="pmsPU" transaction-type="JTA">
     <jta-data-source>jdbc/pms</jta-data-source>
+    <class>com.khoders.pms.entities.Category</class>
     <class>com.khoders.pms.entities.Customer</class>
     <class>com.khoders.pms.entities.ExpiredProduct</class>
     <class>com.khoders.pms.entities.Location</class>
@@ -11,6 +12,7 @@
     <class>com.khoders.pms.entities.Potency</class>
     <class>com.khoders.pms.entities.Product</class>
     <class>com.khoders.pms.entities.ProductPackage</class>
+    <class>com.khoders.pms.entities.ProductType</class>
     <class>com.khoders.pms.entities.PurchaseOrder</class>
     <class>com.khoders.pms.entities.PurchaseOrderItem</class>
     <class>com.khoders.pms.entities.ReturnGood</class>

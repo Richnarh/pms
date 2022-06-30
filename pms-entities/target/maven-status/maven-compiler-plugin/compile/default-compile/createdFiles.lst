@@ -5,6 +5,7 @@ com\khoders\pms\enums\CustomerType.class
 com\khoders\pms\entities\system\UserAccount.class
 com\khoders\pms\entities\SaleItem.class
 com\khoders\pms\entities\system\Permission.class
+com\khoders\pms\entities\Category.class
 com\khoders\pms\entities\Sales.class
 com\khoders\pms\entities\system\CompanyBranch.class
 com\khoders\pms\entities\Warehouse.class
@@ -12,6 +13,7 @@ com\khoders\pms\entities\OrderRecords.class
 com\khoders\pms\entities\PurchaseOrder.class
 com\khoders\pms\entities\Tax.class
 com\khoders\pms\entities\Product.class
+com\khoders\pms\entities\ProductType.class
 com\khoders\pms\entities\StockReceiptItem.class
 com\khoders\pms\entities\Location.class
 com\khoders\pms\entities\Potency.class

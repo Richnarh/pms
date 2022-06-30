@@ -10,7 +10,7 @@
     <artifactId>pms-admin</artifactId>
     <version>1</version>
     <packaging>war</packaging>
-    <name>pms-admin-1</name>
+    <name>pms-admin</name>
     
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

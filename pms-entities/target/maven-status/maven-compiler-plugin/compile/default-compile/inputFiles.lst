@@ -1,3 +1,4 @@
+C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Category.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Packaging.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Location.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Sales.java
@@ -8,6 +9,7 @@ C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\syst
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\system\UserAccountRecord.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Product.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\ReturnGood.java
+C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\ProductType.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\StockReceiptItem.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\entities\Potency.java
 C:\khoders\java-web\pms\pms-entities\src\main\java\com\khoders\pms\enums\InvoiceType.java
