@@ -1,4 +1,6 @@
 /pms-web/target/
+/pms-entities/target/
+/pms-admin/target/
 /pms-web/faces-config.NavData
 /pms-web/nb-configuration.xml
 /pms-web/src/main/resources/com/khoders/pms/resources/reports/proforma_invoice.jasper
