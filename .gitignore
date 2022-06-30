@@ -1,0 +1,6 @@
+/pms-web/target/
+/pms-web/faces-config.NavData
+/pms-web/nb-configuration.xml
+/pms-web/src/main/resources/com/khoders/pms/resources/reports/proforma_invoice.jasper
+/pms-web/src/main/resources/com/khoders/pms/resources/reports/cash_receipt.jasper
+/pms-web/src/main/resources/com/khoders/pms/resources/reports/receipt.jasper

@@ -1,0 +1,108 @@
+
+package com.khoders.pms.jbeans.controller;
+
+import com.khoders.resource.jpa.CrudApi;
+import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.Msg;
+import com.khoders.resource.utilities.SystemUtils;
+import com.khoders.pms.entities.Location;
+import com.khoders.pms.services.InventoryService;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+/**
+ *
+ * @author richa
+ */
+@Named(value = "locationController")
+@SessionScoped
+public class LocationController implements Serializable
+{
+   @Inject private CrudApi crudApi;
+   @Inject private InventoryService inventoryService;
+   
+   private Location location = new Location();
+   private List<Location> locationList = new LinkedList<>();
+   private String optionText;
+   
+   @PostConstruct
+   private void init()
+   {
+     clearLocation();
+     locationList = inventoryService.getLocationList();
+   }
+   
+   public void saveLocation()
+   {
+       try
+       {
+          location.genCode();
+          if(crudApi.save(location) != null)
+          {
+              locationList = CollectionList.washList(locationList, location);
+              
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+          }
+          clearLocation();
+       } catch (Exception e)
+       {
+          e.printStackTrace();
+       }
+   }
+   
+   public void deleteLocation(Location location){
+       try
+       {
+         if(crudApi.delete(location))
+         {
+             locationList.remove(location);
+             
+             FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+         }  
+       } catch (Exception e)
+       {
+         e.printStackTrace();
+       }
+   }
+   
+   public void editLocation(Location location){
+       this.location = location;
+       optionText = "Update";
+   }
+
+    public void clearLocation()
+    {
+        location = new Location();
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
+    }
+
+    public Location getLocation()
+    {
+      return location;
+    }
+
+    public void setLocation(Location location)
+    {
+        this.location = location;
+    }
+
+    public List<Location> getLocationList()
+    {
+        return locationList;
+    }
+
+    public String getOptionText()
+    {
+        return optionText;
+    }
+}

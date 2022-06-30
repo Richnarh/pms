@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                Product
+            </ui:define>
+
+            <ui:define name="pageContent">
+
+                <h:panelGroup id="mainPanel">
+                    <div class="card p-3">
+                        <div class="container-fluid">
+                            <div class="card-header">#{msg.product}s</div>
+                            <h:panelGroup rendered="#{productController.pageView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form style="margin-bottom: 5px;">
+
+                                            <div class="pull-right py-2">
+                                                <h:commandButton value="#{msg.new} #{msg.product}" class="btn btn-outline-primary btn-sm"
+                                                                 action="#{productController.initProduct()}">
+                                                    <p:ajax update=":mainPanel"/>
+                                                </h:commandButton>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <h:form id="productTable">
+                                    <p:dataTable value="#{productController.productList}" var="product" paginator="true" paginatorPosition="bottom" rows="12">
+
+                                        <p:column style="width: 30px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <h:panelGrid columns="2">
+                                                <span>#{msg.created_date}</span>
+                                                <h:outputText value="#{product.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date_time}" type="localDateTime"/>
+                                                </h:outputText>
+
+                                                <span>#{msg.customer}</span>
+                                                <h:outputText value="#{product.productName}"/>
+
+                                                <span>#{msg.description}</span>
+                                                <h:outputText value="#{product.description}"/>
+
+                                            </h:panelGrid>
+                                        </p:rowExpansion>
+
+                                        <p:column headerText="Code" style="width: 100px;">
+                                            #{product.refNo}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.product}" filterBy="#{product.productName}" filterMatchMode="contains">
+                                            <h:outputText value="#{product.productName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.location}">
+                                            #{product.location.locationName}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.manufacturer}">
+                                            #{product.manufacturer.manufacturerName}
+                                        </p:column>
+
+                                         <p:column headerText="#{msg.action}" style="width: 120px;">
+                                            <p:menuButton value="#{msg.manage}">
+                                                <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{productController.editProduct(product)}" immediate="true" ajax="false"/>
+                                                <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}" action="#{productController.deleteProduct(product)}" immediate="true"  update=":mainPanel"/>
+                                            </p:menuButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+                        </div>
+
+                        <h:panelGroup id="productForm" rendered="#{productController.pageView.createView}">
+                            <center>
+                                <h:form class="spaced-form">
+                                    <h:panelGrid columns="2">
+                                        <h:panelGrid columns="2">
+                                            <span>#{msg.code}</span>
+                                            <p:inputText value="#{productController.product.refNo}"/>
+
+                                            <span>#{msg.product} #{msg.name} <span class="text-danger">*</span></span>
+                                            <p:inputText value="#{productController.product.productName}" required="true"/>
+
+                                            <span>#{msg.selling} #{msg.price}</span>
+                                            <p:inputText value="#{productController.product.sellingPrice}" required="true"/>
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="3">
+                                            
+                                            <span>#{msg.location}</span>
+                                            <p:selectOneMenu value="#{productController.product.location}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.locationList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('location').show()" resetValues="true" icon="#{msg.add_icon}"/>
+
+                                            <span>#{msg.manufacturer}</span>
+                                            <p:selectOneMenu value="#{productController.product.manufacturer}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.manufacturerList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('manufacturer').show()" resetValues="true" icon="#{msg.add_icon}"/>
+                                        </h:panelGrid>
+
+                                    </h:panelGrid>
+                                    <hr/>
+                                    <center>
+                                        <p:commandButton icon="#{msg.check_icon_circle}" class="kbtn-success mx-2" value="#{productController.optionText}" action="#{productController.saveProduct()}" update="@form, :mainPanel"/>
+                                        <p:commandButton icon="#{msg.clear_icon}" class="kbtn-default" value="#{msg.clear}" immediate="true" action="#{productController.clearProduct()}" update="@form"/>
+                                    </center>
+                                    <h:commandButton value="#{msg.close}" class="btn btn-danger float-end" immediate="true" action="#{productController.closePage()}">
+                                        <p:ajax update="@form,:mainPanel"/>
+                                    </h:commandButton>
+                                </h:form>
+                            </center>
+                        </h:panelGroup>
+                    </div>
+                    <ui:include src="includes/location.xhtml"/>
+                    <ui:include src="includes/manufacturer.xhtml"/>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

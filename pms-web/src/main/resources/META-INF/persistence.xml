@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="pmsPU" transaction-type="JTA">
+    <jta-data-source>jdbc/pms</jta-data-source>
+    <class>com.khoders.pms.entities.Customer</class>
+    <class>com.khoders.pms.entities.ExpiredProduct</class>
+    <class>com.khoders.pms.entities.Location</class>
+    <class>com.khoders.pms.entities.Manufacturer</class>
+    <class>com.khoders.pms.entities.Packaging</class>
+    <class>com.khoders.pms.entities.Potency</class>
+    <class>com.khoders.pms.entities.Product</class>
+    <class>com.khoders.pms.entities.ProductPackage</class>
+    <class>com.khoders.pms.entities.PurchaseOrder</class>
+    <class>com.khoders.pms.entities.PurchaseOrderItem</class>
+    <class>com.khoders.pms.entities.ReturnGood</class>
+    <class>com.khoders.pms.entities.SaleItem</class>
+    <class>com.khoders.pms.entities.Sales</class>
+    <class>com.khoders.pms.entities.SalesTax</class>
+    <class>com.khoders.pms.entities.StockReceipt</class>
+    <class>com.khoders.pms.entities.StockReceiptItem</class>
+    <class>com.khoders.pms.entities.Tax</class>
+    <class>com.khoders.pms.entities.UnitMeasurement</class>
+    <class>com.khoders.pms.entities.Warehouse</class>
+    <class>com.khoders.pms.entities.system.CompanyBranch</class>
+    <class>com.khoders.pms.entities.system.CompanyProfile</class>
+    <class>com.khoders.pms.entities.system.Page</class>
+    <class>com.khoders.pms.entities.system.Permission</class>
+    <class>com.khoders.pms.entities.system.UserAccount</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+</persistence>

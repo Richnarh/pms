@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <div class="row">
+        <div class="col-lg-4">
+            <h:form id="orderItemForm">
+                <ui:include src="item-form.xhtml"/>
+            </h:form>
+        </div>
+        <div class="col-lg-8">
+            <h:form id="saleItemItemTable">
+                <p:dataTable value="#{salesController.saleItemList}" var="saleItem" 
+                             paginator="true" paginatorPosition="bottom" rows="6">
+                    <p:column style="width: 0.5px">
+                        <p:rowToggler/>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:panelGrid columns="2">
+                            <span>Item ID</span>
+                            <h:outputText value="#{saleItem.refNo}"/>
+
+                            <span>Created Date</span>
+                            <h:outputText value="#{saleItem.createdDate}">
+                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:rowExpansion>
+
+                    <p:column headerText="#{msg.package}" style="width: 50px;">
+                        #{saleItem.productPackage.unitMeasurement.units}
+                    </p:column>
+
+                    <p:column headerText="#{msg.product}" style="width: 140px;">
+                        #{saleItem.stockReceiptItem.product.productName}
+                    </p:column>
+
+                    <p:column style="width: 15px;" headerText="#{msg.qty}" class="text-end">
+                        #{saleItem.quantity}
+                    </p:column>
+
+                    <p:column headerText="Unit Price" class="text-end" style="width: 40px;">
+                        <h:outputText value="#{saleItem.unitPrice}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Total" class="text-end" style="width: 30px;">
+                        <h:outputText value="#{saleItem.unitPrice * saleItem.quantity}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Action" style="width: 30px;">
+                        <p:commandLink class="text-danger" value="#{msg.remove}" action="#{salesController.removeCartItem(saleItem)}" immediate="true" update="@form"/>
+                    </p:column>
+
+                </p:dataTable>
+
+                <center class="py-3 mt-2">
+                    <h:panelGrid columns="2">
+                        <span>Total Amount</span>
+                        <h:outputText value="#{salesController.totalAmount}" class="field-shade">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </h:panelGrid>
+                </center>
+            </h:form>
+            <hr/>
+            <center>
+                <h:form>
+                    <p:commandButton icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" ajax="false" update="@form"/>
+                    <p:commandButton value="#{msg.clear} All" class="kbtn-default mx-3" icon="#{msg.clear_icon}" immediate="true" action="#{salesController.clearAll()}" update=":saleItemItemTable, :orderItemForm"/>
+                    <h:commandButton value="#{msg.close}" class="btn btn-danger float-end" immediate="true" action="#{salesController.closePage()}">
+                        <p:ajax update="@form,:mainPanel"/>
+                    </h:commandButton>
+                </h:form>
+            </center>
+            <br/>
+        </div>
+    </div>
+</html>
+
