@@ -10,7 +10,7 @@ import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.pms.admin.services.CompanyService;
-import com.khoders.pms.entities.system.Page;
+import com.khoders.pms.entities.system.AppPage;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +31,8 @@ public class PageController implements Serializable
 {
     @Inject private CrudApi crudApi;
     @Inject private CompanyService companyService;
-    private List<Page> pageList = new LinkedList<>();
-    private Page page = new Page();
+    private List<AppPage> pageList = new LinkedList<>();
+    private AppPage page = new AppPage();
     private String optionText;
     
     @PostConstruct
@@ -60,13 +60,13 @@ public class PageController implements Serializable
         }
     }
     
-    public void editPage(Page page)
+    public void editPage(AppPage page)
     {
         this.page = page;
         optionText = "Update";
     }
     
-    public void deletePage(Page page)
+    public void deletePage(AppPage page)
     {
         try
         {
@@ -82,22 +82,22 @@ public class PageController implements Serializable
     
     public void clearPage()
     {
-        page = new Page();
+        page = new AppPage();
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public Page getPage()
+    public AppPage getPage()
     {
         return page;
     }
 
-    public void setPage(Page page)
+    public void setPage(AppPage page)
     {
         this.page = page;
     }
 
-    public List<Page> getPageList()
+    public List<AppPage> getPageList()
     {
         return pageList;
     }

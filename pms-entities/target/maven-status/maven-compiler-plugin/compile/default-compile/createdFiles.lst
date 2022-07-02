@@ -13,6 +13,7 @@ com\khoders\pms\entities\OrderRecords.class
 com\khoders\pms\entities\PurchaseOrder.class
 com\khoders\pms\entities\Tax.class
 com\khoders\pms\entities\Product.class
+com\khoders\pms\entities\system\PageAction.class
 com\khoders\pms\entities\ProductType.class
 com\khoders\pms\entities\StockReceiptItem.class
 com\khoders\pms\entities\Location.class

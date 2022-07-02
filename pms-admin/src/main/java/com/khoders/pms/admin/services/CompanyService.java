@@ -8,7 +8,7 @@ package com.khoders.pms.admin.services;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.system.CompanyBranch;
 import com.khoders.pms.entities.system.CompanyProfile;
-import com.khoders.pms.entities.system.Page;
+import com.khoders.pms.entities.system.AppPage;
 import com.khoders.pms.entities.system.Permission;
 import com.khoders.pms.entities.system.UserAccount;
 import java.util.Collections;
@@ -52,11 +52,11 @@ public class CompanyService
 
         return Collections.emptyList();
     }
-   public List<Page> getPageList()
+   public List<AppPage> getPageList()
     {
         try
         {
-            return crudApi.getEm().createQuery("SELECT e FROM Page e", Page.class).getResultList();
+            return crudApi.getEm().createQuery("SELECT e FROM Page e", AppPage.class).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();

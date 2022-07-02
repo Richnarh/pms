@@ -29,28 +29,6 @@
     <class>com.khoders.pms.entities.system.Page</class>
     <class>com.khoders.pms.entities.system.Permission</class>
     <class>com.khoders.pms.entities.system.UserAccount</class>
-    <class>com.khoders.smartpms.entities.Cart</class>
-    <class>com.khoders.smartpms.entities.Category</class>
-    <class>com.khoders.smartpms.entities.Customer</class>
-    <class>com.khoders.smartpms.entities.ExpiredProduct</class>
-    <class>com.khoders.smartpms.entities.Location</class>
-    <class>com.khoders.smartpms.entities.Manufacturer</class>
-    <class>com.khoders.smartpms.entities.Packaging</class>
-    <class>com.khoders.smartpms.entities.Potency</class>
-    <class>com.khoders.smartpms.entities.Product</class>
-    <class>com.khoders.smartpms.entities.ProductPackage</class>
-    <class>com.khoders.smartpms.entities.ProductType</class>
-    <class>com.khoders.smartpms.entities.PurchaseOrder</class>
-    <class>com.khoders.smartpms.entities.PurchaseOrderItem</class>
-    <class>com.khoders.smartpms.entities.SalesCatalogue</class>
-    <class>com.khoders.smartpms.entities.StockReceipt</class>
-    <class>com.khoders.smartpms.entities.StockReceiptItem</class>
-    <class>com.khoders.smartpms.entities.UnitMeasurement</class>
-    <class>com.khoders.smartpms.entities.system.CompanyBranch</class>
-    <class>com.khoders.smartpms.entities.system.CompanyProfile</class>
-    <class>com.khoders.smartpms.entities.system.Page</class>
-    <class>com.khoders.smartpms.entities.system.Permission</class>
-    <class>com.khoders.smartpms.entities.system.UserAccount</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

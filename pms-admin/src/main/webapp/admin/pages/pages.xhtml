@@ -32,22 +32,28 @@
                         <div class="col-md-8">
                             <h:form id="pageTable">
                                 <p:dataTable value="#{pageController.pageList}" var="page" paginator="true" paginatorPosition="bottom" rows="12">
-                                    <p:column headerText="Code" style="width: 100px;">
-                                        #{page.refNo}
-                                    </p:column>
-                                    <p:column headerText="Page Name">
+                                     <p:column style="width: 20px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+                                     <p:rowExpansion>
+                                         <h:panelGrid columns="2">
+                                             <span>Code</span>
+                                             <h:outputText value="#{page.refNo}"/>
+                                         </h:panelGrid>
+                                     </p:rowExpansion>
+                                    <p:column headerText="Page Name" style="width: 130px;">
                                         #{page.pageName}
                                     </p:column>
                                     <p:column headerText="Page URL">
                                         #{page.pageUrl}
                                     </p:column>
-                                    <p:column headerText="#{msg.action}" style="width: 70px;">
-                                        <p:commandButton value="#{msg.edit}" class="kbtn-secondary" action="#{pageController.editPage(page)}" update=":pageForm"/>
-                                    </p:column>
-
-                                    <p:column headerText="#{msg.action}" style="width: 80px;">
-                                        <p:commandButton value="#{msg.delete}" class="kbtn-danger" onclick="return confirm('#{msg.delete_message}')" action="#{pageController.deletePage(page)}" update="@form"/>
-                                    </p:column>
+                                    
+                                      <p:column headerText="#{msg.action}" style="width: 120px;">
+                                            <p:menuButton value="#{msg.manage}">
+                                                <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{pageController.editPage(page)}" immediate="true" update=":pageForm"/>
+                                                <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}"  action="#{pageController.deletePage(page)}" immediate="true" update="@form"/>
+                                            </p:menuButton>
+                                        </p:column>
                                 </p:dataTable>
                             </h:form>
                         </div>

@@ -27,7 +27,7 @@
     
         <resource-bundle>
             <base-name>
-                com.khoders.smartpms.admin.resources.messages
+                com.khoders.pms.admin.resources.messages
             </base-name>
             <var>
                 msg
@@ -36,7 +36,7 @@
     </application>
     
      <lifecycle>
-        <phase-listener>com.khoders.smartpms.admin.listener.SessionListener</phase-listener>
+        <phase-listener>com.khoders.pms.admin.listener.SessionListener</phase-listener>
     </lifecycle>
     
 </faces-config>

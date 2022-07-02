@@ -5,7 +5,7 @@
  */
 package com.khoders.pms.admin.jbeans.converter;
 
-import com.khoders.pms.entities.system.Page;
+import com.khoders.pms.entities.system.AppPage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
@@ -15,7 +15,7 @@ import org.omnifaces.converter.SelectItemsConverter;
  *
  * @author richa
  */
-@FacesConverter(forClass = Page.class)
+@FacesConverter(forClass = AppPage.class)
 public class PageConverter extends SelectItemsConverter
 {
     @Override
@@ -25,6 +25,6 @@ public class PageConverter extends SelectItemsConverter
         {
             return null;
         }
-        return ((Page) value).getId();
+        return ((AppPage) value).getId();
     }
 }

@@ -26,7 +26,7 @@ public class Permission extends UserAccountRecord implements Serializable{
     
     @JoinColumn(name = "pages", referencedColumnName = "id")
     @ManyToOne
-    private Page page;
+    private AppPage page;
 
     public boolean isGrantAccess() {
         return grantAccess;
@@ -36,12 +36,12 @@ public class Permission extends UserAccountRecord implements Serializable{
         this.grantAccess = grantAccess;
     }
 
-    public Page getPage()
+    public AppPage getPage()
     {
         return page;
     }
 
-    public void setPage(Page page)
+    public void setPage(AppPage page)
     {
         this.page = page;
     }

@@ -31,7 +31,7 @@
                             <div class="card-header">Set Permissions</div>
                             <div class="card-body">
                                 <h:form id="permissionsForm" class="spaced-form">
-                                    
+
                                     <h:panelGrid columns="2">
                                         <span>Selected User</span>
                                         <h:outputText value="#{permissionController.selectedAccount.fullname}" class="field-shade"/>
@@ -57,7 +57,7 @@
                 </div>
 
 
-                <div class="col-md-12 py-3">
+                <div class="col-md-3 py-3">
                     <h:form id="permissionTable" class="shadow-sm">
 
                         <p:dataTable value="#{permissionController.permissionList}" var="permissions" scrollable="true" scrollHeight="400">
@@ -75,20 +75,18 @@
                                     </h:outputText>
                                 </h:panelGrid>
                             </p:rowExpansion>
-                            <p:column headerText="Page">
+                            <p:column headerText="Page" style="width: 130px;">
                                 #{permissions.page}
                             </p:column>
-                            <p:column headerText="Page Access">
+                            <p:column headerText="Page Access" style="width: 37px">
                                 <p:selectBooleanCheckbox disabled="true" value="#{permissions.grantAccess}"/>
                             </p:column>
-                            
-                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update=":permissionsForm"
-                                                 action="#{permissionController.editPermissions(permissions)}"/>
-                            </p:column>
-                            <p:column headerText="#{msg.action}" style="width: 100px;">
-                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{permissionController.deletePermissions(permissions)}" 
-                                                 onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+
+                            <p:column headerText="#{msg.action}" style="width: 120px;">
+                                <p:menuButton value="#{msg.manage}">
+                                    <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{permissionController.editPermissions(permissions)}" immediate="true" update=":permissionsForm"/>
+                                    <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}"  action="#{permissionController.deletePermissions(permissions)}" immediate="true" update="@form"/>
+                                </p:menuButton>
                             </p:column>
                         </p:dataTable>
 

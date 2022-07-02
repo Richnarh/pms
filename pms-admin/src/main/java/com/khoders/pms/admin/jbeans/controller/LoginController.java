@@ -14,8 +14,6 @@ import com.khoders.pms.admin.services.UserAccountService;
 import com.khoders.pms.entities.system.UserAccount;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.omnifaces.util.Faces;
@@ -40,9 +38,6 @@ public class LoginController implements Serializable
     {
         try
         {
-            System.out.println("Username => "+userEmail);
-            System.out.println("Password => "+password);
-
             userModel.setUserEmail(userEmail);
             userModel.setPassword(password);
 
@@ -50,14 +45,12 @@ public class LoginController implements Serializable
 
             if (account == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
+              Msg.error("Wrong username or Password");
                 return null;
             }
            if(account.getAccessLevel() != AccessLevel.SUPER_USER)
            {
-               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Access Denied!!"), null));
+              Msg.error("Access Denied!!");
                 return null;
            }
                
@@ -79,8 +72,7 @@ public class LoginController implements Serializable
 
             if (userAccount == null)
             {
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Wrong username or Password"), null));
+                Msg.error("Wrong username or Password");
                 return null;
             }
 

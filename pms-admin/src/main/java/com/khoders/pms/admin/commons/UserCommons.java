@@ -9,7 +9,7 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.admin.services.CompanyService;
 import com.khoders.pms.entities.system.CompanyBranch;
 import com.khoders.pms.entities.system.CompanyProfile;
-import com.khoders.pms.entities.system.Page;
+import com.khoders.pms.entities.system.AppPage;
 import com.khoders.pms.entities.system.UserAccount;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ public class UserCommons implements Serializable
    private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
    private List<UserAccount> userAccountList = new LinkedList<>();
-   private List<Page> pageList = new LinkedList<>();
+   private List<AppPage> pageList = new LinkedList<>();
    
    @PostConstruct
    public void init()
@@ -59,7 +59,7 @@ public class UserCommons implements Serializable
         return userAccountList;
     }
 
-    public List<Page> getPageList()
+    public List<AppPage> getPageList()
     {
         return pageList;
     }
