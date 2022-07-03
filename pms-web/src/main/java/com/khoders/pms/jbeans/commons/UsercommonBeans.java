@@ -1,11 +1,15 @@
 package com.khoders.pms.jbeans.commons;
 
+import com.khoders.pms.entities.Category;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.Customer;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
+import com.khoders.pms.entities.Packaging;
+import com.khoders.pms.entities.Potency;
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
+import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.entities.StockReceiptItem;
 import com.khoders.pms.entities.UnitMeasurement;
 import com.khoders.pms.entities.Warehouse;
@@ -37,8 +41,12 @@ public class UsercommonBeans implements Serializable
     private List<Customer> customerList = new LinkedList<>();
     private List<UserAccount> userAccountList = new LinkedList<>();
     
+    private List<ProductType> productTypeList = new LinkedList<>();
+    private List<Potency> potencyList = new LinkedList<>();
+    private List<Category> categoryList = new LinkedList<>();
     private List<Manufacturer> manufacturerList = new LinkedList<>();
     private List<Location> locationList = new LinkedList<>();
+    private List<Packaging> packagingList = new LinkedList<>();
     private List<Warehouse> warehouseList = new LinkedList<>();
     
     @PostConstruct
@@ -52,8 +60,12 @@ public class UsercommonBeans implements Serializable
         customerList = inventoryService.getCustomerList();
         userAccountList = inventoryService.getUserAccountList();
         
+        productTypeList = inventoryService.getProductTypeList();
+        potencyList = inventoryService.getPotencyList();
+        categoryList = inventoryService.getCategoryList();
         manufacturerList = inventoryService.getManufacturerList();
         locationList = inventoryService.getLocationList();
+        packagingList = inventoryService.getPackagingList();
     }
 
     public List<Product> getProductList()
@@ -101,6 +113,26 @@ public class UsercommonBeans implements Serializable
     public List<Warehouse> getWarehouseList()
     {
         return warehouseList;
+    }
+
+    public List<ProductType> getProductTypeList()
+    {
+        return productTypeList;
+    }
+
+    public List<Potency> getPotencyList()
+    {
+        return potencyList;
+    }
+
+    public List<Category> getCategoryList()
+    {
+        return categoryList;
+    }
+
+    public List<Packaging> getPackagingList()
+    {
+        return packagingList;
     }
     
 }

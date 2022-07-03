@@ -5,13 +5,19 @@ com\khoders\pms\enums\CustomerType.class
 com\khoders\pms\entities\system\UserAccount.class
 com\khoders\pms\entities\SaleItem.class
 com\khoders\pms\entities\system\Permission.class
+com\khoders\pms\entities\Category.class
+com\khoders\pms\entities\system\UserPageAction.class
+com\khoders\pms\entities\system\UserPage.class
 com\khoders\pms\entities\Sales.class
+com\khoders\pms\entities\system\AppPage.class
 com\khoders\pms\entities\system\CompanyBranch.class
 com\khoders\pms\entities\Warehouse.class
 com\khoders\pms\entities\OrderRecords.class
 com\khoders\pms\entities\PurchaseOrder.class
 com\khoders\pms\entities\Tax.class
 com\khoders\pms\entities\Product.class
+com\khoders\pms\entities\system\PageAction.class
+com\khoders\pms\entities\ProductType.class
 com\khoders\pms\entities\StockReceiptItem.class
 com\khoders\pms\entities\Location.class
 com\khoders\pms\entities\Potency.class
@@ -19,7 +25,6 @@ com\khoders\pms\entities\system\CompanyProfile.class
 com\khoders\pms\entities\ReturnGood.class
 com\khoders\pms\entities\SalesTax.class
 com\khoders\pms\entities\StockReceipt.class
-com\khoders\pms\entities\system\Page.class
 com\khoders\pms\entities\system\RefNo.class
 com\khoders\pms\entities\UnitMeasurement.class
 com\khoders\pms\enums\TransType.class

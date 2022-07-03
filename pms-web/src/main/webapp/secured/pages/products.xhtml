@@ -43,7 +43,7 @@
                                             <h:panelGrid columns="2">
                                                 <span>#{msg.created_date}</span>
                                                 <h:outputText value="#{product.createdDate}">
-                                                    <f:convertDateTime pattern="#{msg.formatted_date_time}" type="localDateTime"/>
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                                 </h:outputText>
 
                                                 <span>#{msg.customer}</span>
@@ -51,6 +51,15 @@
 
                                                 <span>#{msg.description}</span>
                                                 <h:outputText value="#{product.description}"/>
+
+                                                <span>#{msg.manufacturer}</span>
+                                                <h:outputText value="#{product.manufacturer.manufacturerName}"/>
+
+                                                <span>#{msg.category}</span>
+                                                <h:outputText value="#{product.category.categoryName}"/>
+
+                                                <span>#{msg.product} #{msg.type}</span>
+                                                <h:outputText value="#{product.productType.productTypeName}"/>
 
                                             </h:panelGrid>
                                         </p:rowExpansion>
@@ -67,8 +76,24 @@
                                             #{product.location.locationName}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.manufacturer}">
-                                            #{product.manufacturer.manufacturerName}
+                                        <p:column headerText="#{msg.potency}">
+                                            <h:outputText value="#{product.potency.potencyName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.frequency}">
+                                            #{product.frequency}
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.dose}">
+                                            <h:outputText value="#{product.dose}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.route}">
+                                            <h:outputText value="#{product.route}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.packaging}">
+                                            #{product.packaging.packagingName}
                                         </p:column>
 
                                          <p:column headerText="#{msg.action}" style="width: 120px;">
@@ -87,11 +112,20 @@
                                 <h:form class="spaced-form">
                                     <h:panelGrid columns="2">
                                         <h:panelGrid columns="2">
-                                            <span>#{msg.code}</span>
+                                            <span>#{msg.product} #{msg.code}</span>
                                             <p:inputText value="#{productController.product.refNo}"/>
 
                                             <span>#{msg.product} #{msg.name} <span class="text-danger">*</span></span>
                                             <p:inputText value="#{productController.product.productName}" required="true"/>
+
+                                            <span>#{msg.dose}</span>
+                                            <p:inputText value="#{productController.product.dose}" required="true"/>
+
+                                            <span>#{msg.frequency}</span>
+                                            <p:inputText value="#{productController.product.frequency}" required="true"/>
+
+                                            <span>#{msg.route}</span>
+                                            <p:inputText value="#{productController.product.route}" required="true"/>
 
                                             <span>#{msg.selling} #{msg.price}</span>
                                             <p:inputText value="#{productController.product.sellingPrice}" required="true"/>
@@ -99,13 +133,40 @@
                                         </h:panelGrid>
 
                                         <h:panelGrid columns="3">
-                                            
+                                            <span>#{msg.product} #{msg.type}</span>
+                                            <p:selectOneMenu value="#{productController.product.productType}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.productTypeList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('productType').show()" resetValues="true" icon="#{msg.add_icon}"/>
+
+                                            <span>#{msg.potency}</span>
+                                            <p:selectOneMenu value="#{productController.product.potency}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.potencyList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('potency').show()" resetValues="true" icon="#{msg.add_icon}"/>
+
+                                            <span>#{msg.packaging}</span>
+                                            <p:selectOneMenu value="#{productController.product.packaging}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.packagingList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('packaging').show()" resetValues="true" icon="#{msg.add_icon}"/>
+
                                             <span>#{msg.location}</span>
                                             <p:selectOneMenu value="#{productController.product.location}" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{usercommonBeans.locationList}"/>
                                             </p:selectOneMenu>
                                             <p:commandButton class="kbtn-info" oncomplete="PF('location').show()" resetValues="true" icon="#{msg.add_icon}"/>
+
+                                            <span>#{msg.category}</span>
+                                            <p:selectOneMenu value="#{productController.product.category}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{usercommonBeans.categoryList}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('category').show()" resetValues="true" icon="#{msg.add_icon}"/>
 
                                             <span>#{msg.manufacturer}</span>
                                             <p:selectOneMenu value="#{productController.product.manufacturer}" filter="true" filterMatchMode="contains">
@@ -128,7 +189,11 @@
                             </center>
                         </h:panelGroup>
                     </div>
+                    <ui:include src="includes/product-type.xhtml"/>
+                    <ui:include src="includes/potency.xhtml"/>
+                    <ui:include src="includes/packaging.xhtml"/>
                     <ui:include src="includes/location.xhtml"/>
+                    <ui:include src="includes/category.xhtml"/>
                     <ui:include src="includes/manufacturer.xhtml"/>
                 </h:panelGroup>
             </ui:define>

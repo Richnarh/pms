@@ -1,13 +1,17 @@
 package com.khoders.pms.services;
 
+import com.khoders.pms.entities.Category;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.pms.entities.SaleItem;
 import com.khoders.pms.entities.Customer;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
+import com.khoders.pms.entities.Packaging;
+import com.khoders.pms.entities.Potency;
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
+import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.PurchaseOrderItem;
 import com.khoders.pms.entities.Sales;
@@ -46,7 +50,33 @@ public class InventoryService
 
         return Collections.emptyList();
     }
- 
+    public List<Potency> getPotencyList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Potency e ORDER BY e.createdDate DESC", Potency.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+    
+    public List<Packaging> getPackagingList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Packaging e ORDER BY e.createdDate DESC", Packaging.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
     public List<Location> getLocationList()
     {
         try
@@ -73,7 +103,32 @@ public class InventoryService
         }
         return Collections.emptyList();
     }
+    public List<ProductType> getProductTypeList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM ProductType e ORDER BY e.createdDate DESC", ProductType.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
+        return Collections.emptyList();
+    }
+    public List<Category> getCategoryList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Category e ORDER BY e.createdDate DESC", Category.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
     public List<UnitMeasurement> getUnitMeasurementList()
     {
         try

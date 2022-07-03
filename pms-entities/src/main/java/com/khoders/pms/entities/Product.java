@@ -23,19 +23,44 @@ public class Product extends UserAccountRecord implements Serializable
     @ManyToOne
     private Location location;
     
+    @JoinColumn(name = "product_type", referencedColumnName = "id")
+    @ManyToOne
+    private ProductType productType; 
+    
     @JoinColumn(name = "manufacturer", referencedColumnName = "id")
     @ManyToOne
     private Manufacturer manufacturer;
     
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    @ManyToOne
+    private Category category;
+    
     @Column(name = "description")
     private String description;
+    
+    @Column(name = "dose")
+    private String dose;
+    
+    @Column(name = "frequency")
+    private String frequency;
+    
+    @Column(name = "route")
+    private String route;
     
     @Column(name = "selling_price")
     private double sellingPrice;
     
     @Column(name = "reorder_level")
     private int reorderLevel;
-
+    
+    @JoinColumn(name = "potency", referencedColumnName = "id")
+    @ManyToOne
+    private Potency potency;
+    
+    @JoinColumn(name = "packaging", referencedColumnName = "id")
+    @ManyToOne
+    private Packaging packaging;
+    
     public String getProductName()
     {
         return productName;
@@ -88,9 +113,79 @@ public class Product extends UserAccountRecord implements Serializable
         this.reorderLevel = reorderLevel;
     }
 
+    public ProductType getProductType()
+    {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType)
+    {
+        this.productType = productType;
+    }
+
+    public Category getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(Category category)
+    {
+        this.category = category;
+    }
+
+    public String getDose()
+    {
+        return dose;
+    }
+
+    public void setDose(String dose)
+    {
+        this.dose = dose;
+    }
+
+    public String getFrequency()
+    {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency)
+    {
+        this.frequency = frequency;
+    }
+
+    public String getRoute()
+    {
+        return route;
+    }
+
+    public void setRoute(String route)
+    {
+        this.route = route;
+    }
+
+    public Potency getPotency()
+    {
+        return potency;
+    }
+
+    public void setPotency(Potency potency)
+    {
+        this.potency = potency;
+    }
+
+    public Packaging getPackaging()
+    {
+        return packaging;
+    }
+
+    public void setPackaging(Packaging packaging)
+    {
+        this.packaging = packaging;
+    }
+
     @Override
     public String toString()
     {
-        return productName;
+        return productName +" "+potency +" "+packaging;
     } 
 }
