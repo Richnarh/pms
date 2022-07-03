@@ -6,12 +6,15 @@
 package com.khoders.pms.admin.jbeans.controller;
 
 import com.khoders.pms.admin.services.PermissionService;
+import com.khoders.pms.entities.system.AppPage;
 import com.khoders.pms.entities.system.PageAction;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -31,6 +34,7 @@ public class PageActionController implements Serializable
     @Inject private PermissionService permissionService;
     private PageAction pageAction = new PageAction();
     private List<PageAction> pageActionList = new LinkedList<>();
+    private List<AppPage> appPageList = new LinkedList<>();
     
     private String optionText;
     
@@ -39,6 +43,33 @@ public class PageActionController implements Serializable
         clearPage();
         pageActionList = permissionService.getPageActionList();
     }
+    
+    public void initDefault()
+    {
+        appPageList = permissionService.getAppPageList();
+        for (AppPage appPage : appPageList)
+        {
+            initActions(appPage, "create", "Create", Status.ACTIVE);
+            initActions(appPage, "edit", "Edit", Status.ACTIVE);
+            initActions(appPage, "delete", "Delete", Status.ACTIVE);
+        }
+        init();
+    }
+
+    private PageAction initActions(AppPage appPage, String actionCode, String actionName, Status actionStatus)
+    {
+        PageAction action = new PageAction();
+        action.setActionCode(actionCode);
+        action.setActionName(actionName);
+        action.setActionStatus(actionStatus);
+        action.setAppPage(appPage);
+        action.genCode();
+        action.setLastModifiedDate(LocalDateTime.now());
+        
+        crudApi.save(action);
+
+        return action;
+    }      
     
     public void savePageAction()
     {
@@ -99,6 +130,8 @@ public class PageActionController implements Serializable
     {
         return optionText;
     }
+
+
     
     
 }

@@ -9,15 +9,13 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
-import com.khoders.pms.admin.services.CompanyService;
+import com.khoders.pms.admin.services.PermissionService;
 import com.khoders.pms.entities.system.AppPage;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -30,7 +28,7 @@ import javax.inject.Named;
 public class AppPageController implements Serializable
 {
     @Inject private CrudApi crudApi;
-    @Inject private CompanyService companyService;
+    @Inject private PermissionService permissionService;
     private List<AppPage> appPageList = new LinkedList<>();
     private AppPage appPage = new AppPage();
     private String optionText;
@@ -39,7 +37,7 @@ public class AppPageController implements Serializable
     private void init()
     {
         optionText="Save Changes";
-        appPageList = companyService.getPageList();
+        appPageList = permissionService.getAppPageList();
     }
     
     public void savePage()
@@ -50,8 +48,7 @@ public class AppPageController implements Serializable
             if(crudApi.save(appPage) != null)
             {
                 appPageList = CollectionList.washList(appPageList, appPage);
-                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                Msg.info(Msg.SUCCESS_MESSAGE);
             }
             clearPage();
         } catch (Exception e)
@@ -64,6 +61,7 @@ public class AppPageController implements Serializable
     {
         this.appPage = appPage;
         optionText = "Update";
+        SystemUtils.resetJsfUI();
     }
     
     public void deletePage(AppPage appPage)
@@ -73,6 +71,7 @@ public class AppPageController implements Serializable
             if(crudApi.delete(appPage))
             {
                 appPageList.remove(appPage);
+                Msg.info(Msg.SUCCESS_MESSAGE);
             }
         } catch (Exception e)
         {

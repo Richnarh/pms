@@ -18,17 +18,20 @@
                         <div class="col-md-4">
                             <h:form id="appPageForm" class="spaced-form">
                                 <h:panelGrid columns="2">
-                                    <span>#{msg.page} Code</span>
-                                    <p:inputText value="#{appPageController.appPage.pageCode}"/>
+                                    <span>#{msg.page} Code <span class="text-danger">*</span></span>
+                                    <p:inputText value="#{appPageController.appPage.pageCode}" required="true"/>
                                     
-                                    <span>#{msg.page} Name</span>
-                                    <p:inputText value="#{appPageController.appPage.pageName}"/>
+                                    <span>#{msg.page} Name <span class="text-danger">*</span></span>
+                                    <p:inputText value="#{appPageController.appPage.pageName}" required="true"/>
 
-                                    <span>#{msg.page} URL</span>
-                                    <p:inputText value="#{appPageController.appPage.pageUrl}"/>
+                                    <span>#{msg.page} URL <span class="text-danger">*</span></span>
+                                    <p:inputText value="#{appPageController.appPage.pageUrl}" required="true"/>
 
-                                    <span>#{msg.page} #{msg.status}</span>
-                                    <p:selectOneMenu value="#{appPageController.appPage.pageStatus}">
+                                    <span>#{msg.page} Re-Order <span class="text-danger">*</span></span>
+                                    <p:inputText value="#{appPageController.appPage.reorder}" required="true"/>
+
+                                    <span>#{msg.page} #{msg.status} <span class="text-danger">*</span></span>
+                                    <p:selectOneMenu value="#{appPageController.appPage.pageStatus}" required="true">
                                         <f:selectItem itemLabel="#{msg.choose}"/>
                                         <f:selectItems value="#{commonClass.statusList}"/>
                                     </p:selectOneMenu>
@@ -52,6 +55,9 @@
                                              <h:outputText value="#{appPage.refNo}"/>
                                          </h:panelGrid>
                                      </p:rowExpansion>
+                                    <p:column headerText="No." style="width: 20px;">
+                                        #{appPage.reorder}
+                                    </p:column>
                                     <p:column headerText="#{msg.page} Code" style="width: 130px;">
                                         #{appPage.pageCode}
                                     </p:column>

@@ -9,6 +9,10 @@ import com.khoders.pms.jbeans.UserModel;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
 import com.khoders.pms.entities.system.UserAccount;
+import com.khoders.pms.entities.system.UserPage;
+import com.khoders.pms.entities.system.UserPageAction;
+import com.khoders.pms.listener.AppSession;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
@@ -57,5 +61,19 @@ public class UserAccountService
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<UserPageAction> userPermissions(UserAccount userAccount)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM UserPageAction e WHERE e.userAccount=:userAccount", UserPageAction.class)
+               .setParameter("userAccount", userAccount)
+               .getResultList();
+    }
+
+    public List<UserPage> userPages(UserAccount userAccount)
+    {
+        return crudApi.getEm().createQuery("SELECT e FROM UserPage e WHERE e.userAccount=:userAccount ORDER BY e.appPage.reorder ASC", UserPage.class)
+                .setParameter("userAccount", userAccount)
+                .getResultList();
     }
 }

@@ -40,6 +40,8 @@
                                 <br/>
                                 <p:commandButton icon="#{msg.check_icon_circle}" class="kbtn-success mx-3" value="#{msg.save}" action="#{pageActionController.savePageAction()}" update="@form, :pageActionTable"/>
                                 <p:commandButton icon="#{msg.clear_icon}" class="kbtn-default" value="#{msg.clear}" immediate="true" action="#{pageActionController.clearPage()}" update="@form"/>
+                                <hr/>
+                                <p:commandButton icon="#{msg.cog_icon}" class="mx-3" value="Init Defaults" action="#{pageActionController.initDefault()}" ajax="false" update=":pageActionTable"/>
                             </h:form>
                         </div>
                         <div class="col-md-8">
@@ -54,6 +56,9 @@
                                              <h:outputText value="#{pageAction.refNo}"/>
                                          </h:panelGrid>
                                      </p:rowExpansion>
+                                    <p:column headerText="#{msg.page} Name">
+                                        #{pageAction.appPage.pageName}
+                                    </p:column>
                                     <p:column headerText="#{msg.action} Code">
                                         #{pageAction.actionCode}
                                     </p:column>
@@ -61,11 +66,11 @@
                                         #{pageAction.actionName}
                                     </p:column>
                                     
-                                    <p:column headerText="#{msg.action} #{msg.status}">
+                                    <p:column headerText="#{msg.status}" style="width: 50px;">
                                         #{pageAction.actionStatus.label}
                                     </p:column>
                                     
-                                      <p:column headerText="#{msg.action}" style="width: 120px;">
+                                      <p:column headerText="#{msg.action}" style="width: 80px;">
                                             <p:menuButton value="#{msg.manage}">
                                                 <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{pageActionController.editPageAction(pageAction)}" immediate="true" update=":pageActionForm"/>
                                                 <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}"  action="#{pageActionController.deletePageAction(pageAction)}" immediate="true" update="@form"/>

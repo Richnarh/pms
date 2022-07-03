@@ -52,18 +52,6 @@ public class CompanyService
 
         return Collections.emptyList();
     }
-   public List<AppPage> getPageList()
-    {
-        try
-        {
-            return crudApi.getEm().createQuery("SELECT e FROM AppPage e", AppPage.class).getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
 
     public List<CompanyBranch> getCompanyBranchList()
     {

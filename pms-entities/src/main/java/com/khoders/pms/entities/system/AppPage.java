@@ -29,6 +29,9 @@ public class AppPage extends RefNo
     @Column(name = "page_url")
     private String pageUrl;
     
+    @Column(name = "reorder")
+    private Integer reorder;
+    
     @Column(name = "page_status")
     @Enumerated(EnumType.STRING)
     private Status pageStatus;
@@ -71,6 +74,16 @@ public class AppPage extends RefNo
     public void setPageStatus(Status pageStatus)
     {
         this.pageStatus = pageStatus;
+    }
+
+    public Integer getReorder()
+    {
+        return reorder;
+    }
+
+    public void setReorder(Integer reorder)
+    {
+        this.reorder = reorder;
     }
     
     @Override
