@@ -15,52 +15,62 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h:form class="shadow-sm">
-                            <p:dataTable value="#{permissionController.userAccountList}" var="useAccount" scrollable="true" scrollHeight="300">
-                                <p:column headerText="Full Name" filterBy="#{useAccount.fullname}" filterMatchMode="contains">
-                                    <h:commandLink class="ptext-link" value="#{useAccount.fullname} - #{useAccount.phoneNumber}" action="#{permissionController.selectedAccountActn(useAccount)}">
-                                        <p:ajax update=":permissionsForm, :permissionTable"/>
-                                    </h:commandLink>
-                                </p:column>
-                            </p:dataTable>
+                        <h:form>
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    <p:selectOneMenu value="#{permissionController.selectedUser}" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{userCommons.userAccountList}"/>
+                                        <p:ajax listener="#{permissionController.selectUser()}" update="@form, :permissions"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="card-body">
+                                    <p:dataTable class="mt-2" value="#{permissionController.appPageList}" var="appPage" scrollable="true" scrollHeight="300">
+                                        <p:column headerText="#{msg.page}s" filterBy="#{appPage.pageName}" filterMatchMode="contains">
+                                            <h:outputText value="#{appPage.pageName}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msg.action}" style="width:50px">
+                                            <h:commandButton class="btn btn-primary btn-sm" value="Add" action="#{permissionController.addPageToUser(appPage)}">
+                                                <p:ajax update=":permissionTable"/>
+                                            </h:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
                         </h:form>
                     </div>
 
                     <div class="col-md-6 mx-auto">
                         <div class="card shadow-sm">
-                            <div class="card-header">Set Permissions</div>
+                            <div class="card-header">User Page Actions</div>
                             <div class="card-body">
-                                <h:form id="permissionsForm" class="spaced-form">
-
-                                    <h:panelGrid columns="2">
-                                        <span>Selected User</span>
-                                        <h:outputText value="#{permissionController.selectedAccount.fullname}" class="field-shade"/>
-
-                                        <span>Page</span>
-                                        <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{permissionController.permission.page}">
-                                            <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{userCommons.pageList}"/>
-                                        </p:selectOneMenu>
-
-                                        <span>Grant Access</span>
-                                        <p:selectBooleanCheckbox value="#{permissionController.permission.grantAccess}"/>
-
-                                    </h:panelGrid>
-                                    <div class="pt-3">
-                                        <p:commandButton rendered="#{permissionController.selectedAccount != null}" class="kbtn-success" value="#{permissionController.optionText}" action="#{permissionController.savePermissions()}" update="@form, :permissionTable"/>
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" action="#{permissionController.clear()}" update="@form"/>
-                                    </div>
+                                <h:form id="permissions" class="spaced-form">
+                                    <p:dataTable class="mt-2" value="#{permissionController.userPageList}" var="userPage">
+                                        <p:column headerText="#{msg.date}" style="width:100px">
+                                            <h:outputText value="#{userPage.createdDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msg.page} Name">
+                                            <h:outputText value="#{userPage.appPage.pageName}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msg.action}" style="width:100px">
+                                            <p:menuButton value="#{msg.choose}">
+                                                <p:menuitem icon="#{msg.cog_icon}" class="text-info" value="Set Page Action" action="#{permissionController.setUserPageAction(userPage)}" oncomplete="PF('action').show()" resetValues="true" update=":actionForm"/>
+                                                <p:menuitem icon="#{msg.delete_icon}" class="text-info" value="#{msg.delete}" action="#{permissionController.deleteUserPageAction(userPage)}" immediate="true" update="@form"/>
+                                            </p:menuButton>
+                                        </p:column>
+                                    </p:dataTable>
                                 </h:form>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-                <div class="col-md-3 py-3">
+                <div class="col-md-12 py-3">
                     <h:form id="permissionTable" class="shadow-sm">
 
-                        <p:dataTable value="#{permissionController.permissionList}" var="permissions" scrollable="true" scrollHeight="400">
+                        <p:dataTable value="#{permissionController.userPageActionList}" var="userPageAction" scrollable="true" scrollHeight="400">
                             <f:facet name="header" class="spaced-form">
                                 <p>User permissions</p>
                             </f:facet>
@@ -70,28 +80,36 @@
                             <p:rowExpansion>
                                 <h:panelGrid columns="2">
                                     <span>#{msg.created_date}</span>
-                                    <h:outputText value="#{permissions.createdDate}">
+                                    <h:outputText value="#{userPageAction.createdDate}">
                                         <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                     </h:outputText>
                                 </h:panelGrid>
                             </p:rowExpansion>
-                            <p:column headerText="Page" style="width: 130px;">
-                                #{permissions.page}
+                            <p:column headerText="#{msg.date}" style="width: 130px;">
+                                <h:outputText value="#{userPageAction.createdDate}">
+                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                </h:outputText>
                             </p:column>
-                            <p:column headerText="Page Access" style="width: 37px">
-                                <p:selectBooleanCheckbox disabled="true" value="#{permissions.grantAccess}"/>
+
+                            <p:column headerText="#{msg.page}s" style="width: 130px;">
+                                #{userPageAction.pageAction.appPage.pageName}
+                            </p:column>
+
+                            <p:column headerText="#{msg.action} Name" style="width: 130px;">
+                                #{userPageAction.pageAction.actionName}
                             </p:column>
 
                             <p:column headerText="#{msg.action}" style="width: 120px;">
                                 <p:menuButton value="#{msg.manage}">
-                                    <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{permissionController.editPermissions(permissions)}" immediate="true" update=":permissionsForm"/>
-                                    <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}"  action="#{permissionController.deletePermissions(permissions)}" immediate="true" update="@form"/>
+                                    <p:menuitem icon="#{msg.edit_icon}" class="text-info" value="#{msg.edit}" action="#{permissionController.editUserPageAction(userPageAction)}" immediate="true" update="@form"/>
+                                    <p:menuitem icon="#{msg.delete_icon}" class="text-danger" value="#{msg.delete}"  action="#{permissionController.deleteUserPageAction(userPageAction)}" immediate="true" update="@form"/>
                                 </p:menuButton>
                             </p:column>
                         </p:dataTable>
 
                     </h:form>
                 </div>
+                <ui:include src="includes/actions.xhtml"/>
             </ui:define>
         </ui:composition>
     </h:body>

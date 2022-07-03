@@ -29,6 +29,10 @@
     <class>com.khoders.pms.entities.system.Page</class>
     <class>com.khoders.pms.entities.system.Permission</class>
     <class>com.khoders.pms.entities.system.UserAccount</class>
+    <class>com.khoders.pms.entities.system.AppPage</class>
+    <class>com.khoders.pms.entities.system.PageAction</class>
+    <class>com.khoders.pms.entities.system.UserPage</class>
+    <class>com.khoders.pms.entities.system.UserPageAction</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

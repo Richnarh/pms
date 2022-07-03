@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "user_pages")
 public class UserPage extends RefNo
 {
-    @JoinColumn(name = "pages")
+    @JoinColumn(name = "app_page")
     @ManyToOne
     private AppPage appPage;
     

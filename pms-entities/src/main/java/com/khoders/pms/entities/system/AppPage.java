@@ -5,8 +5,11 @@
  */
 package com.khoders.pms.entities.system;
 
+import com.khoders.resource.enums.Status;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 /**
@@ -27,7 +30,8 @@ public class AppPage extends RefNo
     private String pageUrl;
     
     @Column(name = "page_status")
-    private Boolean pageStatus = false;
+    @Enumerated(EnumType.STRING)
+    private Status pageStatus;
 
     public String getPageName()
     {
@@ -59,20 +63,20 @@ public class AppPage extends RefNo
         this.pageCode = pageCode;
     }
 
-    public Boolean getPageStatus()
+    public Status getPageStatus()
     {
         return pageStatus;
     }
 
-    public void setPageStatus(Boolean pageStatus)
+    public void setPageStatus(Status pageStatus)
     {
         this.pageStatus = pageStatus;
     }
-
+    
     @Override
     public String toString()
     {
-        return pageName +" - "+pageCode;
+        return pageName;
     }
     
 }

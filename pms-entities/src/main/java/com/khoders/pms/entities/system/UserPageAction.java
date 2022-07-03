@@ -18,11 +18,11 @@ import javax.persistence.Table;
 @Table(name = "user_page_action")
 public class UserPageAction extends RefNo
 {
-    @JoinColumn(name = "user_page", referencedColumnName = "id")
+    @JoinColumn(name = "user_pages", referencedColumnName = "id")
     @ManyToOne
     private UserPage userPage;
     
-    @JoinColumn(name = "user_page", referencedColumnName = "id")
+    @JoinColumn(name = "page_action", referencedColumnName = "id")
     @ManyToOne
     private PageAction pageAction;
 

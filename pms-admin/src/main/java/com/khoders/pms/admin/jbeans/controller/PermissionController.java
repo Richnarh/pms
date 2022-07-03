@@ -5,21 +5,21 @@
  */
 package com.khoders.pms.admin.jbeans.controller;
 
+import com.khoders.pms.admin.listener.AppSession;
+import com.khoders.pms.admin.services.PermissionService;
+import com.khoders.pms.entities.system.AppPage;
+import com.khoders.pms.entities.system.PageAction;
+import com.khoders.pms.entities.system.UserAccount;
+import com.khoders.pms.entities.system.UserPage;
+import com.khoders.pms.entities.system.UserPageAction;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
-import com.khoders.resource.utilities.SystemUtils;
-import com.khoders.pms.admin.services.CompanyService;
-import com.khoders.pms.admin.services.UserAccountService;
-import com.khoders.pms.entities.system.Permission;
-import com.khoders.pms.entities.system.UserAccount;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,110 +32,111 @@ import javax.inject.Named;
 public class PermissionController implements Serializable
 {
     @Inject private CrudApi crudApi;
-    @Inject private UserAccountService userAccountService;
-    @Inject private CompanyService companyService;
+    @Inject private AppSession appSession;
+    @Inject private PermissionService permissionService;
     
-    private Permission permission = new Permission();
-    private UserAccount selectedAccount = new UserAccount();
-    private List<Permission> permissionList = new LinkedList<>();
-    private List<UserAccount> userAccountList = new LinkedList<>();
-    
-    private String optionText = "Save Changes";
+    private UserPageAction userPageAction = null;
+    private UserPage userPage = null;
+    private List<UserPage> userPageList = new LinkedList<>();
+    private UserAccount selectedUser = null;
+    private List<AppPage> appPageList = new LinkedList<>();
+    private List<PageAction> pageActionList = new LinkedList<>();
+    private List<UserPageAction> userPageActionList = new LinkedList<>();
     
     @PostConstruct
     private void init(){
-        userAccountList = userAccountService.getAccountList();
+        appPageList = permissionService.getAppPageList();
+        
     }
     
-    public void selectedAccountActn(UserAccount userAccount)
+    public void addPageToUser(AppPage appPage)
     {
+        System.out.println("Selected User --- "+selectedUser);
+        if(selectedUser != null)
+        {
+            userPage = new UserPage();
+            userPage.setAppPage(appPage);
+            userPage.genCode();
+            userPage.setUserAccount(selectedUser);
+            
+            if(crudApi.save(userPage) != null)
+            {
+               userPageList = CollectionList.washList(userPageList, userPage);
+                Msg.info("Page is added to user");
+            }
+        }
+    }
+    
+    public void selectUser(){
+        if(selectedUser == null) return;
+        userPageList = permissionService.getUserPageList(selectedUser);
+//        userPageActionList = permissionService.getUserPageActionList(selectedUser);
+    }
+    
+    public void activateAction(PageAction pageAction)
+    {
+        userPageAction.setPageAction(pageAction);
+        userPageAction.setLastModifiedBy(appSession.getCurrentUser().getFullname());
+        if(crudApi.save(userPageAction) != null){
+            userPageActionList = CollectionList.washList(userPageActionList, userPageAction);
+            Msg.info("Action set for "+pageAction.getAppPage().getPageName());
+        }
+    }
+    
+    public void setUserPageAction(UserPage userPage){
+         userPageAction = new UserPageAction();
+         userPageAction.setUserPage(userPage);
+         userPageAction.genCode();
+         pageActionList = permissionService.getPageActionList(userPage.getAppPage());
+//         userPageAction.set
+    }
+    
+    public void editUserPageAction(UserPageAction userPageAction){
+        this.userPageAction=userPageAction;
+    }
+    
+    public void deleteUserPageAction(UserPage userPage){
         try
         {
-            selectedAccount = userAccount;
-            permissionList = companyService.getPermissions(userAccount);
+            if (crudApi.delete(userPage))
+            {
+                userPageList.remove(userPage);
+                Msg.info(Msg.SUCCESS_MESSAGE);
+            }
         } catch (Exception e)
         {
            e.printStackTrace();
         }
     }
-    
-    public void savePermissions()
+
+    public UserAccount getSelectedUser()
     {
-        try
-        {
-            permission.setUserAccount(selectedAccount);
-           if(crudApi.save(permission) != null)
-           {
-               permissionList = CollectionList.washList(permissionList, permission);
-               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-           }
-           clear();
-        } catch (Exception e)
-        {
-           e.printStackTrace();
-        }
-    }
-    
-    public void editPermissions(Permission permission)
-    {
-        this.permission = permission;
-    }
-    
-    public void deletePermissions(Permission permission)
-    {
-        try
-        {
-          if(crudApi.delete(permission))
-          {
-             permissionList.remove(permission);
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-          }
-        } catch (Exception e)
-        {
-          e.printStackTrace();
-        }
-    }
-    
-    public void clear(){
-        permission = new Permission();
-        SystemUtils.resetJsfUI();
+        return selectedUser;
     }
 
-    public Permission getPermission()
+    public void setSelectedUser(UserAccount selectedUser)
     {
-        return permission;
+        this.selectedUser = selectedUser;
     }
 
-    public void setPermission(Permission permission)
+    public List<AppPage> getAppPageList()
     {
-        this.permission = permission;
+        return appPageList;
     }
 
-    public List<Permission> getPermissionList()
+    public List<UserPage> getUserPageList()
     {
-        return permissionList;
+        return userPageList;
     }
 
-    public List<UserAccount> getUserAccountList()
+    public List<PageAction> getPageActionList()
     {
-        return userAccountList;
+        return pageActionList;
     }
 
-    public UserAccount getSelectedAccount()
+    public List<UserPageAction> getUserPageActionList()
     {
-        return selectedAccount;
-    }
-
-    public void setSelectedAccount(UserAccount selectedAccount)
-    {
-        this.selectedAccount = selectedAccount;
-    }
-
-    public String getOptionText()
-    {
-        return optionText;
+        return userPageActionList;
     }
     
 }

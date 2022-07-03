@@ -33,7 +33,7 @@ public class UserCommons implements Serializable
    private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
    private List<UserAccount> userAccountList = new LinkedList<>();
-   private List<AppPage> pageList = new LinkedList<>();
+   private List<AppPage> appPageList = new LinkedList<>();
    
    @PostConstruct
    public void init()
@@ -41,7 +41,7 @@ public class UserCommons implements Serializable
        companyBranchList = companyService.getCompanyBranchList();
        companyProfileList = companyService.getCompanyProfileList();
        userAccountList = companyService.getUserAccountList();
-       pageList = companyService.getPageList();
+       appPageList = companyService.getPageList();
    }
 
     public List<CompanyBranch> getCompanyBranchList()
@@ -59,9 +59,9 @@ public class UserCommons implements Serializable
         return userAccountList;
     }
 
-    public List<AppPage> getPageList()
+    public List<AppPage> getAppPageList()
     {
-        return pageList;
+        return appPageList;
     }
     
 }

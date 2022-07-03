@@ -56,7 +56,7 @@ public class CompanyService
     {
         try
         {
-            return crudApi.getEm().createQuery("SELECT e FROM Page e", AppPage.class).getResultList();
+            return crudApi.getEm().createQuery("SELECT e FROM AppPage e", AppPage.class).getResultList();
         } catch (Exception e)
         {
             e.printStackTrace();
