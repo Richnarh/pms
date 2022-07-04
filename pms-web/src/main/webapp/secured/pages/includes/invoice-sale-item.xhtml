@@ -27,8 +27,8 @@
                             </h:selectOneMenu>
                             
                             <br/>
-                            <span class="mx-2">Proforma Invoice <span class="text-danger">*</span></span>
-                            <p:selectBooleanCheckbox value="#{salesController.sales.isProformaInvoice}" required="true"/>
+                            <span class="mx-2">Proforma Invoice</span>
+                            <p:selectBooleanCheckbox value="#{salesController.sales.isProformaInvoice}"/>
                         </div>
                         <div class="col-md-4">
                             <h:panelGroup id="customerType" rendered="#{salesController.enableType == true}">
