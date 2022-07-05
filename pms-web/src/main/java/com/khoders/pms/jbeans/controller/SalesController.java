@@ -49,7 +49,6 @@ public class SalesController implements Serializable
     @Inject private InventoryService inventoryService;
     private SaleItem saleItem = new SaleItem();
     private List<SaleItem> saleItemList = new LinkedList<>();
-    private List<SaleItem> removedCartList = new LinkedList<>();
     private List<Sales> salesList = new LinkedList<>();
     
     private List<Tax> taxList = new LinkedList<>();
@@ -98,7 +97,7 @@ public class SalesController implements Serializable
         customer = crudApi.find(Customer.class, sales.getCustomer().getId());
         if(customer != null)
         {
-            if(customer.getCustomerName().equals(CustomerType.WALKIN_CUSTOMER.getLabel()) || customer.getCustomerName().equals(CustomerType.BACK_LOG_SUPPLIER.getLabel())){
+            if(customer.getCustomerName().equals(CustomerType.WALK_IN_CUSTOMER.getLabel()) || customer.getCustomerName().equals(CustomerType.BACK_LOG_SUPPLIER.getLabel())){
                 enableType = true;
             }else{
                 enableType = false;
@@ -142,9 +141,10 @@ public class SalesController implements Serializable
         packagePrice = salesService.queryPackagePrice(productPackage.getUnitMeasurement(), saleItem.getStockReceiptItem().getProduct());  
         System.out.println("packagePrice => "+packagePrice);
         saleItem.setUnitPrice(packagePrice);
+        saleItem.setProductPackage(productPackage);
     }
     
-    public void addCartItem()
+    public void addSaleItem()
     {
         try
         {
@@ -180,13 +180,10 @@ public class SalesController implements Serializable
     
     public void removeCartItem(SaleItem saleItem)
     {
-        totalAmount -= (saleItem.getQuantity() * saleItem.getUnitPrice());
-        removedCartList = CollectionList.washList(removedCartList, saleItem); 
-        System.out.println("saleItem => "+saleItem.getStockReceiptItem().getProduct().getProductName());
-        
+        System.out.println("Sales item -- "+saleItem.getStockReceiptItem().getProduct().getProductName());
         saleItemList.remove(saleItem);
         
-        System.out.println("Size on removing --- "+removedCartList.size());
+        System.out.println("Size on removing --- "+saleItemList.size());
     }
     public void viewAsPosSale(Sales sales)
     {
@@ -239,7 +236,7 @@ public class SalesController implements Serializable
         {
             if(customer != null)
             {
-                if (customer.getCustomerName().equals(CustomerType.WALKIN_CUSTOMER.getLabel()) || customer.getCustomerName().equals(CustomerType.BACK_LOG_SUPPLIER.getLabel()))
+                if (customer.getCustomerName().equals(CustomerType.WALK_IN_CUSTOMER.getLabel()) || customer.getCustomerName().equals(CustomerType.BACK_LOG_SUPPLIER.getLabel()))
                 {
                     customer = new Customer();
                     customer.setCustomerName(customerName);
@@ -251,6 +248,11 @@ public class SalesController implements Serializable
                     crudApi.save(customer);
                 }
             }
+            else
+            {
+               customer = salesService.walkinCustomer();
+               sales.setCustomer(customer);
+            }
             
                 sales.genCode();
                 sales.setPurchaseDate(LocalDateTime.now());
@@ -258,6 +260,7 @@ public class SalesController implements Serializable
                 sales.genReceipt();
                 sales.setUserAccount(appSession.getCurrentUser());
                 sales.setCompanyBranch(appSession.getCompanyBranch());
+                
                 if(sales.isIsProformaInvoice()){
                     sales.setInvoiceType(InvoiceType.PROFORMA_INVOICE);
                 }
@@ -322,11 +325,6 @@ public class SalesController implements Serializable
                 
                 salesList = CollectionList.washList(salesList, sales);
                 
-                for (SaleItem removedCart : removedCartList)
-                {
-                    crudApi.delete(removedCart);
-                    removedCartList.remove(removedCart);
-                }
                 taxCalculation();
                 Msg.info("Transaction saved successfully!");
             

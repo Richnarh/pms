@@ -20,19 +20,19 @@
                                 <h:form class="spaced-form" id="packageForm">
                                     <h:panelGrid columns="2">
                                         <span>Products <span class="text-danger">*</span></span>
-                                        <p:selectOneMenu value="#{productPackageController.productPackage.product}" filter="true" filterMatchMode="contains">
+                                        <p:selectOneMenu value="#{productPackageController.productPackage.product}" required="true" style="width: 200px;" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{usercommonBeans.productList}"/>
                                         </p:selectOneMenu>
 
                                         <span>Units <span class="text-danger">*</span></span>
-                                        <p:selectOneMenu value="#{productPackageController.productPackage.unitMeasurement}" filter="true" filterMatchMode="contains">
+                                        <p:selectOneMenu value="#{productPackageController.productPackage.unitMeasurement}" required="true" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
                                             <f:selectItems value="#{usercommonBeans.unitMeasurementList}"/>
                                         </p:selectOneMenu>
 
                                         <span>Package Factor</span>
-                                        <p:inputText value="#{productPackageController.productPackage.packageFactor}"/>
+                                        <p:inputText title="The quatity that makes the selected unit" value="#{productPackageController.productPackage.packageFactor}"/>
 
                                         <span>Package Price</span>
                                         <p:inputText value="#{productPackageController.productPackage.packagePrice}"/>
@@ -67,7 +67,7 @@
                                         </h:panelGrid>
                                     </p:rowExpansion>
 
-                                    <p:column headerText="Product">
+                                    <p:column headerText="Product" filterBy="#{productPackage.product.productName}" filterMatchMode="contains">
                                         <h:outputText value="#{productPackage.product.productName}"/>
                                     </p:column>
                                     <p:column headerText="Units" style="width: 100px;">

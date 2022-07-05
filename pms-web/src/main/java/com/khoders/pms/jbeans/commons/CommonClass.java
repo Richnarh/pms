@@ -4,6 +4,7 @@
  */
 package com.khoders.smartpms.jbeans.commons;
 
+import com.khoders.pms.enums.Frequency;
 import com.khoders.resource.enums.ClientType;
 import com.khoders.resource.enums.DeliveryMethod;
 import com.khoders.resource.enums.PaymentMethod;
@@ -37,5 +38,9 @@ public class CommonClass implements Serializable
     public List<InvoiceType> getInvoiceTypeList()
     {
         return Arrays.asList(InvoiceType.values());
+    }
+    public List<Frequency> getFrequencyList()
+    {
+        return Arrays.asList(Frequency.values());
     }
 }

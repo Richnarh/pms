@@ -8,13 +8,13 @@ import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.pms.entities.Product;
+import com.khoders.pms.listener.AppSession;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -27,8 +27,9 @@ import javax.inject.Named;
 public class ProductController implements Serializable
 {
    @Inject private CrudApi crudApi;
+   @Inject private AppSession appSession;
    @Inject private InventoryService inventoryService;
-   private Product product;
+   private Product product = new Product();
    private List<Product> productList = new LinkedList<>();
    private String optionText;
    
@@ -51,12 +52,18 @@ public class ProductController implements Serializable
    {
        try
        {
+          if(optionText.equals("Save Changes")){
+              Product newProduct = inventoryService.existProdct(product.getProductName());
+              if (newProduct != null)
+              {
+                  Msg.error("Product already exist");
+                  return;
+              }
+          }
           product.genCode();
           if(crudApi.save(product) != null){
               productList = CollectionList.washList(productList, product);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           closePage();
        } catch (Exception e)
@@ -70,10 +77,8 @@ public class ProductController implements Serializable
        {
          if(crudApi.delete(product))
          {
-             productList.remove(product);
-             
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            productList.remove(product);
+            Msg.info(Msg.SUCCESS_MESSAGE);
          }  
        } catch (Exception e)
        {
@@ -98,6 +103,10 @@ public class ProductController implements Serializable
     public void closePage()
     {
        product = new Product();
+       product.setUserAccount(appSession.getCurrentUser());
+       product.setCompanyBranch(appSession.getCompanyBranch());
+       product.setLastModifiedDate(LocalDateTime.now());
+       product.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);
        optionText = "Save Changes";
        pageView.restToListView();
     }

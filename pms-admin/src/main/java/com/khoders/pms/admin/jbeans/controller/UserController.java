@@ -44,7 +44,7 @@ public class UserController implements Serializable
     public void login(UserAccount userAccount)
     {
         
-//            Faces.redirect("http://localhost:8080/invoice-master/access.xhtml?id="+userAccount.getId());
-            Faces.redirect("http://209.145.49.185:8080/invoicemaster/access.xhtml?id="+userAccount.getId());
+            Faces.redirect("http://localhost:8080/pms-web/access.xhtml?id="+userAccount.getId());
+//            Faces.redirect("http://209.145.49.185:8080/pms/access.xhtml?id="+userAccount.getId());
     }
 }

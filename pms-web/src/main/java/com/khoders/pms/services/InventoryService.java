@@ -382,4 +382,19 @@ public class InventoryService
         }
         return Collections.emptyList();
     }
+
+    public Product existProdct(String productName)
+    {
+      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName", Product.class)
+              .setParameter("productName", productName)
+              .getResultStream().findFirst().orElse(null);
+    }
+
+    public ProductPackage existProdct(Product product, UnitMeasurement unitMeasurement)
+    {
+      return crudApi.getEm().createQuery("SELECT e FROM ProductPackage e WHERE e.product=:product AND e.unitMeasurement=:unitMeasurement", ProductPackage.class)
+              .setParameter("product", product)
+              .setParameter("unitMeasurement", unitMeasurement)
+              .getResultStream().findFirst().orElse(null);
+    }
 }

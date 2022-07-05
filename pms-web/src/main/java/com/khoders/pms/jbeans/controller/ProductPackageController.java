@@ -43,12 +43,26 @@ public class ProductPackageController implements Serializable
    {
        try
        {
+           if(optionText.equals("Save Changes")){
+              ProductPackage newPackage = inventoryService.existProdct(productPackage.getProduct(), productPackage.getUnitMeasurement());
+              if (newPackage != null)
+              {
+                  Msg.error("product and the package already exist");
+                  return;
+              }
+          }
+           if(productPackage.getPackageFactor() == 0.0){
+               Msg.error("Package factor is required");
+               return;
+           }
+           if(productPackage.getPackagePrice() == 0.0){
+               Msg.error("Package price is required");
+               return;
+           }
           productPackage.genCode();
           if(crudApi.save(productPackage) != null){
               productPackageList = CollectionList.washList(productPackageList, productPackage);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+               Msg.info(Msg.SUCCESS_MESSAGE);
           }
           clearProductPackage();
        } catch (Exception e)

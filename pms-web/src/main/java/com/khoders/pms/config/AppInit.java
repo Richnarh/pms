@@ -107,12 +107,12 @@ public class AppInit
     
     public void initCustomer()
     {
-        Customer c = defaultCustomer(CustomerType.WALKIN_CUSTOMER);
+        Customer c = defaultCustomer(CustomerType.WALK_IN_CUSTOMER);
         if(c != null)return;
         
         Customer customer = new Customer();
         customer.setClientType(ClientType.CUSTOMER);
-        customer.setCustomerName(CustomerType.WALKIN_CUSTOMER.getLabel());
+        customer.setCustomerName(CustomerType.WALK_IN_CUSTOMER.getLabel());
         customer.setPhone("");
         
         crudApi.save(customer);

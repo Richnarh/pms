@@ -46,11 +46,11 @@
 
                                         </h:panelGrid>
                                     </p:rowExpansion>
-                                    <p:column headerText="Measurement">
+                                    <p:column headerText="U N I T S">
                                         #{unitMeasurement.units}
                                     </p:column>
                                     <p:column headerText="#{msg.action}" style="width: 70px;">
-                                        <p:commandButton value="#{msg.edit}" class="kbtn-secondary" action="#{unitMeasurementController.editUnitMeasurement(unitMeasurement)}" update=":unitMeasurementForm"/>
+                                        <p:commandButton value="#{msg.edit}" class="kbtn-info" action="#{unitMeasurementController.editUnitMeasurement(unitMeasurement)}" update=":unitMeasurementForm"/>
                                     </p:column>
 
                                     <p:column headerText="#{msg.action}" style="width: 80px;">

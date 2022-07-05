@@ -13,7 +13,7 @@ import com.khoders.resource.utilities.MsgResolver;
  */
 public enum CustomerType implements MsgResolver
 {
-   WALKIN_CUSTOMER("WALKIN_CUSTOMER", "Walk-In-Customer"),
+   WALK_IN_CUSTOMER("WALK_IN_CUSTOMER", "Walk-In-Customer"),
    BACK_LOG_SUPPLIER("BACK_LOG_SUPPLIER", "Back-Log-Supplier");
    
    private final String code;
