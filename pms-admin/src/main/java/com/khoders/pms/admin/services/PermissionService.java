@@ -54,9 +54,10 @@ public class PermissionService
     }
     
     
-    public UserPage userPageExist(UserAccount selectedUser){
-        return crudApi.getEm().createQuery("SELECT e FROM UserPage e WHERE e.userAccount=:selectedUser", UserPage.class)
+    public UserPage userPageExist(UserAccount selectedUser, AppPage appPage){
+        return crudApi.getEm().createQuery("SELECT e FROM UserPage e WHERE e.userAccount=:selectedUser AND e.appPage=:appPage", UserPage.class)
                 .setParameter("selectedUser", selectedUser)
+                .setParameter("appPage", appPage)
                 .getResultStream().findFirst().orElse(null);
     }
 

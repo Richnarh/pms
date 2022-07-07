@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 /**
  *
@@ -77,44 +78,17 @@ public class StockService
         }
         return Collections.EMPTY_LIST;
     }
-    
-    public List<StockReceiptItem> getStockReceiptItems(StockReceipt stockReceipt)
-    {
-        try
-        {
-            return crudApi.getEm().createQuery("SELECT e, SUM(e.pkgQuantity) FROM StockReceiptItem e WHERE e.stockReceipt=?1 GROUP BY e.product ORDER BY e.createdDate DESC", StockReceiptItem.class)
-                    .setParameter(1, stockReceipt)
-                    .getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-    
-    /*
-    public List<Object[]> getStockReceiptItems(StockReceipt stockReceipt)
-    {
-        make the query from necessary tables and map into a dto and present it in UI
-            Query query = crudApi.getEm().
-                    createQuery("SELECT e.refNo, p, e.productPackage,  SUM(e.pkgQuantity) FROM StockReceiptItem e JOIN Product p on e.product=p WHERE e.stockReceipt=:stockReceipt GROUP BY p ORDER BY e.createdDate DESC", StockReceiptItem.class);
-                    
-           return query.setParameter("stockReceipt", stockReceipt).getResultList();
 
-    }
-    */
-    
-    public List<StockReceiptItem> getStockReceiptItems()
+    public List<Object[]> getStockReceiptItems()
     {
-        try
-        {
-            return crudApi.getEm().createQuery("SELECT e FROM StockReceiptItem e GROUP BY e.product ORDER BY e.product DESC", StockReceiptItem.class)
-                    .getResultList();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+        String queryString = "SELECT e.id, e.`ref_no`, p.`product_name`, SUM(e.pkg_quantity) AS Quantity, u.`units`, pkg.`package_factor`, e.`cost_price`, pkg.`package_price`,p.`reorder_level` FROM `stock_recept_item` e \n" +
+"		INNER JOIN product p ON p.id=e.product \n" +
+"		INNER JOIN product_package pkg ON pkg.id=e.product_package \n" +
+"		INNER JOIN `unit_measurement` u ON u.id=pkg.`units_measurement` \n" +
+"		GROUP BY p.product_name, pkg.`units_measurement` ORDER BY p.product_name DESC";
+        
+        Query query = crudApi.getEm().createNativeQuery(queryString);
+        return query.getResultList();
     }
     
     public StockReceipt getStockReceipt(PurchaseOrder purchaseOrder)

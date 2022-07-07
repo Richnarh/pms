@@ -46,7 +46,7 @@ public class ExpiredProductController implements Serializable
     
     @PostConstruct
     private void init(){
-        stockProductList = stockService.getStockReceiptItems();
+//        stockProductList = stockService.getStockReceiptItems();
     }
     
     public void selectProduct(StockReceiptItem stockReceiptItem)

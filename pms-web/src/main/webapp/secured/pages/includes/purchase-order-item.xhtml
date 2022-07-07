@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
 
     <div class="row wow zoomIn">
         <div class="col-lg-4">
@@ -28,9 +29,6 @@
 
                     <span>Unit Cost <span class="text-danger">*</span> </span>
                     <p:inputText value="#{purchaseOrderController.purchaseOrderItem.costPrice}" required="true"/>
-
-                    <span>Selling Price </span>
-                    <p:inputText value="#{purchaseOrderController.purchaseOrderItem.sellingPrice}"/>
 
                     <span>#{msg.description}</span>
                     <p:inputTextarea value="#{purchaseOrderController.purchaseOrderItem.description}"/>
@@ -79,11 +77,13 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg.selling}" class="text-end" style="width: 50px;">
+                    <ui:remove>
+                        <p:column headerText="#{msg.selling}" class="text-end" style="width: 50px;">
                         <h:outputText value="#{purchaseOrderItem.sellingPrice}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
+                    </ui:remove>
                     
                     <p:column headerText="Total" class="text-end" style="width: 50px;">
                         <h:outputText value="#{purchaseOrderItem.costPrice * purchaseOrderItem.qtyPurchased}">

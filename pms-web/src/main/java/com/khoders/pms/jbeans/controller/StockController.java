@@ -7,8 +7,11 @@ package com.khoders.pms.jbeans.controller;
 
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.StockReceiptItem;
+import com.khoders.pms.jbeans.dto.StockReceiptDto;
 import com.khoders.pms.services.InventoryService;
 import com.khoders.pms.services.StockService;
+import com.khoders.resource.utilities.ParseValue;
+import com.khoders.resource.utilities.Stringz;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,17 +32,39 @@ public class StockController implements Serializable
     @Inject private StockService stockService;
     @Inject private InventoryService inventoryService;
     
-    private List<StockReceiptItem> stockReceiptItemList = new LinkedList<>();
+    private List<StockReceiptItem> stockList = new LinkedList<>();
+    private List<StockReceiptDto> viewStockList = new LinkedList<>();
 
     @PostConstruct
-    private void init()
+    public void init()
     {
-        stockReceiptItemList = stockService.getStockReceiptItems();
+        viewStockReceipt();
     }
     
+    public void viewStockReceipt()
+    {
+        viewStockList = new LinkedList<>();
+        List<Object[]> objects = stockService.getStockReceiptItems();
+        for (Object[] object : objects)
+        {
+          StockReceiptDto dto = new StockReceiptDto();
+          dto.setId(Stringz.objectToString(object[0]));
+          dto.setRefNo(Stringz.objectToString(object[1]));
+          dto.setProductName(Stringz.objectToString(object[2]));
+          dto.setPkgQuantity(ParseValue.parseDoubleValue(object[3]));
+          dto.setProductPackage(Stringz.objectToString(object[4]));
+          dto.setPackageFactor(ParseValue.parseDoubleValue(object[5]));
+          dto.setCostPrice(ParseValue.parseDoubleValue(object[6]));
+          dto.setPackagePrice(ParseValue.parseDoubleValue(object[7]));
+          dto.setReorderLevel(ParseValue.parseIntegerValue(object[8]));
+          
+          viewStockList.add(dto);
+        }
+    }  
+      
     public void initStockList()
     {
-        for (StockReceiptItem stockReceiptItem : stockReceiptItemList)
+        for (StockReceiptItem stockReceiptItem : stockList)
         {
             double qty = stockReceiptItem.getPkgQuantity();
             List<Object[]> pp = inventoryService.stockBreakDown();
@@ -59,10 +84,15 @@ public class StockController implements Serializable
         }
         
     }
-    
-    public List<StockReceiptItem> getStockReceiptItemList()
+
+    public List<StockReceiptItem> getStockList()
     {
-        return stockReceiptItemList;
+        return stockList;
+    }
+
+    public List<StockReceiptDto> getViewStockList()
+    {
+        return viewStockList;
     }
     
 }

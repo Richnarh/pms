@@ -9,9 +9,12 @@ import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.PurchaseOrderItem;
 import com.khoders.pms.entities.StockReceipt;
 import com.khoders.pms.entities.StockReceiptItem;
+import com.khoders.pms.jbeans.dto.StockReceiptDto;
 import com.khoders.pms.listener.AppSession;
 import com.khoders.pms.services.StockService;
 import com.khoders.pms.services.XtractService;
+import com.khoders.resource.utilities.ParseValue;
+import com.khoders.resource.utilities.Stringz;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -39,7 +42,6 @@ public class StockReceiptController implements Serializable
    private PurchaseOrder selectedPurchaseOrder = null;
    private List<StockReceipt> stockReceiptList = new LinkedList<>();
    private List<PurchaseOrderItem> purchaseOrderItemList = new LinkedList<>();
-   private List<StockReceiptItem> stockReceiptItemList = new LinkedList<>();
    private String optionText;
    private LocalDate expiryDate;
    
@@ -68,16 +70,26 @@ public class StockReceiptController implements Serializable
       purchaseOrderItemList = inventoryService.getPurchaseOrderItem(purchaseOrder);
     }
     
-    public void viewStockReceipt(PurchaseOrder purchaseOrder){
-        stockReceipt = stockService.getStockReceipt(purchaseOrder);
-        
-        stockReceiptItemList = stockService.getStockReceiptItems(stockReceipt);
+//    public void viewStockReceipt(PurchaseOrder purchaseOrder)
+//    {
+//        viewStockList = new LinkedList<>();
+//        stockReceipt = stockService.getStockReceipt(purchaseOrder);
 //        List<Object[]> objects = stockService.getStockReceiptItems(stockReceipt);
-        
-        double total = stockReceiptItemList.stream().mapToDouble(StockReceiptItem::getSubTotal).sum();
-        System.out.println("stockReceipt Total => "+total);
-        stockReceipt.setTotalAmount(total);
-    }  
+//        for (Object[] object : objects)
+//        {
+//          StockReceiptDto dto = new StockReceiptDto();
+//          dto.setId(Stringz.objectToString(object[0]));
+//          dto.setRefNo(Stringz.objectToString(object[1]));
+//          dto.setProductName(Stringz.objectToString(object[2]));
+//          dto.setPkgQuantity(ParseValue.parseDoubleValue(object[3]));
+//          dto.setProductPackage(Stringz.objectToString(object[4]));
+//          dto.setPackageFactor(ParseValue.parseDoubleValue(object[5]));
+//          dto.setCostPrice(ParseValue.parseDoubleValue(object[6]));
+//          
+//          viewStockList.add(dto);
+//        }
+//        stockReceipt.setTotalAmount(purchaseOrder.getTotalAmount());
+//    }  
     
    public void saveStockReceipt()
    {
@@ -156,12 +168,7 @@ public class StockReceiptController implements Serializable
     public List<PurchaseOrderItem> getPurchaseOrderItemList() {
         return purchaseOrderItemList;
     }
-
-    public List<StockReceiptItem> getStockReceiptItemList()
-    {
-        return stockReceiptItemList;
-    }
-
+    
     public LocalDate getExpiryDate()
     {
         return expiryDate;
@@ -181,5 +188,4 @@ public class StockReceiptController implements Serializable
     {
         this.selectedPurchaseOrder = selectedPurchaseOrder;
     }
-    
 }

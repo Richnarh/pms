@@ -169,8 +169,6 @@ public class SalesController implements Serializable
                 saleItemList = CollectionList.washList(saleItemList, saleItem);
                 
                 Msg.info("One item added to cart");
-            } else {
-                Msg.info("Order item removed!");
             }
             clear();
         } catch (Exception e) {
@@ -287,7 +285,7 @@ public class SalesController implements Serializable
                        for (SaleItem item : saleItemList)
                        {
                             item.genCode();
-                            item.setSales(sale);
+                            item.setSales(sales);
                             crudApi.save(item);
                        }
                    }

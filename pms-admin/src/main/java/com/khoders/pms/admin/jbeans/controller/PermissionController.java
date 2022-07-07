@@ -25,7 +25,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author richa
+ * @author Richard Narh
  */
 @Named(value = "permissionController")
 @SessionScoped
@@ -55,6 +55,11 @@ public class PermissionController implements Serializable
         if(selectedUser == null)
         {
             Msg.error("Please select a user");
+            return;
+        }
+        UserPage page = permissionService.userPageExist(selectedUser, appPage);
+        if(page != null){
+            Msg.error("The "+appPage.getPageName()+" page is already added for "+selectedUser.getFullname());
             return;
         }
         userPage = new UserPage();

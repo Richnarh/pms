@@ -16,41 +16,54 @@
                 <h:panelGroup id="mainPanel">
                     <div class="card">
                         <div class="container-fluid pb-3">
-                            <div class="card-header">#{msg.stock}</div>
-                            <h:form class="py-3">
-                                <p:commandButton value="Calculate" action="#{stockController.initStockList()}"/>
-                            </h:form>
-                            <p:dataTable id="stockTable" value="#{stockController.stockReceiptItemList}" reflow="true" var="stock"
-                                         scrollable="true" scrollHeight="400">
-                                <p:column exportable="false" style="width: 37px;">
-                                    <p:rowToggler/>
-                                </p:column>
+                            <div class="card-header"> Total #{msg.stock} Summary </div>
+                            <h:form>
+                                <p:commandButton class="m-2" value="Reload" action="#{stockController.init()}" update="@form"/>
+                                <p:dataTable value="#{stockController.viewStockList}" var="stockItem" scrollHeight="500" scrollable="true">
+                                    <p:column style="width: 10px;">
+                                        <p:rowToggler/>
+                                    </p:column>
 
-                                <p:rowExpansion>
-                                    <h:panelGrid columns="2">
-                                        <span>#{msg.created_date}</span>
-                                        <h:outputText value="#{stock.createdDate}">
-                                            <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                    <p:rowExpansion>
+                                        <h:panelGrid columns="2">
+                                            <span>#{msg.id}</span>
+                                            <h:outputText value="#{stockItem.id}"/>
+                                            <span>Code</span>
+                                            <h:outputText value="#{stockItem.refNo}"/>
+                                        </h:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="#{msg.product}">
+                                        <h:outputText value="#{stockItem.productName}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.package}" style="width: 80px;">
+                                        <h:outputText value="#{stockItem.productPackage}"/>
+                                    </p:column>
+
+                                    <p:column headerText="P. Factor" style="width: 70px;" class="text-end">
+                                        <h:outputText value="#{stockItem.packageFactor}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msg.qty} at hand" style="width: 80px;" class="text-end">
+                                        <h:outputText value="#{stockItem.pkgQuantity}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.cost_price}" class="text-end" style="width: 80px;">
+                                        <h:outputText value="#{stockItem.costPrice}">
+                                            <f:convertNumber pattern="#{msg.money_pattern}"/>
                                         </h:outputText>
+                                    </p:column>
 
-                                        <span>#{msg.description}</span>
-                                        <h:outputText value="#{stock.description}"/>
-                                    </h:panelGrid>
-                                </p:rowExpansion>
+                                    <p:column headerText="Selling Price" class="text-end" style="width: 100px;">
+                                        <h:outputText value="#{stockItem.packagePrice}">
+                                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                        </h:outputText>
+                                    </p:column>
 
-                                <p:column headerText="#{msg.product} Code">
-                                    <h:outputText value="#{stock.product.refNo}"/>
-                                </p:column>
+                                </p:dataTable>
 
-                                <p:column headerText="#{msg.product} Name" filterBy="#{stock.product.productName}" filterMatchMode="contains">
-                                    <h:outputText value="#{stock.product.productName}"/>
-                                </p:column>
-
-                                <p:column headerText="#{msg.qty} at hand" class="text-end">
-                                    <h:outputText value="#{stock.pkgQuantity}"/>
-                                </p:column>
-
-                            </p:dataTable>
+                            </h:form>
                         </div>
                     </div>
                 </h:panelGroup>
