@@ -100,8 +100,8 @@
                                                 <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print POS Receipt" action="#{salesController.generatePOSReceipt(sales)}" ajax="false"/>
                                                 <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Cash Receipt" action="#{salesController.geneateCashReceipt(sales)}" ajax="false"/>
                                                 <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Prof Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" target="_blank" icon="#{msg.print_icon}" value="Print Prof Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
+                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Pro Invoice" action="#{salesController.generateProInvoice(sales)}" ajax="false"/>
+                                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" target="_blank" icon="#{msg.print_icon}" value="Print Pro Invoice" action="#{salesController.generateProInvoice(sales)}" ajax="false"/>
                                                 <p:menuitem rendered="#{sales.isProformaInvoice == true}" icon="#{msg.cog_icon}" value="Generate Invoice" action="#{salesController.convertProformaToInvoice(sales)}" ajax="false"/>
                                             </p:menuButton>
                                         </p:column>

@@ -205,13 +205,13 @@ public class SalesController implements Serializable
         
         if(sales.getCustomer() != null)
         {
-            System.out.println("cust Id --- "+sales.getCustomer().getId());
+          System.out.println("cust Id --- "+sales.getCustomer().getId());
           enableType=true;
           customerName = sales.getCustomer().getCustomerName();
           phoneNumber = sales.getCustomer().getPhone();
           address = sales.getCustomer().getAddress();
           
-            System.out.println("customerName -- "+customerName +"\t phoneNumber --- "+phoneNumber +"\t address"+address);
+          System.out.println("customerName -- "+customerName +"\t phoneNumber --- "+phoneNumber +"\t address"+address);
         }
         
         saleItemList = inventoryService.getSales(sales);
@@ -426,13 +426,22 @@ public class SalesController implements Serializable
         proformaInvoiceList.add(proformaInvoiceDto);
         
         ReportManager.reportParams.put("logo", ReportFiles.LOGO);
-        if(sales.isIsProformaInvoice()){
-            reportManager.createReport(proformaInvoiceList, ReportFiles.PROFORMA_INVOICE, ReportManager.reportParams);
+        reportManager.createReport(proformaInvoiceList, ReportFiles.INVOICE, ReportManager.reportParams); 
+    }
+        
+    public void generateProInvoice(Sales sales){
+        List<ProformaInvoiceDto> proformaInvoiceList = new LinkedList<>();
+        
+        saleItemList = inventoryService.getSales(sales);
+        if(saleItemList.isEmpty()){
+            Msg.error("Cannot process an empty invoice!");
+            return;
         }
-        else
-        {
-          reportManager.createReport(proformaInvoiceList, ReportFiles.INVOICE, ReportManager.reportParams);  
-        }
+        ProformaInvoiceDto proformaInvoiceDto = xtractService.extractInvoice(saleItemList, sales);
+        proformaInvoiceList.add(proformaInvoiceDto);
+        
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(proformaInvoiceList, ReportFiles.PROFORMA_INVOICE, ReportManager.reportParams);
     }
     
     public void geneateCashReceipt(Sales sales){
