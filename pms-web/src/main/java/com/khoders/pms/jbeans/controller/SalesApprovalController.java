@@ -10,9 +10,11 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.pms.entities.SaleItem;
 import com.khoders.pms.entities.Sales;
 import com.khoders.pms.entities.StockReceiptItem;
+import com.khoders.pms.listener.AppSession;
 import com.khoders.pms.services.InventoryService;
 import com.khoders.pms.services.SalesService;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -28,6 +30,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 public class SalesApprovalController implements Serializable
 {
+    @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
     @Inject private SalesService salesService;
     @Inject private InventoryService inventoryService;
@@ -60,6 +63,9 @@ public class SalesApprovalController implements Serializable
                 stockReceiptItem = crudApi.getEm().find(StockReceiptItem.class, salesCart.getStockReceiptItem().getId());
                 stockReceiptItem.setPkgQuantity(qtyAtHand);
                 stockReceiptItem.setQtySold(stockReceiptItem.getQtySold() + qtyPurchased);
+                stockReceiptItem.setQtyLeft(qtyAtHand);
+                stockReceiptItem.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                stockReceiptItem.setLastModifiedDate(LocalDateTime.now());
                 crudApi.save(stockReceiptItem);
 
                 salesCart.genCode();

@@ -19,6 +19,7 @@
                             <div class="card-header"> Total #{msg.stock} Summary </div>
                             <h:form>
                                 <p:commandButton class="m-2" value="Reload" action="#{stockController.init()}" update="@form"/>
+                                <h:commandLink target="_blank" value="Print Summary" class="btn btn-outline-primary btn-sm" action="#{stockController.printStockSummary()}"/>
                                 <p:dataTable value="#{stockController.viewStockList}" var="stockItem" scrollHeight="500" scrollable="true">
                                     <p:column style="width: 10px;">
                                         <p:rowToggler/>

@@ -8,7 +8,11 @@ import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.pms.entities.Product;
+import com.khoders.pms.jbeans.ReportFiles;
+import com.khoders.pms.jbeans.dto.ProductDto;
 import com.khoders.pms.listener.AppSession;
+import com.khoders.pms.services.XtractService;
+import com.khoders.resource.reports.ReportManager;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -28,6 +32,8 @@ public class ProductController implements Serializable
 {
    @Inject private CrudApi crudApi;
    @Inject private AppSession appSession;
+   @Inject private XtractService xtractService;
+   @Inject private ReportManager reportManager;
    @Inject private InventoryService inventoryService;
    private Product product = new Product();
    private List<Product> productList = new LinkedList<>();
@@ -110,7 +116,11 @@ public class ProductController implements Serializable
        optionText = "Save Changes";
        pageView.restToListView();
     }
-
+    public void printProduct(){
+        List<ProductDto> productDtos = xtractService.extractProduct();
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(productDtos, ReportFiles.PRODUCT, ReportManager.reportParams);
+    }
     public Product getProduct()
     {
         return product;

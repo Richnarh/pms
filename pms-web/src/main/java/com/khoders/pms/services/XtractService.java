@@ -1,5 +1,6 @@
 package com.khoders.pms.services;
 
+import com.khoders.pms.entities.Product;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.pms.entities.SaleItem;
@@ -8,11 +9,15 @@ import com.khoders.pms.entities.Sales;
 import com.khoders.pms.entities.SalesTax;
 import com.khoders.pms.entities.StockReceipt;
 import com.khoders.pms.entities.StockReceiptItem;
+import com.khoders.pms.jbeans.dto.ProductDto;
 import com.khoders.pms.jbeans.dto.ProformaInvoiceDto;
 import com.khoders.pms.jbeans.dto.SaleItemDto;
 import com.khoders.pms.jbeans.dto.SalesReceipt;
 import com.khoders.pms.jbeans.dto.SalesTaxDto;
+import com.khoders.pms.jbeans.dto.StockSummary;
 import com.khoders.pms.listener.AppSession;
+import com.khoders.resource.utilities.ParseValue;
+import com.khoders.resource.utilities.Stringz;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +33,7 @@ public class XtractService
 {
     @Inject private AppSession appSession;
     @Inject private CrudApi crudApi;
+    @Inject private StockService stockService;
     @Inject private InventoryService inventoryService;
     @Inject private SalesService salesService;
     
@@ -222,6 +228,49 @@ public class XtractService
         invoiceDto.setTaxList(salesTaxes);
         
         return invoiceDto;
-
+    }
+    public List<ProductDto> extractProduct(){
+         List<ProductDto> dtoList = new LinkedList<>();
+         
+        List<Product> productList = inventoryService.getProductList();
+        for (Product product : productList)
+        {
+         ProductDto dto = new ProductDto();
+         dto.setCompanyAddress(appSession.getCompanyBranch() != null ? appSession.getCompanyBranch().getBranchName() : "");
+         dto.setWebsite(appSession.getCompanyBranch() != null && appSession.getCompanyBranch().getCompanyProfile() != null ? appSession.getCompanyBranch().getCompanyProfile().getWebsite() : "");
+         dto.setTelNumber(appSession.getCompanyBranch() != null ? appSession.getCompanyBranch().getTelephoneNo() : "");
+         dto.setProductCode(product.getRefNo());
+         dto.setProductName(product.getProductName());
+         dto.setReorderLevel(product.getReorderLevel());
+         dto.setLocation(product.getLocation() != null ? product.getLocation().getLocationName() : "");
+         dto.setManufacturer(product.getManufacturer() != null ? product.getManufacturer().getManufacturerName() : "");
+         dtoList.add(dto);
+        }
+        return dtoList;
+    }
+    
+    public List<StockSummary> extractStockSummary(){
+        List<StockSummary> viewStockList = new LinkedList<>();
+        List<Object[]> objects = stockService.getStockReceiptItems();
+        for (Object[] object : objects)
+        {
+          StockSummary dto = new StockSummary();
+          dto.setCompanyAddress(appSession.getCompanyBranch() != null ? appSession.getCompanyBranch().getBranchAddress() : "");
+          dto.setWebsite(appSession.getCompanyBranch() != null && appSession.getCompanyBranch().getCompanyProfile() != null ? appSession.getCompanyBranch().getCompanyProfile().getWebsite() : "");
+          dto.setTelNumber(appSession.getCompanyBranch() != null ? appSession.getCompanyBranch().getTelephoneNo() : "");
+          
+          dto.setId(Stringz.objectToString(object[0]));
+          dto.setRefNo(Stringz.objectToString(object[1]));
+          dto.setProductName(Stringz.objectToString(object[2]));
+          dto.setPkgQuantity(ParseValue.parseDoubleValue(object[3]));
+          dto.setProductPackage(Stringz.objectToString(object[4]));
+          dto.setPackageFactor(ParseValue.parseDoubleValue(object[5]));
+          dto.setCostPrice(ParseValue.parseDoubleValue(object[6]));
+          dto.setPackagePrice(ParseValue.parseDoubleValue(object[7]));
+          dto.setReorderLevel(ParseValue.parseIntegerValue(object[8]));
+          dto.setQtySold(ParseValue.parseDoubleValue(object[9]));
+          viewStockList.add(dto);
+        }
+        return viewStockList;
     }
 }

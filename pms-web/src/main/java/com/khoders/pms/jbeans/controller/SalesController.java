@@ -242,6 +242,8 @@ public class SalesController implements Serializable
                     customer.setAddress(address);
                     customer.setUserAccount(appSession.getCurrentUser());
                     customer.setCompanyBranch(appSession.getCompanyBranch());
+                    customer.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                    customer.setLastModifiedDate(LocalDateTime.now());
                     customer.genCode();
                     crudApi.save(customer);
                 }
@@ -258,6 +260,8 @@ public class SalesController implements Serializable
                 sales.genReceipt();
                 sales.setUserAccount(appSession.getCurrentUser());
                 sales.setCompanyBranch(appSession.getCompanyBranch());
+                sales.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                sales.setLastModifiedDate(LocalDateTime.now());
                 
                 if(sales.isIsProformaInvoice()){
                     sales.setInvoiceType(InvoiceType.PROFORMA_INVOICE);
@@ -286,6 +290,10 @@ public class SalesController implements Serializable
                        {
                             item.genCode();
                             item.setSales(sales);
+                            item.setCompanyBranch(appSession.getCompanyBranch());
+                            item.setUserAccount(appSession.getCurrentUser());
+                            item.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                            item.setLastModifiedDate(LocalDateTime.now());
                             crudApi.save(item);
                        }
                    }
@@ -300,10 +308,13 @@ public class SalesController implements Serializable
 
                         try
                         {
-                            stockReceiptItem = crudApi.getEm().find(StockReceiptItem.class, salesCart.getStockReceiptItem().getId());
-                            stockReceiptItem.setPkgQuantity(qtyAtHand);
-                            stockReceiptItem.setQtySold(stockReceiptItem.getQtySold()+ qtyPurchased);
-                            crudApi.save(stockReceiptItem);
+                            StockReceiptItem receiptItem = crudApi.getEm().find(StockReceiptItem.class, salesCart.getStockReceiptItem().getId());
+                            receiptItem.setPkgQuantity(qtyAtHand);
+                            receiptItem.setQtySold(receiptItem.getQtySold() + qtyPurchased);
+                            receiptItem.setQtyLeft(qtyAtHand);
+                            receiptItem.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                            receiptItem.setLastModifiedDate(LocalDateTime.now());
+                            crudApi.save(receiptItem);
 
                             salesCart.genCode();
                             salesCart.setSales(sale);
