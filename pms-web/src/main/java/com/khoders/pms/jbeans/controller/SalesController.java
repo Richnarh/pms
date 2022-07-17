@@ -133,11 +133,6 @@ public class SalesController implements Serializable
     {
         System.out.println("Item selected -- ");
         double packagePrice = 0.0;
-//        if(saleItem.getStockReceiptItem() != null && saleItem.getStockReceiptItem().getProductPackage() != null)
-//        {
-//          System.out.println("UnitMeasurement => "+saleItem.getStockReceiptItem().getProductPackage().getUnitMeasurement());
-//          
-//        }
         packagePrice = salesService.queryPackagePrice(productPackage.getUnitMeasurement(), saleItem.getStockReceiptItem().getProduct());  
         System.out.println("packagePrice => "+packagePrice);
         saleItem.setUnitPrice(packagePrice);
@@ -183,6 +178,7 @@ public class SalesController implements Serializable
         
         System.out.println("Size on removing --- "+saleItemList.size());
     }
+    
     public void viewAsPosSale(Sales sales)
     {
         this.sales = sales;
@@ -230,29 +226,11 @@ public class SalesController implements Serializable
             return;
         }
         totalAmount = saleItemList.stream().mapToDouble(SaleItem::getSubTotal).sum();
+        double qtyBought = saleItemList.stream().mapToDouble(SaleItem::getQuantity).sum();
         try 
         {
-            if(customer != null)
-            {
-                if (customer.getCustomerName().equals(CustomerType.WALK_IN_CUSTOMER.getLabel()) || customer.getCustomerName().equals(CustomerType.BACK_LOG_SUPPLIER.getLabel()))
-                {
-                    customer = new Customer();
-                    customer.setCustomerName(customerName);
-                    customer.setPhone(phoneNumber);
-                    customer.setAddress(address);
-                    customer.setUserAccount(appSession.getCurrentUser());
-                    customer.setCompanyBranch(appSession.getCompanyBranch());
-                    customer.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
-                    customer.setLastModifiedDate(LocalDateTime.now());
-                    customer.genCode();
-                    crudApi.save(customer);
-                }
-            }
-            else
-            {
-               customer = salesService.walkinCustomer();
-               sales.setCustomer(customer);
-            }
+                customer = salesService.walkinCustomer();
+                sales.setCustomer(customer);
             
                 sales.genCode();
                 sales.setPurchaseDate(LocalDateTime.now());
@@ -262,6 +240,7 @@ public class SalesController implements Serializable
                 sales.setCompanyBranch(appSession.getCompanyBranch());
                 sales.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
                 sales.setLastModifiedDate(LocalDateTime.now());
+                sales.setQtyPurchased(qtyBought);
                 
                 if(sales.isIsProformaInvoice()){
                     sales.setInvoiceType(InvoiceType.PROFORMA_INVOICE);
@@ -279,65 +258,26 @@ public class SalesController implements Serializable
                 
                 if (crudApi.save(sales) != null)
                 {
-                   Sales sale = crudApi.find(Sales.class, sales.getId());
-                   
-                   sale.setCustomer(customer);
-                   crudApi.save(sale);
-                   
-                   if(sales.getInvoiceType() != null)
-                   {
-                       for (SaleItem item : saleItemList)
-                       {
-                            item.genCode();
-                            item.setSales(sales);
-                            item.setCompanyBranch(appSession.getCompanyBranch());
-                            item.setUserAccount(appSession.getCurrentUser());
-                            item.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
-                            item.setLastModifiedDate(LocalDateTime.now());
-                            crudApi.save(item);
-                       }
-                   }
-                   else
-                   {
-                    for (SaleItem salesCart : saleItemList)
+                    for (SaleItem item : saleItemList)
                     {
-                        double qtyPurchased = salesCart.getQuantity();
-                        double qtyInStock = salesCart.getStockReceiptItem().getPkgQuantity();
-
-                        double qtyAtHand = qtyInStock - qtyPurchased;
-
-                        try
-                        {
-                            StockReceiptItem receiptItem = crudApi.getEm().find(StockReceiptItem.class, salesCart.getStockReceiptItem().getId());
-                            receiptItem.setPkgQuantity(qtyAtHand);
-                            receiptItem.setQtySold(receiptItem.getQtySold() + qtyPurchased);
-                            receiptItem.setQtyLeft(qtyAtHand);
-                            receiptItem.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
-                            receiptItem.setLastModifiedDate(LocalDateTime.now());
-                            crudApi.save(receiptItem);
-
-                            salesCart.genCode();
-                            salesCart.setSales(sale);
-                            crudApi.save(salesCart);
-
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                         item.genCode();
+                         item.setSales(sales);
+                         item.setCompanyBranch(appSession.getCompanyBranch());
+                         item.setUserAccount(appSession.getCurrentUser());
+                         item.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : "");
+                         item.setLastModifiedDate(LocalDateTime.now());
+                         crudApi.save(item);
                     }
-                    // Save approval - POS
-                    Sales s = crudApi.find(Sales.class, sales.getId());
-                    s.setApproval(true);
-                    crudApi.save(s);
-                  }
+                   
                 }
                 
                 salesList = CollectionList.washList(salesList, sales);
                 
                 taxCalculation();
+                
                 Msg.info("Transaction saved successfully!");
             
-            closePage();
+                pageView.restToListView();
             
         } catch (Exception e) 
         {
@@ -375,11 +315,11 @@ public class SalesController implements Serializable
         if(!salesTaxList.isEmpty())
         {
             SalesTax nhil = salesTaxList.get(0);
-            SalesTax getFund = salesTaxList.get(1);
-            SalesTax covid19 = salesTaxList.get(2);
-            SalesTax salesVat = salesTaxList.get(3);
+//            SalesTax getFund = salesTaxList.get(1);
+            SalesTax covid19 = salesTaxList.get(1);
+            SalesTax salesVat = salesTaxList.get(2);
 
-            double totalLevies = nhil.getTaxAmount()+getFund.getTaxAmount()+covid19.getTaxAmount();
+            double totalLevies = nhil.getTaxAmount()+covid19.getTaxAmount();
 
             double taxableValue = sales.getTotalAmount() + totalLevies;
             
@@ -491,7 +431,7 @@ public class SalesController implements Serializable
         saleItem.genCode();
         totalAmount = 0.0;
         enableType=false;
-        productPackageList = new LinkedList<>();
+//        productPackageList = new LinkedList<>();
         saleItem.setUserAccount(appSession.getCurrentUser());
         saleItem.setCompanyBranch(appSession.getCompanyBranch());
         resetEnable();

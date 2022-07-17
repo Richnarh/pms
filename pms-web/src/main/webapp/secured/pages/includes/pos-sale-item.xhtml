@@ -42,8 +42,7 @@
                         </ui:repeat>
                     </tbody>
                 </table>
-                
-          
+
                 <center class="py-3 mt-2">
                     <h:panelGrid columns="2">
                         <span>Total Amount</span>
@@ -52,17 +51,23 @@
                         </h:outputText>
                     </h:panelGrid>
                 </center>
-            </h:form>
-            <hr/>
-            <center>
-                <h:form>
-                    <p:commandButton icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" ajax="false" update="@form"/>
+                <!--</h:form>-->
+                <hr/>
+                <center>
+                    <!--<h:form>-->
+                    <p:commandButton id="reload" icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" update="@form"/>
                     <p:commandButton value="#{msg.clear} All" class="kbtn-default mx-3" icon="#{msg.clear_icon}" immediate="true" action="#{salesController.clearAll()}" update=":saleItemItemTable, :orderItemForm"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger float-end" immediate="true" action="#{salesController.closePage()}">
                         <p:ajax update="@form,:mainPanel"/>
                     </h:commandButton>
-                </h:form>
-            </center>
+                </center>
+
+                <p:blockUI block="saleItemItemTable" trigger="reload">
+                    <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                    <p><small>Please wait...</small></p>
+                </p:blockUI>
+                <br/>
+            </h:form>
             <br/>
         </div>
     </div>

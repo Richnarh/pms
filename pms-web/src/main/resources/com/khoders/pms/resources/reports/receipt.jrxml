@@ -58,7 +58,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="43" splitType="Stretch">
+		<band height="46" splitType="Stretch">
 			<staticText>
 				<reportElement x="100" y="0" width="86" height="15" forecolor="#172D44" uuid="0dfbe360-a4a2-4249-98fa-05ec7eb6e5e8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -82,6 +82,28 @@
 				</textElement>
 				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm").format($F{date})]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="142" y="30" width="44" height="15" forecolor="#172D44" uuid="53ef4b56-56af-4c96-bb5b-64a09d5a2172">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[PAID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="30" width="42" height="15" uuid="ee7c5e4c-4f05-4b76-958d-a910d71c8756">
+					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<paragraph firstLineIndent="2" rightIndent="0"/>
+				</textElement>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

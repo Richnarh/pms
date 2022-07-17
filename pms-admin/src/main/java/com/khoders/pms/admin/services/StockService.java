@@ -10,6 +10,7 @@ import com.khoders.pms.entities.Sales;
 import com.khoders.pms.entities.StockReceiptItem;
 import com.khoders.pms.entities.system.CompanyBranch;
 import com.khoders.pms.entities.system.UserAccount;
+import com.khoders.pms.enums.ApprovalOption;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import java.util.Collections;
@@ -195,5 +196,24 @@ public class StockService
         }
         return Collections.emptyList();
     }
-   
+    
+   public List<Sales> getSalesList(ApprovalOption approvalOption)
+    {
+        if(approvalOption == ApprovalOption.ALL){
+            return crudApi.getEm().createQuery("SELECT e FROM Sales e ORDER BY e.valueDate DESC", Sales.class)
+                    .getResultList();
+        }
+        
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Sales e WHERE e.approval=:approval ORDER BY e.valueDate DESC", Sales.class)
+                    .setParameter("approval", (approvalOption == ApprovalOption.APPROVED))
+                    .getResultList();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
 }

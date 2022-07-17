@@ -60,7 +60,7 @@ public class TransactionHistoryController implements Serializable
     
     public void filterByReceiptNumber()
     {
-      salesList = stockService.getSalesByReceipt(receiptNumber);  
+      salesList = stockService.getSalesByReceipt(receiptNumber.trim());  
     }
     
     public void fetchByDates()

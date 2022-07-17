@@ -302,8 +302,8 @@ public class InventoryService
     {
         try
         {
-           TypedQuery<SaleItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM SaleItem e WHERE e.sales=?1", SaleItem.class);
-                        typedQuery.setParameter(1, sales);
+           TypedQuery<SaleItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM SaleItem e WHERE e.sales=:sales", SaleItem.class);
+                        typedQuery.setParameter("sales", sales);
                        return typedQuery.getResultList();
            
         } catch (Exception e)
@@ -397,4 +397,21 @@ public class InventoryService
               .setParameter("unitMeasurement", unitMeasurement)
               .getResultStream().findFirst().orElse(null);
     }
+    
+    public List<Sales> getSalesByReceipt(String receiptNumber)
+    {
+        try {
+           
+            String qryString = "SELECT e FROM Sales e WHERE e.receiptNumber=?1";
+            
+            TypedQuery<Sales> typedQuery = crudApi.getEm().createQuery(qryString, Sales.class)
+                    .setParameter(1, receiptNumber);
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+  
 }

@@ -1,5 +1,6 @@
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\CompanyBranchController.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\listener\SessionListener.java
+C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\services\StockService.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\UserController.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\LoginController.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\PageActionController.java
@@ -14,8 +15,10 @@ C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\listener\A
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\services\UserAccountService.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\converter\CompanyProfileConverter.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\AppPageController.java
+C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\ReverseSalesController.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\converter\UserAccountConverter.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\services\PermissionService.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\PermissionController.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\converter\CompanyBranchConverter.java
 C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\UserModel.java
+C:\khoders\java-web\pms\pms-admin\src\main\java\com\khoders\pms\admin\jbeans\controller\TransactionHistoryController.java

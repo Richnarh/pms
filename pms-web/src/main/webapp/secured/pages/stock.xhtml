@@ -18,7 +18,7 @@
                         <div class="container-fluid pb-3">
                             <div class="card-header"> Total #{msg.stock} Summary </div>
                             <h:form>
-                                <p:commandButton class="m-2" value="Reload" action="#{stockController.init()}" update="@form"/>
+                                <p:commandButton id="reload" class="m-2" value="Reload" action="#{stockController.init()}" update="@form"/>
                                 <h:commandLink target="_blank" value="Print Summary" class="btn btn-outline-primary btn-sm" action="#{stockController.printStockSummary()}"/>
                                 <p:dataTable value="#{stockController.viewStockList}" var="stockItem" scrollHeight="500" scrollable="true">
                                     <p:column style="width: 10px;">
@@ -46,8 +46,12 @@
                                         <h:outputText value="#{stockItem.packageFactor}"/>
                                     </p:column>
                                     
-                                    <p:column headerText="#{msg.qty} at hand" style="width: 80px;" class="text-end">
+                                    <p:column headerText="#{msg.qty} at Hand" style="width: 80px;" class="text-end">
                                         <h:outputText value="#{stockItem.pkgQuantity}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msg.qty} Sold" style="width: 80px;" class="text-end">
+                                        <h:outputText value="#{stockItem.qtySold}"/>
                                     </p:column>
 
                                     <p:column headerText="#{msg.cost_price}" class="text-end" style="width: 80px;">
@@ -63,7 +67,10 @@
                                     </p:column>
 
                                 </p:dataTable>
-
+                                <p:blockUI block="@form" trigger="reload">
+                                    <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                    <p><small>Please wait...</small></p>
+                                </p:blockUI>
                             </h:form>
                         </div>
                     </div>

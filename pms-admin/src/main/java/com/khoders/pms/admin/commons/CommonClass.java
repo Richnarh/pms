@@ -5,6 +5,7 @@
  */
 package com.khoders.pms.admin.commons;
 
+import com.khoders.pms.enums.ApprovalOption;
 import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.Status;
 import java.io.Serializable;
@@ -26,5 +27,8 @@ public class CommonClass implements Serializable
     }
     public List<AccessLevel> getAccessLevelList(){
         return Arrays.asList(AccessLevel.values());
+    }
+    public List<ApprovalOption> getApprovalOptionList(){
+        return Arrays.asList(ApprovalOption.values());
     }
 }

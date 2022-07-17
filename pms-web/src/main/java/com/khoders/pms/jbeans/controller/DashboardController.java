@@ -42,9 +42,9 @@ public class DashboardController implements Serializable
         dateRange.setFromDate(LocalDate.now());
         dateRange.setToDate(LocalDate.now());
        
-        Sales salesCatalogue  = inventoryService.getTotalSumPerDateRange(dateRange);
-        if(salesCatalogue != null){
-            dailyTotalSum = salesCatalogue.getTotalAmount();
+        Sales sales  = inventoryService.getTotalSumPerDateRange(dateRange);
+        if(sales != null){
+            dailyTotalSum = sales.getTotalAmount();
         }
     }
     

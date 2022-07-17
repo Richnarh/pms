@@ -268,7 +268,7 @@ public class XtractService
           dto.setCostPrice(ParseValue.parseDoubleValue(object[6]));
           dto.setPackagePrice(ParseValue.parseDoubleValue(object[7]));
           dto.setReorderLevel(ParseValue.parseIntegerValue(object[8]));
-          dto.setQtySold(ParseValue.parseDoubleValue(object[9]));
+          dto.setQtySold(ParseValue.parseDoubleValue(object[9-1]));
           viewStockList.add(dto);
         }
         return viewStockList;
