@@ -3,6 +3,7 @@ package com.khoders.pms.jbeans.commons;
 import com.khoders.pms.entities.Category;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.Customer;
+import com.khoders.pms.entities.Frequency;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
 import com.khoders.pms.entities.Packaging;
@@ -43,6 +44,7 @@ public class UsercommonBeans implements Serializable
     
     private List<ProductType> productTypeList = new LinkedList<>();
     private List<Potency> potencyList = new LinkedList<>();
+    private List<Frequency> frequencyList = new LinkedList<>();
     private List<Category> categoryList = new LinkedList<>();
     private List<Manufacturer> manufacturerList = new LinkedList<>();
     private List<Location> locationList = new LinkedList<>();
@@ -66,6 +68,7 @@ public class UsercommonBeans implements Serializable
         manufacturerList = inventoryService.getManufacturerList();
         locationList = inventoryService.getLocationList();
         packagingList = inventoryService.getPackagingList();
+        frequencyList = inventoryService.getFrequencyList();
     }
 
     public List<Product> getProductList()
@@ -133,6 +136,11 @@ public class UsercommonBeans implements Serializable
     public List<Packaging> getPackagingList()
     {
         return packagingList;
+    }
+
+    public List<Frequency> getFrequencyList()
+    {
+        return frequencyList;
     }
     
 }

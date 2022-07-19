@@ -67,8 +67,8 @@
                                                 <span>#{msg.category}</span>
                                                 <h:outputText value="#{product.category.categoryName}"/>
 
-                                                <span>#{msg.product} #{msg.type}</span>
-                                                <h:outputText value="#{product.productType.productTypeName}"/>
+                                                <span>#{msg.route}</span>
+                                                <h:outputText value="#{product.route}"/>
 
                                             </h:panelGrid>
                                         </p:rowExpansion>
@@ -81,14 +81,10 @@
                                             #{product.frequency.label}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.route}" style="width: 100px;">
-                                            <h:outputText value="#{product.route}"/>
+                                        <p:column headerText="#{msg.product} #{msg.type}" style="width: 100px;">
+                                            <h:outputText value="#{product.productType.productTypeName}"/>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.potency}" style="width: 100px;">
-                                            <h:outputText value="#{product.potency.potencyName}"/>
-                                        </p:column>
-                                        
                                         <p:column headerText="#{msg.packaging}" style="width: 100px;">
                                             #{product.packaging.packagingName}
                                         </p:column>
@@ -118,13 +114,7 @@
                                             <span>#{msg.description}</span>
                                             <p:inputText value="#{productController.product.description}"/>
 
-                                            <span>#{msg.frequency} <span class="text-danger">*</span></span>
-                                            <p:selectOneMenu value="#{productController.product.frequency}">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.frequencyList}"/>
-                                            </p:selectOneMenu>
-
-                                            <span>#{msg.route} <span class="text-danger">*</span></span>
+                                            <span>#{msg.route}</span>
                                             <p:inputText value="#{productController.product.route}"/>
 
                                             <span>Re-order level</span>
@@ -139,14 +129,14 @@
                                                 <f:selectItems value="#{usercommonBeans.productTypeList}"/>
                                             </p:selectOneMenu>
                                             <p:commandButton class="kbtn-info" oncomplete="PF('productType').show()" resetValues="true" icon="#{msg.add_icon}"/>
-
-                                            <span>#{msg.potency} <span class="text-danger">*</span></span>
-                                            <p:selectOneMenu value="#{productController.product.potency}" required="true" filter="true" filterMatchMode="contains">
+                                            
+                                            <span>#{msg.frequency}</span>
+                                            <p:selectOneMenu value="#{productController.product.potency}" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{usercommonBeans.potencyList}"/>
+                                                <f:selectItems value="#{usercommonBeans.frequencyList}"/>
                                             </p:selectOneMenu>
-                                            <p:commandButton class="kbtn-info" oncomplete="PF('potency').show()" resetValues="true" icon="#{msg.add_icon}"/>
-
+                                            <p:commandButton class="kbtn-info" oncomplete="PF('frequency').show()" resetValues="true" icon="#{msg.add_icon}"/>
+                                            
                                             <span>#{msg.packaging} <span class="text-danger">*</span></span>
                                             <p:selectOneMenu value="#{productController.product.packaging}" required="true" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
@@ -191,6 +181,7 @@
                     </div>
                     <ui:include src="includes/product-type.xhtml"/>
                     <ui:include src="includes/potency.xhtml"/>
+                    <ui:include src="includes/frequency.xhtml"/>
                     <ui:include src="includes/packaging.xhtml"/>
                     <ui:include src="includes/location.xhtml"/>
                     <ui:include src="includes/category.xhtml"/>

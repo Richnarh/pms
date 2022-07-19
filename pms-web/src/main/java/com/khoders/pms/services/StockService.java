@@ -7,10 +7,11 @@ package com.khoders.pms.services;
 
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.ExpiredProduct;
+import com.khoders.pms.entities.Packaging;
 import com.khoders.pms.entities.Product;
+import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.StockReceipt;
-import com.khoders.pms.entities.StockReceiptItem;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -116,5 +117,19 @@ public class StockService
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ProductType getProductType(String prdtType)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM ProductType e WHERE e.productTypeName=?1", ProductType.class)
+                                            .setParameter(1, prdtType)
+                                            .getResultStream().findFirst().orElse(null);
+    }
+
+    public Packaging getPackage(String packageString)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM Packaging e WHERE e.packagingName=?1", Packaging.class)
+                                            .setParameter(1, packageString)
+                                            .getResultStream().findFirst().orElse(null);
     }
 }

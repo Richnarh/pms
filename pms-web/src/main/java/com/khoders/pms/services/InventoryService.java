@@ -5,6 +5,7 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.pms.entities.SaleItem;
 import com.khoders.pms.entities.Customer;
+import com.khoders.pms.entities.Frequency;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
 import com.khoders.pms.entities.Packaging;
@@ -413,5 +414,17 @@ public class InventoryService
         }
         return Collections.emptyList();
     }
-  
+
+    public List<Frequency> getFrequencyList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Frequency e ORDER BY e.createdDate DESC", Frequency.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();    
+    }
 }

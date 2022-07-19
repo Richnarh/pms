@@ -5,7 +5,7 @@
  */
 package com.khoders.pms.entities;
 
-import com.khoders.pms.entities.system.RefNo;
+import com.khoders.pms.entities.system.UserAccountRecord;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "packaging")
-public class Packaging extends RefNo{
+public class Packaging extends UserAccountRecord{
     @Column(name = "packaging_name")
     private String packagingName;
 

@@ -33,6 +33,7 @@
     <class>com.khoders.pms.entities.system.PageAction</class>
     <class>com.khoders.pms.entities.system.UserPage</class>
     <class>com.khoders.pms.entities.system.UserPageAction</class>
+    <class>com.khoders.pms.entities.Frequency</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
