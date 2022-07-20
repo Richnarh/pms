@@ -42,7 +42,7 @@ public class InventoryService
     {
         try
         {
-            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.createdDate DESC", Product.class).getResultList();
+            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.productType.productTypeName ASC", Product.class).getResultList();
             
         } catch (Exception e)
         {

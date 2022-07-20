@@ -91,12 +91,12 @@ public class ProductUploadController implements Serializable
            e.printStackTrace();
         }
     }
-    
-    
+        
     public void saveUpload()
     {
         try
         {
+            if(productList.isEmpty()) return;
             for (ProductDetails details : productList)
             {
                Product newProduct = new Product();

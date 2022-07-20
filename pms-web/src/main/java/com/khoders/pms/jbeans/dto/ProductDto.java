@@ -13,8 +13,8 @@ public class ProductDto extends BaseDto
 {
   private String productCode;  
   private String productName;  
-  private String location;  
-  private String manufacturer;  
+  private String packaging;  
+  private String productType;  
   private int reorderLevel;  
 
     public String getProductCode()
@@ -37,26 +37,26 @@ public class ProductDto extends BaseDto
         this.productName = productName;
     }
 
-    public String getLocation()
+    public String getPackaging()
     {
-        return location;
+        return packaging;
     }
 
-    public void setLocation(String location)
+    public void setPackaging(String packaging)
     {
-        this.location = location;
+        this.packaging = packaging;
     }
 
-    public String getManufacturer()
+    public String getProductType()
     {
-        return manufacturer;
+        return productType;
     }
 
-    public void setManufacturer(String manufacturer)
+    public void setProductType(String productType)
     {
-        this.manufacturer = manufacturer;
+        this.productType = productType;
     }
-
+    
     public int getReorderLevel()
     {
         return reorderLevel;

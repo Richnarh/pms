@@ -160,7 +160,6 @@ public class XtractService
         {
             e.printStackTrace();
         }
-
         return receiptItem;
     }
     
@@ -229,8 +228,9 @@ public class XtractService
         
         return invoiceDto;
     }
+    
     public List<ProductDto> extractProduct(){
-         List<ProductDto> dtoList = new LinkedList<>();
+        List<ProductDto> dtoList = new LinkedList<>();
          
         List<Product> productList = inventoryService.getProductList();
         for (Product product : productList)
@@ -242,8 +242,8 @@ public class XtractService
          dto.setProductCode(product.getRefNo());
          dto.setProductName(product.getProductName());
          dto.setReorderLevel(product.getReorderLevel());
-         dto.setLocation(product.getLocation() != null ? product.getLocation().getLocationName() : "");
-         dto.setManufacturer(product.getManufacturer() != null ? product.getManufacturer().getManufacturerName() : "");
+         dto.setPackaging(product.getPackaging() != null ? product.getPackaging().getPackagingName() : "");
+         dto.setProductType(product.getProductType() != null ? product.getProductType().getProductTypeName() : "");
          dtoList.add(dto);
         }
         return dtoList;
