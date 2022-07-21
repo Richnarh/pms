@@ -45,11 +45,11 @@ public class ProductUploadController implements Serializable
     private UploadedFile file = null;
     
     public String getFileExtension(String filename) {
-        if(filename == null)
-        {
-            return null;
-        }
-        return filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+    if(filename == null)
+    {
+        return null;
+    }
+    return filename.substring(filename.lastIndexOf(".") + 1, filename.length());
     }
     
     public void uploadProduct()
