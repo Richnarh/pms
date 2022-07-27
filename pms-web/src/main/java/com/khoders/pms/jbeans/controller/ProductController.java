@@ -41,11 +41,10 @@ public class ProductController implements Serializable
    
    private FormView pageView = FormView.listForm();
    
-   @PostConstruct
-   private void init()
+   public void init()
    {
      clearProduct();
-     productList = inventoryService.getProductList();
+     productList = inventoryService.getProducts();
    }
    
    public void initProduct()
@@ -59,7 +58,7 @@ public class ProductController implements Serializable
        try
        {
           if(optionText.equals("Save Changes")){
-              Product newProduct = inventoryService.existProdct(product.getProductName());
+              Product newProduct = inventoryService.existProdct(product);
               if (newProduct != null)
               {
                   Msg.error("Product already exist");

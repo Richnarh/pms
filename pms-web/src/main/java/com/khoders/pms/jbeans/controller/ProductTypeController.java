@@ -46,9 +46,7 @@ public class ProductTypeController implements Serializable
           productType.genCode();
           if(crudApi.save(productType) != null){
               productTypeList = CollectionList.washList(productTypeList, productType);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           clearProductType();
        } catch (Exception e)
@@ -63,9 +61,7 @@ public class ProductTypeController implements Serializable
          if(crudApi.delete(productType))
          {
              productTypeList.remove(productType);
-             
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+             Msg.info(Msg.SUCCESS_MESSAGE);
          }  
        } catch (Exception e)
        {

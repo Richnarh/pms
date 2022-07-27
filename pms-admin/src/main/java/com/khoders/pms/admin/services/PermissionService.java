@@ -10,6 +10,7 @@ import com.khoders.pms.entities.system.PageAction;
 import com.khoders.pms.entities.system.UserAccount;
 import com.khoders.pms.entities.system.UserPage;
 import com.khoders.pms.entities.system.UserPageAction;
+import com.khoders.resource.enums.Status;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -40,7 +41,13 @@ public class PermissionService
                 .setParameter("userAccount", userAccount)
                 .getResultList();
     }
-
+    public List<AppPage> appPageList()
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM AppPage e WHERE e.pageStatus=:pageStatus ORDER BY e.reorder ASC", AppPage.class)
+               .setParameter("pageStatus", Status.ACTIVE)
+               .getResultList();  
+    }
+    
     public List<AppPage> getAppPageList()
     {
        return crudApi.getEm().createQuery("SELECT e FROM AppPage e ORDER BY e.reorder ASC", AppPage.class).getResultList();  

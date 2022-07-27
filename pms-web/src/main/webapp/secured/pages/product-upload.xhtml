@@ -18,40 +18,50 @@
                     <div class="card mb-5 wow zoomIn">
                         <div class="container-fluid">
                             <div class="card-header">Upload #{msg.product}</div>
-                            <h:panelGroup>
-                                 <div class="col-md-12 mb-5 pt-3 mx-auto">
+                            <h:panelGroup id="mainGroup">
+                                <div class="col-md-12 mx-auto py-3">
                                     <h:form enctype="multipart/form-data">
-                                        <div class="p-3">
-                                            <p:fileUpload value="#{productUploadController.file}" mode="simple" skinSimple="true" required="true"/>
-                                            <p:commandButton class="kbtn-default" action="#{productUploadController.uploadProduct()}" ajax="false" value="Upload Order"/>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <p:fileUpload value="#{productUploadController.file}" mode="simple" skinSimple="true" required="true"/>
+                                                <p:commandButton class="kbtn-default" action="#{productUploadController.uploadProduct()}" ajax="false" value="Upload Order"/>
+                                            </div> 
+                                            <div class="col-md-2">
+                                                <span class="shadow-sm faded-shade">Count: #{productUploadController.productList.size()}</span>
+                                            </div>
                                         </div>
                                     </h:form>
                                 </div>
-                                
-                                <h:form id="purchaseOrderTable" class="mb-3 wow">
+
+                                <h:form id="uploadTable" class="mb-3 wow">
                                     <p:dataTable value="#{productUploadController.productList}" reflow="true" var="product"
                                                  scrollable="true" scrollHeight="400">
 
                                         <p:column headerText="#{msg.product}">
                                             #{product.productName}
                                         </p:column>
-                                        
+
                                         <p:column headerText="Priduct Type">
                                             #{product.productType}
                                         </p:column>
-                                        
+
                                         <p:column headerText="Packaging">
                                             #{product.packaging}
                                         </p:column>
-                                        
+
                                     </p:dataTable>
-                                    
+
                                     <div class="p-2">
-                                        <p:commandButton class="kbtn-cancel" value="#{msg.clear}" ajax="false" action="#{productUploadController.clear()}"/>
-                            
-                                        <p:commandButton class="kbtn-success" icon="#{msg.check_icon}" value="Save Changes" ajax="false" action="#{productUploadController.saveUpload()}"/>
+                                        <p:commandButton id="clear" class="kbtn-cancel mx-2" value="#{msg.clear}" action="#{productUploadController.clear()}" update="@form"/>
+
+                                        <p:commandButton id="save" class="kbtn-success" icon="#{msg.check_icon}" value="Save Changes" action="#{productUploadController.saveUpload()}" update="@form"/>
                                     </div>
+
                                 </h:form>
+                                    <p:blockUI block="mainGroup" trigger=":uploadTable:clear, :uploadTable:save">
+                                        <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                             </h:panelGroup>
                         </div>
                     </div>

@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -81,10 +79,7 @@ public class PurchaseOrderController implements Serializable
            if(crudApi.save(purchaseOrder)!=null)
            {
                purchaseOrderList = CollectionList.washList(purchaseOrderList, purchaseOrder);
-               FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase order saved"), null)); 
-               
-               
+               Msg.info("Purchase order saved");
                clearPurchaseOrder();
            }
            
@@ -102,14 +97,11 @@ public class PurchaseOrderController implements Serializable
           if(crudApi.delete(purchaseOrder))
           {
               purchaseOrderList.remove(purchaseOrder);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           else
           {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            Msg.info(Msg.FAILED_MESSAGE);
           }
         } catch (Exception e) 
         {
@@ -144,16 +136,8 @@ public class PurchaseOrderController implements Serializable
               return;
             }
             
-//            if (purchaseOrderItem.getQuantity() <= 0)
-//            {
-//                FacesContext.getCurrentInstance().addMessage(null,
-//                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
-//                return;
-//            }
-            
             if (purchaseOrderItem.getCostPrice() <= 0.0) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter price"), null));
+                Msg.info("Please enter price");
                 return;
             }
 

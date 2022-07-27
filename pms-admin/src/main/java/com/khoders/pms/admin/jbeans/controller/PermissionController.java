@@ -45,8 +45,7 @@ public class PermissionController implements Serializable
     
     @PostConstruct
     private void init(){
-        appPageList = permissionService.getAppPageList();
-        
+        appPageList = permissionService.appPageList();
     }
     
     public void addPageToUser(AppPage appPage)

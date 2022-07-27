@@ -38,6 +38,19 @@ public class InventoryService
 {
     private @Inject CrudApi crudApi;
     
+    public List<Product> getProducts()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.productName ASC", Product.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
     public List<Product> getProductList()
     {
         try
@@ -384,10 +397,12 @@ public class InventoryService
         return Collections.emptyList();
     }
 
-    public Product existProdct(String productName)
+    public Product existProdct(Product product)
     {
-      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName", Product.class)
-              .setParameter("productName", productName)
+      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName OR e.packaging=:packaging", Product.class)
+              .setParameter("productName", product.getProductName())
+              .setParameter("packaging", product.getPackaging())
+//              .setParameter("productType", product.getProductType())
               .getResultStream().findFirst().orElse(null);
     }
 

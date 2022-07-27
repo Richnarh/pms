@@ -7,7 +7,7 @@ package com.khoders.pms.jbeans.dto;
 
 /**
  *
- * @author richa
+ * @author richard
  */
 public class ProductDto extends BaseDto
 {

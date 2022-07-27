@@ -20,18 +20,22 @@
                             <div class="card-header">#{msg.product}s</div>
                             <h:panelGroup rendered="#{productController.pageView.listView}">
                                 <div class="row">
-                                    <div class="col-12 col-sm-12 col-lg-12">
-                                        <h:form style="margin-bottom: 5px;">
-                                            <div class="pt-2">
-                                            <h:commandLink target="_blank" value="Print #{msg.product}" class="btn btn-outline-primary btn-sm"
+                                    <div class="col-12 col-sm-12 col-lg-12 py-2">
+                                        <h:form id="initForm" style="margin-bottom: 5px;">
+                                            <div class="float-end">
+                                            <h:commandLink target="_blank" value="Print #{msg.product}s" class="btn btn-primary btn-sm"
                                                            action="#{productController.printProduct()}"/>
-                                        </div>
-                                            <div class="pull-right py-2">
-                                                <h:commandButton value="#{msg.new} #{msg.product}" class="btn btn-outline-primary btn-sm"
+                                            
+                                            <h:commandButton id="reload" value="Reload" class="btn btn-primary btn-sm mx-2"
+                                                                 action="#{productController.init()}">
+                                                    <p:ajax update=":mainPanel"/>
+                                                </h:commandButton>
+                                            <h:commandButton id="newProduct" value="#{msg.new} #{msg.product}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{productController.initProduct()}">
                                                     <p:ajax update=":mainPanel"/>
                                                 </h:commandButton>
-                                            </div>
+                                        </div>
+                                           <span class="shadow-sm col-2 faded-shade">Count: #{productController.productList.size()}</span>
                                         </h:form>
                                     </div>
                                 </div>
@@ -96,6 +100,11 @@
                                             </p:menuButton>
                                         </p:column>
                                     </p:dataTable>
+                                    
+                                    <p:blockUI block="productTable" trigger=":initForm:reload, :initForm:newProduct">
+                                        <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                                 </h:form>
                             </h:panelGroup>
                         </div>
@@ -137,8 +146,8 @@
                                             </p:selectOneMenu>
                                             <p:commandButton class="kbtn-info" oncomplete="PF('frequency').show()" resetValues="true" icon="#{msg.add_icon}"/>
                                             
-                                            <span>#{msg.packaging} <span class="text-danger">*</span></span>
-                                            <p:selectOneMenu value="#{productController.product.packaging}" required="true" filter="true" filterMatchMode="contains">
+                                            <span>#{msg.packaging}</span>
+                                            <p:selectOneMenu value="#{productController.product.packaging}" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{usercommonBeans.packagingList}"/>
                                             </p:selectOneMenu>

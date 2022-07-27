@@ -178,6 +178,6 @@ public class Product extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return productName +" "+packaging;
+        return productName +" "+productType +" "+packaging;
     } 
 }

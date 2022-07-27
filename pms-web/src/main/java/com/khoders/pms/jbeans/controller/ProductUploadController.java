@@ -10,6 +10,7 @@ import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.jbeans.dto.ProductDetails;
 import com.khoders.pms.listener.AppSession;
+import com.khoders.pms.services.InventoryService;
 import com.khoders.pms.services.StockService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.BeansUtil;
@@ -39,8 +40,10 @@ public class ProductUploadController implements Serializable
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private StockService stockService;
+    @Inject private InventoryService inventoryService;
     private ProductDetails product = new ProductDetails();
     private List<ProductDetails> productList = new LinkedList<>();
+    private List<Product> failedProductList = new LinkedList<>();
     
     private UploadedFile file = null;
     
@@ -78,10 +81,22 @@ public class ProductUploadController implements Serializable
                 c++;
                 product = new ProductDetails();
                 Row currentRow = iterator.next();
-                product.setProductName(BeansUtil.objToString(currentRow.getCell(0)));
-                product.setProductType(BeansUtil.objToString(currentRow.getCell(1)));
-                product.setPackaging(BeansUtil.objToString(currentRow.getCell(2)));
-
+                String prodName = BeansUtil.objToString(currentRow.getCell(0));
+                if(prodName == null || prodName.isEmpty()){
+                    Msg.error("Please the excel has  product name field(s) being empty!");
+                    return;
+                }
+                product.setProductName(prodName);
+                String object1 = BeansUtil.objToString(currentRow.getCell(1));
+                if(object1 != null && !object1.isEmpty()){
+                    product.setProductType(object1);
+                }
+                
+                String object2 = BeansUtil.objToString(currentRow.getCell(2));
+                if(object2 != null && !object2.isEmpty()){
+                    product.setPackaging(object2);
+                }
+                
                 productList.add(product);
                 
                 System.out.println("Iteration "+c+" done!");
@@ -96,12 +111,11 @@ public class ProductUploadController implements Serializable
     {
         try
         {
+            int c=0;
             if(productList.isEmpty()) return;
             for (ProductDetails details : productList)
             {
-               Product newProduct = new Product();
-               
-                ProductType productType = stockService.getProductType(details.getProductType().trim());
+                ProductType productType = stockService.getProductType(details.getProductType() != null ? details.getProductType().trim() : null);
                 if (productType == null)
                 {
                     ProductType type = new ProductType();
@@ -114,7 +128,7 @@ public class ProductUploadController implements Serializable
                     crudApi.save(type);
                 }
                 
-                Packaging packages = stockService.getPackage(details.getPackaging().trim());
+                Packaging packages = stockService.getPackage(details.getPackaging() != null ? details.getPackaging().trim() : null);
                 if (packages == null)
                 {
                     Packaging pack = new Packaging();
@@ -126,17 +140,32 @@ public class ProductUploadController implements Serializable
                 
                     crudApi.save(pack);
                 }
-                newProduct.genCode();
-                newProduct.setProductName(details.getProductName().trim());
-                newProduct.setProductType(productType);
-                newProduct.setPackaging(packages);
-                newProduct.setUserAccount(appSession.getCurrentUser());
-                newProduct.setCompanyBranch(appSession.getCompanyBranch());
-                newProduct.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);
                 
-                crudApi.save(newProduct);
+                Product prod = new Product();
+                prod.setProductType(productType);
+                prod.setPackaging(packages);
+                prod.setProductName(details.getProductName().trim());
+                Product oldProduct = inventoryService.existProdct(prod);
+                if(oldProduct == null){
+                    Product newProduct = new Product();
+                    newProduct.genCode();
+                    newProduct.setProductName(details.getProductName().trim());
+                    newProduct.setProductType(productType);
+                    newProduct.setPackaging(packages);
+                    newProduct.setUserAccount(appSession.getCurrentUser());
+                    newProduct.setCompanyBranch(appSession.getCompanyBranch());
+                    newProduct.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);  
+                    System.out.println("New Saving........"+c++);
+                    crudApi.save(newProduct);
+                }   
+                else{
+                   failedProductList.add(oldProduct);
+                }
+                
             }
-            
+            System.out.println("productList -- "+productList.size());
+            System.out.println("failedProductList -- "+failedProductList.size());
+            failedProductList.forEach(i->System.out.println("Item: "+i.getProductName()));
             Msg.info("Product upload saved!");
         } catch (Exception e)
         {
