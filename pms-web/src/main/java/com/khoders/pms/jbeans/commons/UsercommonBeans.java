@@ -11,6 +11,7 @@ import com.khoders.pms.entities.Potency;
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
 import com.khoders.pms.entities.ProductType;
+import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.StockReceiptItem;
 import com.khoders.pms.entities.UnitMeasurement;
 import com.khoders.pms.entities.Warehouse;
@@ -50,11 +51,13 @@ public class UsercommonBeans implements Serializable
     private List<Location> locationList = new LinkedList<>();
     private List<Packaging> packagingList = new LinkedList<>();
     private List<Warehouse> warehouseList = new LinkedList<>();
+    private List<PurchaseOrder> purchaseOrderList = new LinkedList<>();
     
     @PostConstruct
     public void init()
     {
         productList = inventoryService.getProductList();
+        purchaseOrderList = inventoryService.getPurchaseOrderList();
         productPackageList = inventoryService.getProductPackageList();
         stockReceiptItemList = inventoryService.getStockReceiptItemList();
         unitMeasurementList = inventoryService.getUnitMeasurementList();
@@ -141,6 +144,11 @@ public class UsercommonBeans implements Serializable
     public List<Frequency> getFrequencyList()
     {
         return frequencyList;
+    }
+
+    public List<PurchaseOrder> getPurchaseOrderList()
+    {
+        return purchaseOrderList;
     }
     
 }

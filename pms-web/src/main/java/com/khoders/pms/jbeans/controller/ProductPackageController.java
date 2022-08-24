@@ -9,7 +9,8 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import com.khoders.pms.entities.ProductPackage;
 import com.khoders.pms.entities.UnitMeasurement;
-import com.khoders.resource.enums.UnitOfMeasurement;
+import com.khoders.pms.listener.AppSession;
+import com.khoders.pms.services.StockService;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +28,13 @@ import javax.inject.Named;
 public class ProductPackageController implements Serializable
 {
    @Inject private CrudApi crudApi;
+   @Inject private AppSession appSession;
    @Inject private InventoryService inventoryService;
+   @Inject private StockService stockService;
    
    private ProductPackage productPackage;
    private List<ProductPackage> productPackageList = new LinkedList<>();
+   private List<ProductPackage> segmentedList = new LinkedList<>();
    private List<Product> productList = new LinkedList<>();
    private String optionText;
    private Product selectedProduct = null;
@@ -46,6 +50,7 @@ public class ProductPackageController implements Serializable
    
    public void selectProduct(Product product){
        selectedProduct=product;
+       segmentedList = stockService.segmentedProducts(selectedProduct);
    }
    
    public void updateUnit(){
@@ -61,7 +66,7 @@ public class ProductPackageController implements Serializable
        try
        {
            if(optionText.equals("Save Changes")){
-              ProductPackage newPackage = inventoryService.existProdct(selectedProduct, productPackage.getUnitMeasurement());
+              ProductPackage newPackage = stockService.existProdctPackage(selectedProduct, productPackage.getUnitMeasurement());
               if (newPackage != null)
               {
                   Msg.error("product and the package already exist");
@@ -113,6 +118,7 @@ public class ProductPackageController implements Serializable
     public void clearProductPackage()
     {
         productPackage = new ProductPackage();
+        productPackage.setUserAccount(appSession.getCurrentUser());
         selectedProduct = null;
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
@@ -156,6 +162,11 @@ public class ProductPackageController implements Serializable
     public UnitMeasurement getSelectedUnit()
     {
         return selectedUnit;
+    }
+
+    public List<ProductPackage> getSegmentedList()
+    {
+        return segmentedList;
     }
     
 }

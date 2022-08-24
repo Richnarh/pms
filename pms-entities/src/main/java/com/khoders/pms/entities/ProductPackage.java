@@ -88,6 +88,6 @@ public class ProductPackage extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return unitMeasurement.getUnits();
+        return unitMeasurement != null ? unitMeasurement.getUnits() : new UnitMeasurement().toString();
     } 
 }

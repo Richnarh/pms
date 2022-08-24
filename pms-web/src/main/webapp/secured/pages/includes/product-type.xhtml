@@ -18,6 +18,12 @@
         <h:form id="productTypeTable">
             
             <p:dataTable value="#{productTypeController.productTypeList}" var="productType" paginator="true" paginatorPosition="bottom" rows="7">
+                <p:rowExpansion>
+                    <h:panelGrid columns="2">
+                        <span>Id</span>
+                        <h:outputText value="#{productType.id}"/>
+                    </h:panelGrid>
+                </p:rowExpansion>
                 <p:column headerText="Package Type" filterBy="#{productType.productTypeName}" filterMatchMode="contains">
                     #{productType.productTypeName}
                 </p:column>

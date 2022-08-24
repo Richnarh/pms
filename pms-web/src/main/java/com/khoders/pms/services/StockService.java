@@ -9,9 +9,11 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.ExpiredProduct;
 import com.khoders.pms.entities.Packaging;
 import com.khoders.pms.entities.Product;
+import com.khoders.pms.entities.ProductPackage;
 import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.StockReceipt;
+import com.khoders.pms.entities.UnitMeasurement;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -118,18 +120,41 @@ public class StockService
         }
         return null;
     }
-
-    public ProductType getProductType(String prdtType)
+    public ProductPackage existProdctPackage(Product product, UnitMeasurement unitMeasurement)
     {
+      return crudApi.getEm().createQuery("SELECT e FROM ProductPackage e WHERE e.product=:product AND e.unitMeasurement=:unitMeasurement", ProductPackage.class)
+              .setParameter("product", product)
+              .setParameter("unitMeasurement", unitMeasurement)
+              .getResultStream().findFirst().orElse(null);
+    }
+    public ProductType getProductType(String prdtType){
        return crudApi.getEm().createQuery("SELECT e FROM ProductType e WHERE e.productTypeName=?1", ProductType.class)
                                             .setParameter(1, prdtType)
                                             .getResultStream().findFirst().orElse(null);
     }
-
+    public UnitMeasurement getUnits(String units)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM UnitMeasurement e WHERE e.units=?1", UnitMeasurement.class)
+                                            .setParameter(1, units)
+                                            .getResultStream().findFirst().orElse(null);
+    }
     public Packaging getPackage(String packageString)
     {
        return crudApi.getEm().createQuery("SELECT e FROM Packaging e WHERE e.packagingName=?1", Packaging.class)
                                             .setParameter(1, packageString)
                                             .getResultStream().findFirst().orElse(null);
+    }
+    public Product getProduct(String productName)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=?1", Product.class)
+                                            .setParameter(1, productName)
+                                            .getResultStream().findFirst().orElse(null);
+    }
+
+    public List<ProductPackage> segmentedProducts(Product product)
+    {
+       return crudApi.getEm().createQuery("SELECT e FROM ProductPackage e WHERE e.product=:product", ProductPackage.class)
+               .setParameter("product", product)
+               .getResultList();
     }
 }

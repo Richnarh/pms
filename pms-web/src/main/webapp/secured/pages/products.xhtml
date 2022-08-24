@@ -48,6 +48,9 @@
 
                                         <p:rowExpansion>
                                             <h:panelGrid columns="2">
+                                                <span>Id</span>
+                                                <h:outputText value="#{product.id}"/>
+                                                
                                                 <span>#{msg.created_date}</span>
                                                 <h:outputText value="#{product.createdDate}">
                                                     <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>

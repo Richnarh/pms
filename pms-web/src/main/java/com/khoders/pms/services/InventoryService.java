@@ -406,13 +406,6 @@ public class InventoryService
               .getResultStream().findFirst().orElse(null);
     }
 
-    public ProductPackage existProdct(Product product, UnitMeasurement unitMeasurement)
-    {
-      return crudApi.getEm().createQuery("SELECT e FROM ProductPackage e WHERE e.product=:product AND e.unitMeasurement=:unitMeasurement", ProductPackage.class)
-              .setParameter("product", product)
-              .setParameter("unitMeasurement", unitMeasurement)
-              .getResultStream().findFirst().orElse(null);
-    }
     
     public List<Sales> getSalesByReceipt(String receiptNumber)
     {

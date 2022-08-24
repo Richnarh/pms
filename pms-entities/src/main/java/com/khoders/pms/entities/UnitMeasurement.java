@@ -1,6 +1,7 @@
 package com.khoders.pms.entities;
 
-import com.khoders.pms.entities.system.RefNo;
+import com.khoders.pms.entities.system.UserAccountRecord;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "unit_measurement")
-public class UnitMeasurement extends RefNo
+public class UnitMeasurement extends UserAccountRecord implements Serializable
 {
     @Column(name = "units")
     private String units;
