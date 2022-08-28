@@ -16,7 +16,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-4">
-                            <h:form>
+                            <h:form id="prodTbl">
+                                <p:commandButton id="reload" value="Reload" class="my-2" icon="#{msg.refresh_icon}"
+                                                 action="#{productPackageController.initProduct()}" update="@form"/>
                                 <p:dataTable value="#{productPackageController.productList}" var="product" scrollable="true" scrollHeight="400">
                                     <p:column headerText="#{msg.product}" filterBy="#{product.productName}" filterMatchMode="contains">
                                         <h:commandLink styleClass="ptext-link" value="#{product.productName} #{product.productType.productTypeName} #{product.packaging.packagingName}" action="#{productPackageController.selectProduct(product)}">
@@ -24,6 +26,10 @@
                                         </h:commandLink>
                                     </p:column>
                                 </p:dataTable>
+                                <p:blockUI block="prodTbl" trigger="@form">
+                                    <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                    <p><small>Please wait...</small></p>
+                                </p:blockUI>
                             </h:form>
                         </div>
                         <div class="col-md-8">
@@ -76,6 +82,10 @@
                     </div>
                     <div class="col-md-12 p-2">
                         <h:form id="packageTable">
+
+                            <p:commandButton id="reload" value="Reload" class="my-2" icon="#{msg.refresh_icon}"
+                                             action="#{productPackageController.initProductPackage()}" update="@form"/>
+
                             <p:dataTable value="#{productPackageController.productPackageList}" var="productPackage" paginator="true" paginatorPosition="bottom" rows="12">
                                 <p:column exportable="false" style="width: 37px;">
                                     <p:rowToggler/>
@@ -85,7 +95,7 @@
                                     <h:panelGrid columns="2">
                                         <span>Id</span>
                                         <h:outputText value="#{productPackage.id}"/>
-                                        
+
                                         <span>#{msg.created_date}</span>
                                         <h:outputText value="#{productPackage.createdDate}">
                                             <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
@@ -118,6 +128,10 @@
                                     </p:menuButton>
                                 </p:column>
                             </p:dataTable>
+                            <p:blockUI block="packageTable" trigger="@form">
+                                <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                <p><small>Please wait...</small></p>
+                            </p:blockUI>
                         </h:form>
                     </div>
                 </div>

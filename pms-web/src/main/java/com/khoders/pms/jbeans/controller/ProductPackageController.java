@@ -41,11 +41,16 @@ public class ProductPackageController implements Serializable
    private UnitMeasurement selectedUnit = null;
    
    @PostConstruct
-   private void init()
-   {
-     clearProductPackage();
-     productPackageList = inventoryService.getProductPackageList();
+   private void init(){
+     clearProductPackage();  
+   }
+   
+   public void initProduct(){     
      productList = inventoryService.getProducts();
+   }
+   
+   public void initProductPackage(){
+     productPackageList = inventoryService.getProductPackageList();
    }
    
    public void selectProduct(Product product){

@@ -44,6 +44,7 @@ public class StockReceiptController implements Serializable
    private List<PurchaseOrderItem> purchaseOrderItemList = new LinkedList<>();
    private String optionText;
    private LocalDate expiryDate;
+   private boolean savedStock = false;
    
    @PostConstruct
    private void init()
@@ -57,17 +58,21 @@ public class StockReceiptController implements Serializable
       selectedPurchaseOrder = purchaseOrder;
       clearStockReceipt();
       stockReceipt = stockService.getStockReceipt(purchaseOrder);
-      if(stockReceipt == null)
-      {
+      if(stockReceipt == null){
         stockReceipt = new StockReceipt();
         stockReceipt.setPurchaseOrder(purchaseOrder);
         stockReceipt.setTotalAmount(purchaseOrder.getTotalAmount());
         stockReceipt.setBatchNo(SystemUtils.generateCode());
         stockReceipt.setUserAccount(appSession.getCurrentUser());
         stockReceipt.setCompanyBranch(appSession.getCompanyBranch());
+        stockReceipt.setStockSaved(true);
+        savedStock = true;
+      }else{
+        savedStock = false;
       }
-
+      
       purchaseOrderItemList = inventoryService.getPurchaseOrderItem(purchaseOrder);
+      
     }
     
 //    public void viewStockReceipt(PurchaseOrder purchaseOrder)
@@ -96,6 +101,7 @@ public class StockReceiptController implements Serializable
        try
        {
            stockReceipt.setBatchNo(stockReceipt.getBatchNo());
+           
            if (crudApi.save(stockReceipt) != null)
            {
                StockReceiptItem receiptItem = xtractService.saveStockReceipt(purchaseOrderItemList, stockReceipt);
@@ -188,4 +194,15 @@ public class StockReceiptController implements Serializable
     {
         this.selectedPurchaseOrder = selectedPurchaseOrder;
     }
+
+    public boolean isSavedStock()
+    {
+        return savedStock;
+    }
+
+    public void setSavedStock(boolean savedStock)
+    {
+        this.savedStock = savedStock;
+    }
+    
 }

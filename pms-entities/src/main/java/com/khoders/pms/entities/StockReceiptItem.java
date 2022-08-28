@@ -197,7 +197,7 @@ public class StockReceiptItem extends UserAccountRecord implements Serializable{
     @Override
     public String toString()
     {
-        return product+"("+productPackage+")";
+        return product+"";
     }
     
     

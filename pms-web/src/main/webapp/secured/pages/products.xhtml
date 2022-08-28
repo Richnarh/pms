@@ -25,11 +25,9 @@
                                             <div class="float-end">
                                             <h:commandLink target="_blank" value="Print #{msg.product}s" class="btn btn-primary btn-sm"
                                                            action="#{productController.printProduct()}"/>
+                                            <p:commandButton id="reload" value="Reload" class="mx-3" icon="#{msg.refresh_icon}"
+                                                 action="#{productController.init()}" update=":mainPanel"/>
                                             
-                                            <h:commandButton id="reload" value="Reload" class="btn btn-primary btn-sm mx-2"
-                                                                 action="#{productController.init()}">
-                                                    <p:ajax update=":mainPanel"/>
-                                                </h:commandButton>
                                             <h:commandButton id="newProduct" value="#{msg.new} #{msg.product}" class="btn btn-outline-primary btn-sm"
                                                                  action="#{productController.initProduct()}">
                                                     <p:ajax update=":mainPanel"/>

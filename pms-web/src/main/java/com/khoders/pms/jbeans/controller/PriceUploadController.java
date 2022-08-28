@@ -7,6 +7,7 @@ package com.khoders.pms.jbeans.controller;
 
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
+import com.khoders.pms.entities.ProductType;
 import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.PurchaseOrderItem;
 import com.khoders.pms.entities.UnitMeasurement;
@@ -19,6 +20,7 @@ import com.khoders.resource.enums.DeliveryMethod;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.BeansUtil;
 import com.khoders.resource.utilities.Msg;
+import com.khoders.resource.utilities.Stringz;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -176,14 +178,27 @@ public class PriceUploadController implements Serializable
                     {
                         UnitMeasurement units = new UnitMeasurement();
                         units.genCode();
-                        units.setUnits(details.getProductType());
+                        units.setUnits(details.getUnitsMeasurement());
                         units.setUserAccount(appSession.getCurrentUser());
                         units.setCompanyBranch(appSession.getCompanyBranch());
                         units.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);
 
                         crudApi.save(units);
                     }
+                    
+                    ProductType productType = stockService.getProductType(details.getProductType() != null && !details.getProductType().isEmpty() ? Stringz.capitalizeOnlyFirst(details.getProductType().trim()) : null);
+                    if (productType == null)
+                    {
+                        ProductType type = new ProductType();
+                        type.genCode();
+                        type.setProductTypeName(details.getProductType() != null && !details.getProductType().isEmpty() ? Stringz.capitalizeOnlyFirst(details.getProductType().trim()): "");
+                        type.setUserAccount(appSession.getCurrentUser());
+                        type.setCompanyBranch(appSession.getCompanyBranch());
+                        type.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);
 
+                        crudApi.save(type);
+                    }
+                    
                     Product product = stockService.getProduct(details.getProductName() != null ? details.getProductName().trim() : null);
                     if (product == null)
                     {

@@ -273,6 +273,7 @@ public class SalesController implements Serializable
                 
                 salesList = CollectionList.washList(salesList, sales);
                 
+                System.out.println("Execting......");
                 taxCalculation();
                 
                 Msg.info("Transaction saved successfully!");
@@ -287,6 +288,8 @@ public class SalesController implements Serializable
     
     public void taxCalculation()
     {
+        System.out.println("Execting taxCalculation......");
+        System.out.println("taxList......"+taxList.size());
         for (Tax tax : taxList)
         {
             SalesTax salesTax = new SalesTax();
