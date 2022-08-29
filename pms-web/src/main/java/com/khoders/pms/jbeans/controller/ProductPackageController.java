@@ -78,7 +78,7 @@ public class ProductPackageController implements Serializable
                   return;
               }
           }
-           if(productPackage.getPackageFactor() == 0.0){
+           if(productPackage.getUnitsInPackage() == 0.0){
                Msg.error("Units in package is required");
                return;
            }

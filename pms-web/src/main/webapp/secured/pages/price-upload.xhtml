@@ -58,7 +58,7 @@
                                             #{packagePrice.packaging}
                                         </p:column>
 
-                                        <p:column headerText="Units Measurement">
+                                        <p:column headerText="Units M.">
                                             #{packagePrice.unitsMeasurement}
                                         </p:column>
 
@@ -66,12 +66,20 @@
                                             #{packagePrice.qtyPurchased}
                                         </p:column>
 
+                                        <p:column headerText="Units in pkg" class="text-end">
+                                            #{packagePrice.unitsInPackage}
+                                        </p:column>
+
                                         <p:column headerText="Purchased Price" class="text-end">
-                                            #{packagePrice.purchasedPrice}
+                                            <h:outputText value="#{packagePrice.purchasedPrice}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
                                         </p:column>
 
                                         <p:column headerText="Selling Price" class="text-end">
-                                            #{packagePrice.sellingPrice}
+                                            <h:outputText value="#{packagePrice.sellingPrice}">
+                                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                            </h:outputText>
                                         </p:column>
 
                                     </p:dataTable>

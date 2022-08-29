@@ -25,8 +25,8 @@ public class ProductPackage extends UserAccountRecord implements Serializable
     @ManyToOne
     private UnitMeasurement unitMeasurement;
     
-    @Column(name = "package_factor")
-    private double packageFactor;
+    @Column(name = "units_in_package")
+    private double unitsInPackage;
     
     @Column(name = "package_price")
     private double packagePrice;
@@ -55,14 +55,14 @@ public class ProductPackage extends UserAccountRecord implements Serializable
         this.unitMeasurement = unitMeasurement;
     }
 
-    public double getPackageFactor()
+    public double getUnitsInPackage()
     {
-        return packageFactor;
+        return unitsInPackage;
     }
 
-    public void setPackageFactor(double packageFactor)
+    public void setUnitsInPackage(double unitsInPackage)
     {
-        this.packageFactor = packageFactor;
+        this.unitsInPackage = unitsInPackage;
     }
 
     public double getPackagePrice()

@@ -84,7 +84,7 @@ public class StockService
 
     public List<Object[]> getStockReceiptItems()
     {
-        String queryString = "SELECT e.id, e.`ref_no`, p.`product_name`, SUM(e.pkg_quantity) AS Quantity, u.`units`, pkg.`package_factor`, e.`cost_price`, pkg.`package_price`,p.`reorder_level` FROM `stock_recept_item` e \n" +
+        String queryString = "SELECT e.id, e.`ref_no`, p.`product_name`, SUM(e.pkg_quantity) AS Quantity, u.`units`, pkg.`units_in_package`, e.`cost_price`, pkg.`package_price`,p.`reorder_level` FROM `stock_recept_item` e \n" +
 "		INNER JOIN product p ON p.id=e.product \n" +
 "		INNER JOIN product_package pkg ON pkg.id=e.product_package \n" +
 "		INNER JOIN `unit_measurement` u ON u.id=pkg.`units_measurement` \n" +

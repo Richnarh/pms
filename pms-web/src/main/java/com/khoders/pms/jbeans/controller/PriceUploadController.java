@@ -110,9 +110,9 @@ public class PriceUploadController implements Serializable
                     packagePrice.setProductType(productType);
                 }
                                
-                String productPkg = BeansUtil.objToString(currentRow.getCell(3));
-                if(productPkg != null && !productPkg.isEmpty()){
-                    packagePrice.setPackaging(productPkg);
+                String packaging = BeansUtil.objToString(currentRow.getCell(3));
+                if(packaging != null && !packaging.isEmpty()){
+                    packagePrice.setPackaging(packaging);
                 }
                  
                 String units = BeansUtil.objToString(currentRow.getCell(4));
@@ -128,6 +128,10 @@ public class PriceUploadController implements Serializable
                 String sellPrice = BeansUtil.objToString(currentRow.getCell(6));
                 if(sellPrice != null && !sellPrice.isEmpty()){
                     packagePrice.setSellingPrice(BeansUtil.objToDouble(sellPrice));
+                }
+                String unitsInPackage = BeansUtil.objToString(currentRow.getCell(7));
+                if(unitsInPackage != null && !unitsInPackage.isEmpty()){
+                    packagePrice.setUnitsInPackage(BeansUtil.objToDouble(unitsInPackage));
                 }
                                 
                 packagePriceList.add(packagePrice);
@@ -218,7 +222,7 @@ public class PriceUploadController implements Serializable
                         productPackage.setProduct(product);
                         productPackage.setUnitMeasurement(measurement);
                         productPackage.setPackagePrice(details.getSellingPrice());
-                        productPackage.setPackageFactor(details.getUnitsInPackage());
+                        productPackage.setUnitsInPackage(details.getUnitsInPackage());
                         
                         if(crudApi.save(productPackage) != null){
                             PurchaseOrderItem orderItem = new PurchaseOrderItem();

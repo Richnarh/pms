@@ -139,19 +139,19 @@ public class XtractService
 
                 if(receivedStock.getProductPackage() != null)
                 {
-                    receiptItem.setPkgFactor(receivedStock.getProductPackage().getPackageFactor());
+                    receiptItem.setPkgFactor(receivedStock.getProductPackage().getUnitsInPackage());
                     receiptItem.setProductPackage(receivedStock.getProductPackage());   
                 }
                 StockReceiptItem item = inventoryService.getPackageQty(receivedStock.getProductPackage());
                 if (item == null)
                 {
-                    receiptItem.setPkgQuantity(receivedStock.getQtyPurchased() * receivedStock.getProductPackage().getPackageFactor());
+                    receiptItem.setPkgQuantity(receivedStock.getQtyPurchased() * receivedStock.getProductPackage().getUnitsInPackage());
                 } 
                 
                 if (item != null)
                 {
                     System.out.println("Left............");
-                    receiptItem.setPkgQuantity(item.getQtyLeft() + (receivedStock.getQtyPurchased() * receivedStock.getProductPackage().getPackageFactor()));
+                    receiptItem.setPkgQuantity(item.getQtyLeft() + (receivedStock.getQtyPurchased() * receivedStock.getProductPackage().getUnitsInPackage()));
                 }
                 crudApi.save(receiptItem);
             }
