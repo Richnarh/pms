@@ -5,6 +5,7 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.pms.entities.SaleItem;
 import com.khoders.pms.entities.Customer;
+import com.khoders.pms.entities.Frequency;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
 import com.khoders.pms.entities.Packaging;
@@ -37,11 +38,24 @@ public class InventoryService
 {
     private @Inject CrudApi crudApi;
     
+    public List<Product> getProducts()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.productName ASC", Product.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
     public List<Product> getProductList()
     {
         try
         {
-            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.createdDate DESC", Product.class).getResultList();
+            return crudApi.getEm().createQuery("SELECT e FROM Product e ORDER BY e.productType.productTypeName ASC", Product.class).getResultList();
             
         } catch (Exception e)
         {
@@ -302,8 +316,8 @@ public class InventoryService
     {
         try
         {
-           TypedQuery<SaleItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM SaleItem e WHERE e.sales=?1", SaleItem.class);
-                        typedQuery.setParameter(1, sales);
+           TypedQuery<SaleItem> typedQuery = crudApi.getEm().createQuery("SELECT e FROM SaleItem e WHERE e.sales=:sales", SaleItem.class);
+                        typedQuery.setParameter("sales", sales);
                        return typedQuery.getResultList();
            
         } catch (Exception e)
@@ -381,5 +395,44 @@ public class InventoryService
             e.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    public Product existProdct(Product product)
+    {
+      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName AND e.packaging=:packaging", Product.class)
+              .setParameter("productName", product.getProductName())
+              .setParameter("packaging", product.getPackaging())
+//              .setParameter("productType", product.getProductType())
+              .getResultStream().findFirst().orElse(null);
+    }
+
+    
+    public List<Sales> getSalesByReceipt(String receiptNumber)
+    {
+        try {
+           
+            String qryString = "SELECT e FROM Sales e WHERE e.receiptNumber=?1";
+            
+            TypedQuery<Sales> typedQuery = crudApi.getEm().createQuery(qryString, Sales.class)
+                    .setParameter(1, receiptNumber);
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Frequency> getFrequencyList()
+    {
+        try
+        {
+            return crudApi.getEm().createQuery("SELECT e FROM Frequency e ORDER BY e.createdDate DESC", Frequency.class).getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();    
     }
 }

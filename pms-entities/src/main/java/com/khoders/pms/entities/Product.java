@@ -1,10 +1,14 @@
 package com.khoders.pms.entities;
 
 import com.khoders.pms.entities.system.UserAccountRecord;
+import com.khoders.pms.enums.Frequency;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -38,11 +42,9 @@ public class Product extends UserAccountRecord implements Serializable
     @Column(name = "description")
     private String description;
     
-    @Column(name = "dose")
-    private String dose;
-    
     @Column(name = "frequency")
-    private String frequency;
+    @Enumerated(EnumType.STRING)
+    private Frequency frequency;
     
     @Column(name = "route")
     private String route;
@@ -133,26 +135,16 @@ public class Product extends UserAccountRecord implements Serializable
         this.category = category;
     }
 
-    public String getDose()
-    {
-        return dose;
-    }
-
-    public void setDose(String dose)
-    {
-        this.dose = dose;
-    }
-
-    public String getFrequency()
+    public Frequency getFrequency()
     {
         return frequency;
     }
 
-    public void setFrequency(String frequency)
+    public void setFrequency(Frequency frequency)
     {
         this.frequency = frequency;
     }
-
+    
     public String getRoute()
     {
         return route;
@@ -186,6 +178,6 @@ public class Product extends UserAccountRecord implements Serializable
     @Override
     public String toString()
     {
-        return productName +" "+potency +" "+packaging;
+        return productName +" "+productType +" "+packaging;
     } 
 }

@@ -11,8 +11,6 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SecurityUtil;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -36,13 +34,11 @@ public class ProfileUpdateController implements Serializable{
             if(appSession.getCurrentUser() != null)
             {
                 crudApi.save(appSession.getCurrentUser());
-                FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                Msg.info(Msg.SUCCESS_MESSAGE);
             }
             else
             {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.DELETE_MESSAGE, null));  
+             Msg.info(Msg.DELETE_MESSAGE);  
             }
         } 
         catch (Exception e) 
@@ -50,15 +46,12 @@ public class ProfileUpdateController implements Serializable{
             e.printStackTrace();
         }
     }
-    
-    
-       
+           
     public void updatePassword()
     {
         if(!password.equals(confirmPassword))
         {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Password do not match"), null));
+            Msg.info("Password do not match");
             return;
         }
         
@@ -66,9 +59,7 @@ public class ProfileUpdateController implements Serializable{
         
         if(hashedPassword.equalsIgnoreCase(appSession.getCurrentUser().getPassword()))
         {
-            String msg = "This password is same as the old one, please use a new password";
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg(msg), null));
+            Msg.info("This password is same as the old one, please use a new password");
             return;
         }
         
@@ -77,8 +68,7 @@ public class ProfileUpdateController implements Serializable{
         
         if(crudApi.save(appSession.getCurrentUser()) != null)
         {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Password Reset successful!"), null));
+          Msg.info("Password Reset successful!");
         }
     }
 

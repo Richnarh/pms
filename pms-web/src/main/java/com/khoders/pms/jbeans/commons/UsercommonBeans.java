@@ -3,6 +3,7 @@ package com.khoders.pms.jbeans.commons;
 import com.khoders.pms.entities.Category;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.Customer;
+import com.khoders.pms.entities.Frequency;
 import com.khoders.pms.entities.Location;
 import com.khoders.pms.entities.Manufacturer;
 import com.khoders.pms.entities.Packaging;
@@ -10,6 +11,7 @@ import com.khoders.pms.entities.Potency;
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
 import com.khoders.pms.entities.ProductType;
+import com.khoders.pms.entities.PurchaseOrder;
 import com.khoders.pms.entities.StockReceiptItem;
 import com.khoders.pms.entities.UnitMeasurement;
 import com.khoders.pms.entities.Warehouse;
@@ -43,16 +45,19 @@ public class UsercommonBeans implements Serializable
     
     private List<ProductType> productTypeList = new LinkedList<>();
     private List<Potency> potencyList = new LinkedList<>();
+    private List<Frequency> frequencyList = new LinkedList<>();
     private List<Category> categoryList = new LinkedList<>();
     private List<Manufacturer> manufacturerList = new LinkedList<>();
     private List<Location> locationList = new LinkedList<>();
     private List<Packaging> packagingList = new LinkedList<>();
     private List<Warehouse> warehouseList = new LinkedList<>();
+    private List<PurchaseOrder> purchaseOrderList = new LinkedList<>();
     
     @PostConstruct
     public void init()
     {
         productList = inventoryService.getProductList();
+        purchaseOrderList = inventoryService.getPurchaseOrderList();
         productPackageList = inventoryService.getProductPackageList();
         stockReceiptItemList = inventoryService.getStockReceiptItemList();
         unitMeasurementList = inventoryService.getUnitMeasurementList();
@@ -66,6 +71,7 @@ public class UsercommonBeans implements Serializable
         manufacturerList = inventoryService.getManufacturerList();
         locationList = inventoryService.getLocationList();
         packagingList = inventoryService.getPackagingList();
+        frequencyList = inventoryService.getFrequencyList();
     }
 
     public List<Product> getProductList()
@@ -133,6 +139,16 @@ public class UsercommonBeans implements Serializable
     public List<Packaging> getPackagingList()
     {
         return packagingList;
+    }
+
+    public List<Frequency> getFrequencyList()
+    {
+        return frequencyList;
+    }
+
+    public List<PurchaseOrder> getPurchaseOrderList()
+    {
+        return purchaseOrderList;
     }
     
 }

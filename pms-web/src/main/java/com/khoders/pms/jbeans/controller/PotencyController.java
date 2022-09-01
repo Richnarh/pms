@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -47,9 +45,7 @@ public class PotencyController implements Serializable
           if(crudApi.save(potency) != null)
           {
               potencyList = CollectionList.washList(potencyList, potency);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           clearPotency();
        } catch (Exception e)
@@ -64,9 +60,7 @@ public class PotencyController implements Serializable
          if(crudApi.delete(potency))
          {
              potencyList.remove(potency);
-             
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+             Msg.info(Msg.SUCCESS_MESSAGE);
          }  
        } catch (Exception e)
        {

@@ -5,10 +5,11 @@
  */
 package com.khoders.pms.jbeans.controller;
 
-import com.khoders.resource.jpa.CrudApi;
-import com.khoders.pms.entities.StockReceiptItem;
-import com.khoders.pms.services.InventoryService;
-import com.khoders.pms.services.StockService;
+import com.khoders.pms.jbeans.ReportFiles;
+import com.khoders.pms.jbeans.dto.StockSummary;
+import com.khoders.pms.services.XtractService;
+import com.khoders.resource.reports.ReportManager;
+import com.khoders.resource.utilities.Msg;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,44 +26,34 @@ import javax.inject.Named;
 @SessionScoped
 public class StockController implements Serializable
 {
-    @Inject private CrudApi crudApi;
-    @Inject private StockService stockService;
-    @Inject private InventoryService inventoryService;
+ @Inject private ReportManager reportManager;
+    @Inject private XtractService xtractService;
     
-    private List<StockReceiptItem> stockReceiptItemList = new LinkedList<>();
+    private List<StockSummary> viewStockList = new LinkedList<>();
 
     @PostConstruct
-    private void init()
+    public void init()
     {
-        stockReceiptItemList = stockService.getStockReceiptItems();
+       viewStockReceipt();
     }
     
-    public void initStockList()
+    public void viewStockReceipt()
     {
-        for (StockReceiptItem stockReceiptItem : stockReceiptItemList)
-        {
-            double qty = stockReceiptItem.getPkgQuantity();
-            List<Object[]> pp = inventoryService.stockBreakDown();
-            
-            for (Object[] receiptItem : pp)
-            {
-//                Product product = (Product)receiptItem[0];
-                System.out.println("packageFactor -> "+receiptItem[0]);
-                System.out.println("PackageQty -> "+receiptItem[1]);
-            }
-//            int mainPkg = (int)(qty/pp.getPackageFactor());
-//            
-//            double subPkg = mainPkg * pp.getPackageFactor();
-//            
-//            double unitPkg = qty - subPkg;
-             
+       viewStockList = xtractService.extractStockSummary();
+    }
+    
+    public void printStockSummary(){
+        viewStockReceipt();
+        if(viewStockList.isEmpty()){
+            Msg.error("No record to print");
+            return;
         }
-        
+        ReportManager.reportParams.put("logo", ReportFiles.LOGO);
+        reportManager.createReport(viewStockList, ReportFiles.STOCK_SUMMARY, ReportManager.reportParams);
     }
-    
-    public List<StockReceiptItem> getStockReceiptItemList()
+
+    public List<StockSummary> getViewStockList()
     {
-        return stockReceiptItemList;
+        return viewStockList;
     }
-    
 }

@@ -20,6 +20,7 @@
         <!-- Template Main CSS File -->
         <link href="#{application.contextPath}/assets/css/style.css" rel="stylesheet"/>   
         <link href="#{application.contextPath}/assets/css/main.css" rel="stylesheet"/>   
+        <link href="#{application.contextPath}/assets/css/login.css" rel="stylesheet"/>   
     </h:head>
     <body>
         <main>
@@ -32,8 +33,8 @@
 
                                 <div class="d-flex justify-content-center py-4">
                                     <span class="logo d-flex align-items-center w-auto">
-                                        <img src="#{application.contextPath}/assets/img/ssp.png" alt="logo"/>
-                                        <span class="d-none d-lg-block">LOGIN HERE</span>
+                                        <!--<img src="{application.contextPath}/assets/img/ssp.png" alt="logo"/>-->
+                                        <span class="text-white pms-login">KEBE PHARMACY - LOGIN | ADMINISTRATION</span>
                                     </span>
                                 </div><!-- End Logo -->
 
@@ -63,8 +64,9 @@
                                             </div>
 
                                             <div class="col-12">
-                                                <button class="btn btn-primary w-100" type="submit" jsf:action="#{loginController.doLogin()}">Login <i class="fa fa-sign-in"></i></button>
+                                                <button class="btn btn-danger w-100" type="submit" jsf:action="#{loginController.doLogin()}">Login <i class="fa fa-sign-in"></i></button>
                                             </div>
+                                            <small class="text-muted">Admin use Only!</small>
                                         </h:form>
 
                                     </div>

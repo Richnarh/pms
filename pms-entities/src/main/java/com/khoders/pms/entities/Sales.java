@@ -7,7 +7,6 @@ package com.khoders.pms.entities;
 
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.utilities.SystemUtils;
-import com.khoders.pms.entities.system.RefNo;
 import com.khoders.pms.entities.system.UserAccountRecord;
 import com.khoders.pms.enums.InvoiceType;
 import java.time.LocalDate;
@@ -63,6 +62,9 @@ public class Sales extends UserAccountRecord{
     
     @Column(name = "loss")
     private double loss;
+    
+    @Column(name = "qty_purchased")
+    private double qtyPurchased;
     
     public LocalDateTime getPurchaseDate()
     {
@@ -170,6 +172,16 @@ public class Sales extends UserAccountRecord{
     public void setApproval(boolean approval)
     {
         this.approval = approval;
+    }
+
+    public double getQtyPurchased()
+    {
+        return qtyPurchased;
+    }
+
+    public void setQtyPurchased(double qtyPurchased)
+    {
+        this.qtyPurchased = qtyPurchased;
     }
     
     public void genReceipt()

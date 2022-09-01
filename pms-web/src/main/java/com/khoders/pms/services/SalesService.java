@@ -4,6 +4,7 @@
  */
 package com.khoders.pms.services;
 
+import com.khoders.pms.entities.Customer;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.entities.Product;
 import com.khoders.pms.entities.ProductPackage;
@@ -11,6 +12,7 @@ import com.khoders.pms.entities.Sales;
 import com.khoders.pms.entities.SalesTax;
 import com.khoders.pms.entities.Tax;
 import com.khoders.pms.entities.UnitMeasurement;
+import com.khoders.pms.enums.CustomerType;
 import com.khoders.pms.listener.AppSession;
 import java.util.Collections;
 import java.util.List;
@@ -102,5 +104,11 @@ public class SalesService
 
         return Collections.emptyList();
     }
-    
+    public Customer walkinCustomer()
+    {
+        String qryString = "SELECT e FROM Customer e WHERE e.customerName=?1";
+        TypedQuery<Customer> typedQuery = crudApi.getEm().createQuery(qryString, Customer.class)
+                .setParameter(1, CustomerType.WALK_IN_CUSTOMER.getLabel());
+        return typedQuery.getResultStream().findFirst().orElse(null);
+    }
 }

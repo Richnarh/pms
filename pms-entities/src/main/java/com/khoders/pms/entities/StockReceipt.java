@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author richa
+ * @author richard
  */
 @Entity
 @Table(name = "stock_receipt")
@@ -42,6 +42,9 @@ public class StockReceipt extends UserAccountRecord implements Serializable{
     
     @Column(name = "tract_expiry")
     private boolean trackExpiry;
+    
+    @Column(name = "stock_saved")
+    private boolean stockSaved = false;
     
     @Column(name = "charges")
     private double charges;
@@ -127,5 +130,14 @@ public class StockReceipt extends UserAccountRecord implements Serializable{
     {
         this.warehouse = warehouse;
     }
-    
+
+    public boolean isStockSaved()
+    {
+        return stockSaved;
+    }
+
+    public void setStockSaved(boolean stockSaved)
+    {
+        this.stockSaved = stockSaved;
+    }
 }

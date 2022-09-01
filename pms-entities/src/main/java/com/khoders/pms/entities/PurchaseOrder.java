@@ -138,4 +138,11 @@ public class PurchaseOrder extends UserAccountRecord implements Serializable
             setOrderCode(SystemUtils.generatePO());
         }
     }
+
+    @Override
+    public String toString()
+    {
+       return orderCode +" "+purchasedDate;
+    }
+    
 }

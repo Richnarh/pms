@@ -7,6 +7,7 @@ package com.khoders.pms.admin.commons;
 
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.pms.admin.services.CompanyService;
+import com.khoders.pms.admin.services.PermissionService;
 import com.khoders.pms.entities.system.CompanyBranch;
 import com.khoders.pms.entities.system.CompanyProfile;
 import com.khoders.pms.entities.system.AppPage;
@@ -29,6 +30,7 @@ public class UserCommons implements Serializable
 {
    @Inject private CrudApi crudApi;
    @Inject private CompanyService companyService;
+   @Inject private PermissionService permissionService;
    
    private List<CompanyBranch> companyBranchList = new LinkedList<>();
    private List<CompanyProfile> companyProfileList = new LinkedList<>();
@@ -41,7 +43,7 @@ public class UserCommons implements Serializable
        companyBranchList = companyService.getCompanyBranchList();
        companyProfileList = companyService.getCompanyProfileList();
        userAccountList = companyService.getUserAccountList();
-       appPageList = companyService.getPageList();
+       appPageList = permissionService.getAppPageList();
    }
 
     public List<CompanyBranch> getCompanyBranchList()

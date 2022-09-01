@@ -8,8 +8,8 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="#{application.contextPath}/admin/index.xhtml" class="logo d-flex align-items-center">
-          <img src="#{application.contextPath}/assets/img/ssp.png" alt="logo"/>
-          <!--<span class="d-none d-lg-block">{msg.appName}</span>-->
+          <img src="#{application.contextPath}/assets/img/logo.png" alt="logo"/>
+          <span class="d-none d-lg-block">Pharmacy Software - ADMIN</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -21,6 +21,9 @@
             <i class="bi bi-search"></i>
           </a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#{application.contextPath}/users.xhtml" class="top-link">Registrations</a>
+        </li>
 
         <li class="nav-item dropdown pe-3">
             <li class="nav-item">
@@ -28,8 +31,8 @@
                     <h:commandLink class="btn btn-default shadow-sm btn-sm" action="#{userCommons.init()}" value="Refresh"/>
                 </h:form>
             </li>
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="#{application.contextPath}/assets/img/user.png" alt="Profile" class="rounded-circle"/>
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" style="margin-right: 2em;" href="#" data-bs-toggle="dropdown">
+            <img src="#{application.contextPath}/assets/img/logo.png" alt="Profile" class="rounded-circle"/>
             <span class="d-none d-md-block dropdown-toggle ps-2">#{appSession.currentUser.username}</span>
           </a>
 

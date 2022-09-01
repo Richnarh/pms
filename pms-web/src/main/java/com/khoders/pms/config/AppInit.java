@@ -6,14 +6,19 @@
 package com.khoders.pms.config;
 
 import com.khoders.pms.entities.Customer;
+import com.khoders.pms.entities.system.AppPage;
 import com.khoders.pms.jbeans.UserModel;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
 import com.khoders.pms.entities.system.UserAccount;
+import com.khoders.pms.entities.system.UserPage;
 import com.khoders.pms.enums.CustomerType;
 import com.khoders.pms.services.UserAccountService;
+import com.khoders.resource.enums.AccessLevel;
 import com.khoders.resource.enums.ClientType;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -31,7 +36,7 @@ public class AppInit
 
     @Inject private CrudApi crudApi;
     @Inject private UserAccountService userAccountService;
-
+    private List<AppPage> appPageList = new LinkedList<>();
     private UserModel userModel = new UserModel();
 
     @PostConstruct
@@ -65,24 +70,49 @@ public class AppInit
 
             userAccount = new UserAccount();
             userAccount.setUsername(defaultUser);
+            userAccount.setAccessLevel(AccessLevel.SUPER_USER);
+            userAccount.setEmail(defaultUser);
+            userAccount.setFullname(defaultUser);
             userAccount.setPassword(hashText(defaultUser));
 
             crudApi.save(userAccount);
-
+            initPermission(userAccount);
+            
         } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
     
+    private void initPermission(UserAccount userAccount){
+        appPageList = userAccountService.getAppPageList();
+        
+        appPageList.forEach(appPage ->
+        {
+            initDefaultPerm(appPage, userAccount);
+        });
+    }
+    
+    private UserPage initDefaultPerm(AppPage appPage, UserAccount userAccount){
+        UserPage userPage = new UserPage();
+        userPage.setUserAccount(userAccount);
+        userPage.setAppPage(appPage);
+        userPage.genCode();
+        userPage.setLastModifiedBy(userAccount.getEmail());
+        userPage.setLastModifiedDate(LocalDateTime.now());
+        crudApi.save(userPage);
+        
+        return userPage;
+    }
+    
     public void initCustomer()
     {
-        Customer c = defaultCustomer(CustomerType.WALKIN_CUSTOMER);
+        Customer c = defaultCustomer(CustomerType.WALK_IN_CUSTOMER);
         if(c != null)return;
         
         Customer customer = new Customer();
         customer.setClientType(ClientType.CUSTOMER);
-        customer.setCustomerName(CustomerType.WALKIN_CUSTOMER.getLabel());
+        customer.setCustomerName(CustomerType.WALK_IN_CUSTOMER.getLabel());
         customer.setPhone("");
         
         crudApi.save(customer);

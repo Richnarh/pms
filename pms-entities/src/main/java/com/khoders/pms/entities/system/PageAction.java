@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "page_action")
 public class PageAction extends RefNo
 {
-    @JoinColumn(name = "pages", referencedColumnName = "id")
+    @JoinColumn(name = "app_page", referencedColumnName = "id")
     @ManyToOne
     private AppPage appPage;
     

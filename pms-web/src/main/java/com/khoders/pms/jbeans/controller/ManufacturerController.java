@@ -47,9 +47,7 @@ public class ManufacturerController implements Serializable
           if(crudApi.save(manufacturer) != null)
           {
               manufacturerList = CollectionList.washList(manufacturerList, manufacturer);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+              Msg.info(Msg.SUCCESS_MESSAGE);
           }
           clearManufacturer();
        } catch (Exception e)
@@ -64,9 +62,7 @@ public class ManufacturerController implements Serializable
          if(crudApi.delete(manufacturer))
          {
              manufacturerList.remove(manufacturer);
-             
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+             Msg.info(Msg.SUCCESS_MESSAGE);
          }  
        } catch (Exception e)
        {

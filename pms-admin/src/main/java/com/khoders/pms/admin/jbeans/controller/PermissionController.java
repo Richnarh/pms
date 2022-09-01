@@ -25,7 +25,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author richa
+ * @author Richard Narh
  */
 @Named(value = "permissionController")
 @SessionScoped
@@ -45,57 +45,76 @@ public class PermissionController implements Serializable
     
     @PostConstruct
     private void init(){
-        appPageList = permissionService.getAppPageList();
-        
+        appPageList = permissionService.appPageList();
     }
     
     public void addPageToUser(AppPage appPage)
     {
         System.out.println("Selected User --- "+selectedUser);
-        if(selectedUser != null)
+        if(selectedUser == null)
         {
-            userPage = new UserPage();
-            userPage.setAppPage(appPage);
-            userPage.genCode();
-            userPage.setUserAccount(selectedUser);
-            
-            if(crudApi.save(userPage) != null)
-            {
-               userPageList = CollectionList.washList(userPageList, userPage);
-                Msg.info("Page is added to user");
-            }
+            Msg.error("Please select a user");
+            return;
+        }
+        UserPage page = permissionService.userPageExist(selectedUser, appPage);
+        if(page != null){
+            Msg.error("The "+appPage.getPageName()+" page is already added for "+selectedUser.getFullname());
+            return;
+        }
+        userPage = new UserPage();
+        userPage.setAppPage(appPage);
+        userPage.genCode();
+        userPage.setUserAccount(selectedUser);
+
+        if(crudApi.save(userPage) != null)
+        {
+           userPageList = CollectionList.washList(userPageList, userPage);
+           Msg.info("Page is added to user");
         }
     }
     
     public void selectUser(){
         if(selectedUser == null) return;
         userPageList = permissionService.getUserPageList(selectedUser);
-//        userPageActionList = permissionService.getUserPageActionList(selectedUser);
+        userPageActionList = permissionService.getUserPageActionList(selectedUser);
     }
-    
+
     public void activateAction(PageAction pageAction)
     {
         userPageAction.setPageAction(pageAction);
         userPageAction.setLastModifiedBy(appSession.getCurrentUser().getFullname());
+        userPageAction.setUserAccount(selectedUser);
         if(crudApi.save(userPageAction) != null){
             userPageActionList = CollectionList.washList(userPageActionList, userPageAction);
-            Msg.info("Action set for "+pageAction.getAppPage().getPageName());
+            Msg.info("Action set for "+pageAction.getAppPage().getPageName() +"on "+selectedUser.getFullname());
         }
     }
     
-    public void setUserPageAction(UserPage userPage){
+    public void setUserPage(UserPage userPage){
          userPageAction = new UserPageAction();
          userPageAction.setUserPage(userPage);
          userPageAction.genCode();
          pageActionList = permissionService.getPageActionList(userPage.getAppPage());
-//         userPageAction.set
     }
     
     public void editUserPageAction(UserPageAction userPageAction){
         this.userPageAction=userPageAction;
     }
     
-    public void deleteUserPageAction(UserPage userPage){
+    public void deleteUserPageAction(UserPageAction userPageAction){
+        try
+        {
+            if (crudApi.delete(userPageAction))
+            {
+                userPageActionList.remove(userPageAction);
+                Msg.info(Msg.SUCCESS_MESSAGE);
+            }
+        } catch (Exception e)
+        {
+           e.printStackTrace();
+        }
+    }
+    public void deleteUserPage(UserPage userPage){
         try
         {
             if (crudApi.delete(userPage))

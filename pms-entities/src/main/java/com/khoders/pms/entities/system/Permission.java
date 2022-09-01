@@ -5,7 +5,6 @@
  */
 package com.khoders.pms.entities.system;
 
-import com.khoders.pms.entities.system.UserAccountRecord;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

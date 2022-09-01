@@ -26,24 +26,24 @@
                                     <f:selectItem itemLabel="#{msg.choose}"/>
                                     <f:selectItems value="#{userCommons.companyProfileList}"/>
                                 </p:selectOneMenu>
-                                
+
                                 <span>#{msg.branch_name}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.branchName}"/>
-                                
+
                                 <span>#{msg.gps_address}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.gpsAddress}"/>
 
                                 <span>#{msg.telephone_no}</span>
                                 <p:inputText value="#{companyBranchController.companyBranch.telephoneNo}"/>
 
-                        </h:panelGrid>
+                            </h:panelGrid>
                             <div class="py-3">
                                 <p:commandButton class="kbtn-success mr-3" value="#{companyBranchController.optionText}" update="@form, :branchTable" action="#{companyBranchController.saveCompanyBranch()}"/>
                                 <p:commandButton class="kbtn-cancel" value="#{msg.clear}" update="@form" immediate="true" action="#{companyBranchController.clearBranch()}"/>
-                                </div>
+                            </div>
                         </h:form>
                         <h:form id="branchTable">
-                            
+
                             <p:dataTable value="#{companyBranchController.companyBranchList}" var="companyBranch">
                                 <p:column style="width: 37px;">
                                     <p:rowToggler/>
@@ -56,32 +56,32 @@
                                         </h:outputText>
                                     </h:panelGrid>
                                 </p:rowExpansion>
-                                
+
                                 <p:column headerText="#{msg.branch_code}">
                                     #{companyBranch.refNo}
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg.branch_name}">
                                     #{companyBranch.branchName}
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg.profile}">
                                     #{companyBranch.companyProfile}
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg.gps_address}">
                                     #{companyBranch.gpsAddress}
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg.telephone_no}">
                                     #{companyBranch.telephoneNo}
                                 </p:column>
-                                
-                                <p:column headerText="#{msg.action}">
-                                    <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{companyBranchController.editCompanyBranch(companyBranch)}" immediate="true" update=":branchForm"/>
-                                </p:column>
-                                <p:column headerText="#{msg.action}">
-                                    <p:commandButton class="kbtn-danger" value="#{msg.delete}" action="#{companyBranchController.deleteCompanyBranch(companyBranch)}" update="@form"/>
+
+                                <p:column headerText="#{msg.action}" style="width:100px">
+                                    <p:menuButton value="#{msg.choose}">
+                                        <p:menuitem icon="#{msg.cog_icon}" value="#{msg.edit}" action="#{companyBranchController.editCompanyBranch(companyBranch)}" immediate="true" update=":branchForm"/>
+                                        <p:menuitem icon="#{msg.delete_icon}" value="#{msg.delete}" action="#{companyBranchController.deleteCompanyBranch(companyBranch)}" update="@form"/>
+                                    </p:menuButton>
                                 </p:column>
                             </p:dataTable>
                         </h:form>

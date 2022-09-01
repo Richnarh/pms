@@ -78,8 +78,8 @@
                     <h:outputText value="#{purchaseOrderItem.productPackage.unitMeasurement.units}"/>
                 </p:column>
                 
-                <p:column headerText="#{msg.package} Factor">
-                    <h:outputText value="#{purchaseOrderItem.productPackage.packageFactor}"/>
+                <p:column headerText="Units in package">
+                    <h:outputText value="#{purchaseOrderItem.productPackage.unitsInPackage}"/>
                 </p:column>
                 
                 <p:column headerText="#{msg.qty}" style="width: 90px;">
@@ -89,14 +89,10 @@
                 <p:column headerText="#{msg.cost_price}" style="width: 90px;">
                     <p:inputText style="width: 80px;" value="#{purchaseOrderItem.costPrice}"/>
                 </p:column>
-
-                <p:column headerText="#{msg.selling} Price" style="width: 90px;">
-                    <p:inputText style="width: 80px;" value="#{purchaseOrderItem.sellingPrice}"/>
-                </p:column>
                 
             </p:dataTable>
             <center class="py-3">
-                <p:commandButton icon="#{msg.check_icon_circle}" immediate="true" action="#{stockReceiptController.saveStockReceipt()}" class="kbtn-success mx-2" value="#{stockReceiptController.optionText}" update="@form, :mainPanel"/>
+                <p:commandButton rendered="#{stockReceiptController.savedStock == true}" icon="#{msg.check_icon_circle}" immediate="true" action="#{stockReceiptController.saveStockReceipt()}" class="kbtn-success mx-2" value="#{stockReceiptController.optionText}" update="@form, :mainPanel"/>
                 <p:commandButton icon="#{msg.close_icon}" immediate="true" action="#{stockReceiptController.clearStockReceipt()}" class="kbtn-danger" value="#{msg.close}" update="@form" oncomplete="PF('stockReceipt').hide();"/>
             </center>
         </h:form>

@@ -860,7 +860,7 @@
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<text><![CDATA[Authorized Signatory:...............................................................
-(Vikings Shop)]]></text>
+(Kebe Pharmacy)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="field-value" x="1" y="155" width="274" height="27" uuid="b39fdac7-f467-45d7-9e10-449aa43d0fea">

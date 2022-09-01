@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -50,8 +48,7 @@ public class UserAccountController implements Serializable{
     public void checkAll()
     {
         if(selectedAccount == null){
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a user"), null)); 
+           Msg.error("Please select a user");
              return;
         }
         
@@ -66,18 +63,16 @@ public class UserAccountController implements Serializable{
     {
         if(selectedAccount == null)
         {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a user"), null)); 
-            return;
+          Msg.info("Please select a user");
+          return;
         }
         
         try
         {
            if(crudApi.save(selectedAccount)!= null)
            {
-               userPermissionsList = CollectionList.washList(userPermissionsList, selectedAccount);
-               FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("User permissions saved!"), null));
+            userPermissionsList = CollectionList.washList(userPermissionsList, selectedAccount);
+            Msg.info("User permissions saved!");
            }
             clear();
         } catch (Exception e)
@@ -110,11 +105,12 @@ public class UserAccountController implements Serializable{
     {
         try
         {
+            userAccount.setUsername(userAccount.getEmail());
+            userAccount.setPassword(userAccount.getPassword());
             if (crudApi.save(userAccount) != null)
             {
-                userAccountList = CollectionList.washList(userAccountList, userAccount);
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("User saved!"), null));
+             userAccountList = CollectionList.washList(userAccountList, userAccount);
+             Msg.info("User saved!");
             }
             clear();
         } catch (Exception e)
@@ -122,8 +118,7 @@ public class UserAccountController implements Serializable{
             e.printStackTrace();
         }
     }
-    
- 
+     
     public void editUserAccount(UserAccount userAccount)
     {
         this.userAccount = userAccount;
@@ -136,9 +131,8 @@ public class UserAccountController implements Serializable{
         {
             if(crudApi.delete(userAccount))
             {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("User deleted!"), null));
-                userAccountList.remove(userAccount);
+              Msg.info("User deleted!");
+              userAccountList.remove(userAccount);
             }
         } catch (Exception e)
         {
@@ -150,20 +144,17 @@ public class UserAccountController implements Serializable{
     {
         if(userAccount.getUsername() == null)
         {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a user"), null));
-            return;
+          Msg.error("Please select a user");
+          return;
         }
         try
         {
             UserAccount account = crudApi.find(UserAccount.class, userAccount.getId());
             account.setPassword(hashText(userAccount.getPassword()));
-                if(crudApi.save(account) != null)
-                {
-                    
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg(userAccount.getUsername() +"'s password is updated!"), null));
-                }
+            if(crudApi.save(account) != null)
+            {
+              Msg.info(userAccount.getFullname()+"'s password is updated!");
+            }
         } catch (Exception e)
         {
             e.printStackTrace();

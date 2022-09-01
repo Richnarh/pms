@@ -18,7 +18,7 @@
                         <div class="container-fluid">
                             <div class="card-header"> T R A N S A C T I O N</div>
                             <h:panelGroup rendered="#{salesController.pageView.listView}">
-                                <h:form class="m-2">
+                                <h:form class="m-2" id="salesForm">
 
                                     <span class="mr-2">From Date: </span>
                                     <p:datePicker value="#{salesController.dateRange.fromDate}"
@@ -30,21 +30,25 @@
                                                   pattern="#{msg.formatted_date}" 
                                                   monthNavigator="true" yearNavigator="true"/>
 
-                                    <h:commandButton class="mx-2 btn btn-outline-primary btn-sm" value="Search Sales" action="#{salesController.filterSales()}"/>
-
-                                    <h:commandButton class="btn btn-secondary btn-sm" value="#{msg.reset}" action="#{salesController.reset()}">
-                                        <p:ajax update=":purchaseOrderTable, @form"/>
+                                    <h:commandButton id="reload" class="mx-2 btn btn-outline-primary btn-sm" value="Search Sales" action="#{salesController.filterSales()}">
+                                        <p:ajax update=":mainPanel"/>
                                     </h:commandButton>
-
-                                    <div class="float-end mx-2">
-                                        <h:commandButton value="#{msg.new} Invoice" class="btn btn-outline-primary btn-sm"
-                                                         action="#{salesController.initInvoiceSales()}">
-                                            <p:ajax update=":mainPanel"/>
-                                        </h:commandButton>
-                                    </div>
+                                    
+                                    <h:commandButton id="reset" class="btn btn-secondary btn-sm" value="#{msg.reset}" action="#{salesController.reset()}">
+                                        <p:ajax update=":salesTable, @form"/>
+                                    </h:commandButton>
+                                    
+                                    <ui:remove>
+                                        <div class="float-end mx-2">
+                                            <h:commandButton id="invoice" value="#{msg.new} Invoice" class="btn btn-outline-primary btn-sm"
+                                                             action="#{salesController.initInvoiceSales()}">
+                                                <p:ajax update=":mainPanel"/>
+                                            </h:commandButton>
+                                        </div>
+                                   </ui:remove>
 
                                     <div class="float-end">
-                                        <h:commandButton value="#{msg.new} Sale" class="btn btn-primary btn-sm"
+                                        <h:commandButton id="pos" value="#{msg.new} POS Sale" class="btn btn-primary btn-sm"
                                                          action="#{salesController.initPosSales()}">
                                             <p:ajax update=":mainPanel"/>
                                         </h:commandButton>
@@ -53,7 +57,7 @@
                                     <span class="shadow-sm float-end col-1 faded-shade">Count: #{salesController.salesList.size()}</span>
                                 </h:form>
 
-                                <h:form id="purchaseOrderTable" class="mb-3">
+                                <h:form id="salesTable" class="mb-3">
 
                                     <p:dataTable value="#{salesController.salesList}" reflow="true" var="sales"
                                                  scrollable="true" scrollHeight="400">
@@ -96,19 +100,29 @@
                                         <p:column headerText="#{msg.action}" style="width: 100px;">
                                             <p:menuButton value="#{msg.choose}">
                                                 <p:menuitem icon="#{msg.cog_icon}" value="View as POS" immediate="true" action="#{salesController.viewAsPosSale(sales)}" ajax="false"/>
-                                                <p:menuitem icon="#{msg.cog_icon}" value="View as Invoice" immediate="true" action="#{salesController.viewAsInvoiceSale(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print POS Receipt" action="#{salesController.generatePOSReceipt(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Cash Receipt" action="#{salesController.geneateCashReceipt(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Prof Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" target="_blank" icon="#{msg.print_icon}" value="Print Prof Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
-                                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" icon="#{msg.cog_icon}" value="Generate Invoice" action="#{salesController.convertProformaToInvoice(sales)}" ajax="false"/>
+                                 
                                             </p:menuButton>
                                         </p:column>
                                     </p:dataTable>
+                                    <p:blockUI block="salesTable" trigger=":salesForm:reload,:salesForm:reset, :salesForm:pos">
+                                        <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                                        <p><small>Please wait...</small></p>
+                                    </p:blockUI>
                                 </h:form>
                             </h:panelGroup>
-
+                            
+                            <!-- To be used later -->
+                            <ui:remove>
+                                <p:menuitem target="_blank" icon="#{msg.print_icon}" value="Print POS Receipt" action="#{salesController.generatePOSReceipt(sales)}" ajax="false"/>
+                                <p:menuitem icon="#{msg.cog_icon}" value="View as Invoice" immediate="true" action="#{salesController.viewAsInvoiceSale(sales)}" ajax="false"/>
+                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Cash Receipt" action="#{salesController.geneateCashReceipt(sales)}" ajax="false"/>
+                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Invoice" action="#{salesController.generateInvoice(sales)}" ajax="false"/>
+                                <p:menuitem rendered="#{salesController.invoiceType == sales.invoiceType}" target="_blank" icon="#{msg.print_icon}" value="Print Pro Invoice" action="#{salesController.generateProInvoice(sales)}" ajax="false"/>
+                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" target="_blank" icon="#{msg.print_icon}" value="Print Pro Invoice" action="#{salesController.generateProInvoice(sales)}" ajax="false"/>
+                                <p:menuitem rendered="#{sales.isProformaInvoice == true}" icon="#{msg.cog_icon}" value="Generate Invoice" action="#{salesController.convertProformaToInvoice(sales)}" ajax="false"/>
+                            </ui:remove>
+                            <!-- To be used later End/-->
+                                
                             <h:panelGroup rendered="#{salesController.pageView.createView}">
                                 <div class="py-3">
                                     <ui:include src="includes/pos-sale-item.xhtml"/>

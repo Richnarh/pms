@@ -22,6 +22,10 @@ public class UserPageAction extends RefNo
     @ManyToOne
     private UserPage userPage;
     
+    @JoinColumn(name = "user_account", referencedColumnName = "id")
+    @ManyToOne
+    private UserAccount userAccount;
+    
     @JoinColumn(name = "page_action", referencedColumnName = "id")
     @ManyToOne
     private PageAction pageAction;
@@ -44,6 +48,16 @@ public class UserPageAction extends RefNo
     public void setPageAction(PageAction pageAction)
     {
         this.pageAction = pageAction;
+    }
+
+    public UserAccount getUserAccount()
+    {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount)
+    {
+        this.userAccount = userAccount;
     }
     
 }

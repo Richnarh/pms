@@ -14,53 +14,34 @@
         </div>
         <div class="col-lg-8">
             <h:form id="saleItemItemTable">
-                <p:dataTable value="#{salesController.saleItemList}" var="saleItem" 
-                             paginator="true" paginatorPosition="bottom" rows="6">
-                    <p:column style="width: 0.5px">
-                        <p:rowToggler/>
-                    </p:column>
-
-                    <p:rowExpansion>
-                        <p:panelGrid columns="2">
-                            <span>Item ID</span>
-                            <h:outputText value="#{saleItem.refNo}"/>
-
-                            <span>Created Date</span>
-                            <h:outputText value="#{saleItem.createdDate}">
-                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                            </h:outputText>
-                        </p:panelGrid>
-                    </p:rowExpansion>
-
-                    <p:column headerText="#{msg.package}" style="width: 50px;">
-                        #{saleItem.productPackage.unitMeasurement.units}
-                    </p:column>
-
-                    <p:column headerText="#{msg.product}" style="width: 140px;">
-                        #{saleItem.stockReceiptItem.product.productName}
-                    </p:column>
-
-                    <p:column style="width: 15px;" headerText="#{msg.qty}" class="text-end">
-                        #{saleItem.quantity}
-                    </p:column>
-
-                    <p:column headerText="Unit Price" class="text-end" style="width: 40px;">
-                        <h:outputText value="#{saleItem.unitPrice}">
-                            <f:convertNumber pattern="#{msg.money_pattern}"/>
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="Total" class="text-end" style="width: 30px;">
-                        <h:outputText value="#{saleItem.unitPrice * saleItem.quantity}">
-                            <f:convertNumber pattern="#{msg.money_pattern}"/>
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="Action" style="width: 30px;">
-                        <p:commandLink class="text-danger" value="#{msg.remove}" action="#{salesController.removeCartItem(saleItem)}" immediate="true" update="@form"/>
-                    </p:column>
-
-                </p:dataTable>
+                <table class="table">
+                    <tr>
+                        <th>Package</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </tr>
+                    <tbody>
+                        <ui:repeat value="#{salesController.saleItemList}" var="saleItem" >
+                            <tr>
+                                <td>#{saleItem.productPackage.unitMeasurement.units}</td>
+                                <td>#{saleItem.stockReceiptItem.product.productName}</td>
+                                <td>#{saleItem.quantity}</td>
+                                <td>
+                                    <h:outputText value="#{saleItem.unitPrice}">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{saleItem.unitPrice * saleItem.quantity}">
+                                        <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                    </h:outputText>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
 
                 <center class="py-3 mt-2">
                     <h:panelGrid columns="2">
@@ -70,17 +51,23 @@
                         </h:outputText>
                     </h:panelGrid>
                 </center>
-            </h:form>
-            <hr/>
-            <center>
-                <h:form>
-                    <p:commandButton icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" ajax="false" update="@form"/>
+                <!--</h:form>-->
+                <hr/>
+                <center>
+                    <!--<h:form>-->
+                    <p:commandButton id="reload" icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" update="@form"/>
                     <p:commandButton value="#{msg.clear} All" class="kbtn-default mx-3" icon="#{msg.clear_icon}" immediate="true" action="#{salesController.clearAll()}" update=":saleItemItemTable, :orderItemForm"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger float-end" immediate="true" action="#{salesController.closePage()}">
                         <p:ajax update="@form,:mainPanel"/>
                     </h:commandButton>
-                </h:form>
-            </center>
+                </center>
+
+                <p:blockUI block="saleItemItemTable" trigger="reload">
+                    <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
+                    <p><small>Please wait...</small></p>
+                </p:blockUI>
+                <br/>
+            </h:form>
             <br/>
         </div>
     </div>

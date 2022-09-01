@@ -196,3 +196,14 @@ and open the template in the editor.
     line-height: 20px;
     color: #2A3F54;
 }
+
+.top-link{
+    color: #012970;
+    padding: 0.81em;
+    font-weight: bold;
+}
+.top-link:hover{
+    background-color: #f6f9ff;
+    
+    border-radius: 5%;
+}
