@@ -117,7 +117,7 @@ public class PriceUploadController implements Serializable
                  
                 String units = BeansUtil.objToString(currentRow.getCell(4));
                 if(units != null && !units.isEmpty()){
-                    packagePrice.setUnitsMeasurement(units);
+                    packagePrice.setUnitsMeasurement(Stringz.capitalizeOnlyFirst(units));
                 }
                 
                 String purchasedPrice = BeansUtil.objToString(currentRow.getCell(5));
@@ -182,7 +182,7 @@ public class PriceUploadController implements Serializable
                     {
                         UnitMeasurement units = new UnitMeasurement();
                         units.genCode();
-                        units.setUnits(details.getUnitsMeasurement());
+                        units.setUnits(Stringz.capitalizeOnlyFirst(details.getUnitsMeasurement()));
                         units.setUserAccount(appSession.getCurrentUser());
                         units.setCompanyBranch(appSession.getCompanyBranch());
                         units.setLastModifiedBy(appSession.getCurrentUser() != null ? appSession.getCurrentUser().getFullname() : null);
@@ -222,7 +222,8 @@ public class PriceUploadController implements Serializable
                         productPackage.setProduct(product);
                         productPackage.setUnitMeasurement(measurement);
                         productPackage.setPackagePrice(details.getSellingPrice());
-                        productPackage.setUnitsInPackage(details.getUnitsInPackage());
+                        productPackage.setUnitsInPackage(1);
+                        productPackage.setUserAccount(appSession.getCurrentUser());
                         
                         if(crudApi.save(productPackage) != null){
                             PurchaseOrderItem orderItem = new PurchaseOrderItem();

@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h:form id="prodTbl">
-                                <p:commandButton id="reload" value="Reload" class="my-2" icon="#{msg.refresh_icon}"
+                                <p:commandButton id="reloadProd" value="Reload" class="my-2" icon="#{msg.refresh_icon}"
                                                  action="#{productPackageController.initProduct()}" update="@form"/>
                                 <p:dataTable value="#{productPackageController.productList}" var="product" scrollable="true" scrollHeight="400">
                                     <p:column headerText="#{msg.product}" filterBy="#{product.productName}" filterMatchMode="contains">
@@ -26,7 +26,7 @@
                                         </h:commandLink>
                                     </p:column>
                                 </p:dataTable>
-                                <p:blockUI block="prodTbl" trigger="@form">
+                                <p:blockUI block="prodTbl" trigger="reloadProd">
                                     <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
                                     <p><small>Please wait...</small></p>
                                 </p:blockUI>
@@ -47,7 +47,7 @@
                                         </p:selectOneMenu>
 
                                         <span>Units in package <span class="text-danger">*</span></span>
-                                        <p:inputText title="The quatity that makes the selected unit" value="#{productPackageController.productPackage.packageFactor}"/>
+                                        <p:inputText title="The quatity that makes the selected unit" value="#{productPackageController.productPackage.unitsInPackage}"/>
 
                                         <span>Selling Price for (#{productPackageController.selectedUnit}) <span class="text-danger">*</span></span>
                                         <p:inputText value="#{productPackageController.productPackage.packagePrice}"/>
@@ -68,7 +68,7 @@
                                             <h:outputText value="#{segment.unitMeasurement.units}"/>
                                         </p:column>
                                         <p:column headerText="Units in Package" style="width: 100px;" class="text-end">
-                                            <h:outputText value="#{segment.packageFactor}"/>
+                                            <h:outputText value="#{segment.unitsInPackage}"/>
                                         </p:column>
                                         <p:column headerText="Selling Price" style="width: 100px;" class="text-end">
                                             <h:outputText value="#{segment.packagePrice}"/>
@@ -116,7 +116,7 @@
                                     <h:outputText value="#{productPackage.unitMeasurement.units}"/>
                                 </p:column>
                                 <p:column headerText="Units in Package" style="width: 100px;" class="text-end">
-                                    <h:outputText value="#{productPackage.packageFactor}"/>
+                                    <h:outputText value="#{productPackage.unitsInPackage}"/>
                                 </p:column>
                                 <p:column headerText="Selling Price" style="width: 100px;" class="text-end">
                                     <h:outputText value="#{productPackage.packagePrice}"/>
@@ -128,7 +128,7 @@
                                     </p:menuButton>
                                 </p:column>
                             </p:dataTable>
-                            <p:blockUI block="packageTable" trigger="@form">
+                            <p:blockUI block="packageTable" trigger="reload">
                                 <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
                                 <p><small>Please wait...</small></p>
                             </p:blockUI>

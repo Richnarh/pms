@@ -399,7 +399,7 @@ public class InventoryService
 
     public Product existProdct(Product product)
     {
-      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName OR e.packaging=:packaging", Product.class)
+      return crudApi.getEm().createQuery("SELECT e FROM Product e WHERE e.productName=:productName AND e.packaging=:packaging", Product.class)
               .setParameter("productName", product.getProductName())
               .setParameter("packaging", product.getPackaging())
 //              .setParameter("productType", product.getProductType())
