@@ -278,8 +278,6 @@ public class SalesController implements Serializable
                 
                 Msg.info("Transaction saved successfully!");
             
-                pageView.restToListView();
-            
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -434,11 +432,16 @@ public class SalesController implements Serializable
         saleItem.genCode();
         totalAmount = 0.0;
         enableType=false;
-//        productPackageList = new LinkedList<>();
         saleItem.setUserAccount(appSession.getCurrentUser());
         saleItem.setCompanyBranch(appSession.getCompanyBranch());
         resetEnable();
         SystemUtils.resetJsfUI();
+    }
+    
+    public void resetSales(){
+        closePage();
+        clearAll();
+        pageView.restToCreateView();
     }
     
     public void closePage()

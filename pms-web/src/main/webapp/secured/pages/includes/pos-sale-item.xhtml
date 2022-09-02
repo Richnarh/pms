@@ -56,13 +56,13 @@
                 <center>
                     <!--<h:form>-->
                     <p:commandButton id="reload" icon="#{msg.check_icon}" value="Process and Save Transaction" action="#{salesController.saveAll()}" class="kbtn-success mr-5" immediate="true" update="@form"/>
-                    <p:commandButton value="#{msg.clear} All" class="kbtn-default mx-3" icon="#{msg.clear_icon}" immediate="true" action="#{salesController.clearAll()}" update=":saleItemItemTable, :orderItemForm"/>
+                    <p:commandButton id="reset" value="Reset Transaction" class="kbtn-secondary mx-3" icon="#{msg.clear_icon}" immediate="true" action="#{salesController.resetSales()}" update=":mainPanel, @form"/>
                     <h:commandButton value="#{msg.close}" class="btn btn-danger float-end" immediate="true" action="#{salesController.closePage()}">
                         <p:ajax update="@form,:mainPanel"/>
                     </h:commandButton>
                 </center>
 
-                <p:blockUI block="saleItemItemTable" trigger="reload">
+                <p:blockUI block="saleItemItemTable" trigger="reload,reset">
                     <img src="#{application.contextPath}/assets/img/loading.gif" height="75px"/>
                     <p><small>Please wait...</small></p>
                 </p:blockUI>

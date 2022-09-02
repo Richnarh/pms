@@ -23,6 +23,7 @@
                                 <div class="col-md-4">
                                     <div class="card info-card sales-card">
                                         <div class="card-body">
+                                            <h:form>
                                             <h5 class="card-title">Sales <span>| Today</span></h5>
 
                                             <div class="d-flex align-items-center">
@@ -33,8 +34,11 @@
                                                     <h6>GHS #{dashboardController.dailyTotalSum}</h6>
                                                 </div>
                                             </div>
+                                            <h:commandButton action="#{dashboardController.init()}" class="btn btn-sm btn-default shadow-sm float-end" value="Refresh">
+                                                <p:ajax update="@form"/>
+                                            </h:commandButton>
+                                            </h:form>
                                         </div>
-
                                     </div>
                                 </div><!-- End Sales Card -->
                                 <ui:remove>

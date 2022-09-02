@@ -4,6 +4,7 @@ import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.pms.entities.Sales;
 import com.khoders.pms.services.InventoryService;
+import com.khoders.resource.utilities.Msg;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
@@ -19,7 +20,6 @@ import javax.inject.Named;
 @SessionScoped
 public class DashboardController implements Serializable
 {
-
     @Inject
     private CrudApi crudApi;
     @Inject
@@ -30,7 +30,7 @@ public class DashboardController implements Serializable
     double monthlyTotalSum,weeklyTotalSum,dailyTotalSum=0.0;
 
     @PostConstruct
-    private void init()
+    public void init()
     {
        getDailySales();
        getTotalMonthlySales();
@@ -38,18 +38,14 @@ public class DashboardController implements Serializable
     }
     private void getDailySales()
     {
-        
         dateRange.setFromDate(LocalDate.now());
         dateRange.setToDate(LocalDate.now());
        
-        Sales sales  = inventoryService.getTotalSumPerDateRange(dateRange);
-        if(sales != null){
-            dailyTotalSum = sales.getTotalAmount();
-        }
+        dailyTotalSum  = inventoryService.getTotalSumPerDateRange(dateRange).stream().mapToDouble(Sales::getTotalAmount).sum();
+        Msg.info("Amount updated");
     }
     
-    private void getTotalMonthlySales()
-    {
+    private void getTotalMonthlySales(){
        int todayDateValue = LocalDate.now().getDayOfMonth() - 1;
 
        LocalDate fromDate = LocalDate.now().minusDays(todayDateValue);
@@ -58,27 +54,22 @@ public class DashboardController implements Serializable
         dateRange.setFromDate(fromDate);
         dateRange.setToDate(todayDate);
        
-        Sales salesCatalogue  = inventoryService.getTotalSumPerDateRange(dateRange);
-        if(salesCatalogue != null){
-            monthlyTotalSum = salesCatalogue.getTotalAmount();
-        }
+        monthlyTotalSum  = inventoryService.getTotalSumPerDateRange(dateRange).stream().mapToDouble(Sales::getTotalAmount).sum();
+        System.out.println("monthlyTotalSum: ");
     }
 
     private void getTotalWeeklySales()
     {
-       int todayDateValue = LocalDate.now().getDayOfWeek().getValue();
+        int todayDateValue = LocalDate.now().getDayOfWeek().getValue();
         
-       LocalDate fromDate = LocalDate.now().minusDays(todayDateValue);
+        LocalDate fromDate = LocalDate.now().minusDays(todayDateValue);
         
-       LocalDate todayDate = fromDate.plusDays(6);
+        LocalDate todayDate = fromDate.plusDays(6);
         
         dateRange.setFromDate(fromDate);
         dateRange.setToDate(todayDate);
        
-        Sales salesCatalogue  = inventoryService.getTotalSumPerDateRange(dateRange);
-        if(salesCatalogue != null){
-            weeklyTotalSum = salesCatalogue.getTotalAmount();
-        }
+        weeklyTotalSum  = inventoryService.getTotalSumPerDateRange(dateRange).stream().mapToDouble(Sales::getTotalAmount).sum();
     }
 
     public double getMonthlyTotalSum()
@@ -95,6 +86,4 @@ public class DashboardController implements Serializable
     {
         return dailyTotalSum;
     }
-    
-    
 }
