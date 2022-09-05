@@ -216,4 +216,20 @@ public class StockService
         
         return Collections.emptyList();
     }
+    public List<Sales> getTotalSumPerDateRange(DateRangeUtil dateRange)
+    {
+        try
+        {
+           return crudApi.getEm().createQuery("SELECT e FROM Sales e WHERE e.valueDate BETWEEN ?1 AND ?2 ", Sales.class)
+                   .setParameter(1, dateRange.getFromDate())
+                   .setParameter(2, dateRange.getToDate())
+                   .getResultList();
+           
+        } catch (Exception e)
+        {
+           e.printStackTrace();
+        }
+        
+        return Collections.emptyList();
+    }
 }

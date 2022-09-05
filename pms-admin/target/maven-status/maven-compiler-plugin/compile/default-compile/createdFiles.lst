@@ -6,6 +6,7 @@ com\khoders\pms\admin\jbeans\controller\LoginController.class
 com\khoders\pms\admin\services\StockService.class
 com\khoders\pms\admin\jbeans\converter\CompanyBranchConverter.class
 com\khoders\pms\admin\commons\CommonClass.class
+com\khoders\pms\admin\jbeans\controller\DashboardController.class
 com\khoders\pms\admin\UserModel.class
 com\khoders\pms\admin\jbeans\controller\UserAccountController.class
 com\khoders\pms\admin\jbeans\controller\PermissionController.class
